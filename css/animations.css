@@ -1,0 +1,74 @@
+/* ==========================================================================
+   Keyframe Animations & Motion System
+   ========================================================================== */
+
+/* ── Green Pulse (Status & Activity Dots) ── */
+@keyframes pulseGreen {
+  0%  { transform: scale(0.95); box-shadow: 0 0 0 0 var(--accent-green-glow); }
+  70% { transform: scale(1);    box-shadow: 0 0 0 6px rgba(16,185,129,0); }
+  100%{ transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+}
+
+/* ── Spinner ── */
+@keyframes rotate {
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes dash {
+  0%   { stroke-dasharray: 1, 150;  stroke-dashoffset: 0; }
+  50%  { stroke-dasharray: 90, 150; stroke-dashoffset: -35; }
+  100% { stroke-dasharray: 90, 150; stroke-dashoffset: -124; }
+}
+
+/* ── Card Entrance (Spring from Bottom) ── */
+@keyframes cardEnterSpring {
+  0% {
+    opacity: 0;
+    transform: translateY(320px) rotate(calc(var(--curr-rot, 0deg) * 1.5)) scale(0.75);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--curr-rot, 0deg)) scale(1);
+  }
+}
+
+/* ── Card Exit (Fall Down) ── */
+@keyframes cardExitDown {
+  0% {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--curr-rot, 0deg)) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(360px) rotate(calc(var(--curr-rot, 0deg) - 15deg)) scale(0.8);
+  }
+}
+
+/* ── Card Exit (Fly Sideways) ── */
+@keyframes cardExitSide {
+  0% {
+    opacity: 1;
+    transform: translateX(0) rotate(var(--curr-rot, 0deg)) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(var(--exit-x-offset, 350px)) rotate(calc(var(--curr-rot, 0deg) + 20deg)) scale(0.85);
+  }
+}
+
+/* ── Animation Classes ──
+   Use .neo-card. prefix so these OVERRIDE the base .neo-card transitions */
+
+.neo-card.card-entering {
+  animation: cardEnterSpring 0.85s var(--spring) forwards !important;
+}
+
+.neo-card.card-exiting-down {
+  animation: cardExitDown 0.45s var(--smooth) forwards !important;
+  pointer-events: none !important;
+}
+
+.neo-card.card-exiting-side {
+  animation: cardExitSide 0.45s var(--smooth) forwards !important;
+  pointer-events: none !important;
+}

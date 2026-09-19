@@ -1,0 +1,107 @@
+/* ==========================================================================
+   KINSEI Studio — Design Tokens & CSS Variables
+   All spacing, color, typography, and motion tokens in one place.
+   ========================================================================== */
+
+:root {
+  /* ── Color Palette ── */
+  --bg-main: #EFEFEB;
+  --bg-card: #F4F4F0;
+  --bg-card-alt: #EBEBE7;
+  --bg-white: #FFFFFF;
+  --bg-overlay: rgba(30, 30, 30, 0.45);
+  --bg-subtle: rgba(30, 30, 30, 0.05);
+  --bg-subtle-hover: rgba(30, 30, 30, 0.08);
+
+  --text-primary: #1E1E1E;
+  --text-secondary: #666666;
+  --text-tertiary: #888888;
+  --text-muted: #777777;
+  --text-inverse: #FFFFFF;
+
+  --border-color: #1E1E1E;
+  --border-subtle: rgba(30, 30, 30, 0.12);
+  --border-dashed: rgba(30, 30, 30, 0.15);
+  --border-ghost: #C0C0BA;
+
+  --accent-green: #10B981;
+  --accent-green-glow: rgba(16, 185, 129, 0.7);
+  --accent-yellow: #F59E0B;
+  --accent-yellow-dark: #D97706;
+
+  /* ── Typography ── */
+  --font-primary: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+
+  --fs-xs: 0.72rem;
+  --fs-sm: 0.78rem;
+  --fs-base: 0.96rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.35rem;
+  --fs-2xl: 1.5rem;
+  --fs-hero: clamp(2rem, 3.1vw, 2.85rem);
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-extrabold: 800;
+
+  /* ── Spacing ── */
+  --space-1: 4px;
+  --space-2: 6px;
+  --space-3: 8px;
+  --space-4: 10px;
+  --space-5: 12px;
+  --space-6: 14px;
+  --space-7: 16px;
+  --space-8: 18px;
+  --space-9: 20px;
+  --space-10: 24px;
+  --space-12: 28px;
+  --space-14: 32px;
+  --space-16: 36px;
+  --space-20: 48px;
+
+  /* ── Neo-Brutalist Border Tokens ── */
+  --stroke-thin: 1.5px;
+  --stroke-thick: 6px;
+  --stroke-pressed: 3.5px;
+
+  /* ── Radii ── */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-card: 14px;
+  --radius-btn: 12px;
+  --radius-pill: 30px;
+  --radius-round: 50%;
+
+  /* ── Motion ── */
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
+
+  --dur-fast: 0.12s;
+  --dur-normal: 0.25s;
+  --dur-slow: 0.4s;
+  --dur-spring: 0.85s;
+
+  /* ── Z-Index Scale ── */
+  --z-ambient: 1;
+  --z-cursor: 2;
+  --z-app: 5;
+  --z-cards: 10;
+  --z-header: 50;
+  --z-contact: 50;
+  --z-status: 55;
+  --z-mobile-contact: 60;
+  --z-card-hover: 100;
+  --z-modal: 999;
+  --z-toast: 9999;
+
+  /* ── Card Dimensions ── */
+  --card-width: 320px;
+  --card-width-mobile: calc(100vw - 44px);
+  --card-max-mobile: 330px;
+}

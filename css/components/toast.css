@@ -1,0 +1,58 @@
+/* ==========================================================================
+   Toast Notification — Bottom-right feedback popup
+   ========================================================================== */
+
+.toast-notification {
+  position: fixed;
+  bottom: 28px;
+  right: 32px;
+  background: var(--text-primary);
+  color: var(--text-inverse);
+  padding: var(--space-7) 22px;
+  border-radius: var(--radius-card);
+  border: var(--stroke-thin) solid #333;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  z-index: var(--z-toast);
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  transform: translateY(120px) scale(0.9);
+  opacity: 0;
+  pointer-events: none;
+  transition: all var(--dur-slow) var(--spring);
+}
+
+.toast-notification.toast-active {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.toast-icon {
+  width: 28px; height: 28px;
+  background: var(--accent-green);
+  border-radius: var(--radius-round);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--fw-extrabold);
+  font-size: 0.95rem;
+  color: var(--text-inverse);
+  flex-shrink: 0;
+}
+
+.toast-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toast-title {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+}
+
+.toast-message {
+  font-size: 0.85rem;
+  color: #CCC;
+}

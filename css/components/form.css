@@ -1,0 +1,154 @@
+/* ==========================================================================
+   Contact Form — Figma-exact: 4 fields + 2 buttons (ghost + solid)
+   No budget chips, no TEZKOR SO'ROV badge
+   ========================================================================== */
+
+.contact-form {
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  background: transparent;
+}
+
+.input-group {
+  position: relative;
+  width: 100%;
+}
+
+/* ── Underline Input ── */
+.line-input,
+.line-select {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: var(--stroke-thin) solid var(--border-color);
+  padding: 9px 8px;
+  border-radius: 4px 4px 0 0;
+  font-family: var(--font-primary);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-medium);
+  color: var(--text-primary);
+  outline: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.line-input::placeholder {
+  color: var(--text-muted);
+  font-weight: var(--fw-regular);
+}
+
+/* Light blue on focus */
+.line-input:focus,
+.line-select:focus {
+  background-color: rgba(203, 228, 254, 0.45);
+  border-bottom-width: 2.5px;
+  border-bottom-color: var(--text-primary);
+}
+
+/* Light blue when filled */
+.line-input.is-filled,
+.line-select.is-filled {
+  background-color: rgba(203, 228, 254, 0.45);
+}
+
+/* Consistent light blue for Chrome/Edge autofill matching the theme */
+.line-input:-webkit-autofill,
+.line-input:-webkit-autofill:hover,
+.line-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #E1EFFF inset !important;
+  -webkit-text-fill-color: var(--text-primary) !important;
+  border-radius: 4px 4px 0 0;
+}
+
+/* ── Custom Select ── */
+.select-group { position: relative; }
+
+.line-select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding-right: 28px;
+}
+
+.select-chevron {
+  position: absolute;
+  right: 0;
+  bottom: 12px;
+  pointer-events: none;
+  color: var(--text-primary);
+  transition: transform var(--dur-normal) var(--smooth);
+}
+
+.line-select:focus + .select-chevron {
+  transform: rotate(180deg);
+}
+
+/* ── "Other" slide-down ── */
+.custom-service-group {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.35s var(--smooth), opacity 0.3s ease, margin-top 0.3s ease;
+  margin-top: -10px;
+}
+
+.custom-service-group.expanded {
+  max-height: 60px;
+  opacity: 1;
+  margin-top: 0;
+}
+
+/* ── Submit Button ── */
+.submit-btn {
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: var(--radius-btn);
+  font-size: 0.98rem;
+  font-weight: var(--fw-bold);
+  transition: all 0.25s var(--smooth);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Disabled state: ghost button */
+  background-color: transparent;
+  color: var(--text-muted);
+  border: 1.5px solid var(--border-ghost);
+  cursor: not-allowed;
+}
+
+/* When all fields are filled ("hammasi to'ldirilgach"): Ochiq ko'k (Light Blue) */
+.submit-btn.ready-to-submit {
+  background-color: #CBE4FE;
+  color: var(--text-primary);
+  border: 2px solid var(--border-color);
+  box-shadow: 0 4px 14px rgba(160, 205, 255, 0.4);
+  cursor: pointer;
+}
+
+.submit-btn.ready-to-submit:hover {
+  transform: translateY(-2px);
+  background-color: #B5D8FE;
+  box-shadow: 0 6px 18px rgba(160, 205, 255, 0.55);
+}
+
+.submit-btn.ready-to-submit:active {
+  transform: translateY(0);
+  background-color: #9ECBFE;
+}
+
+/* ── Spinner ── */
+.btn-loader .spinner {
+  animation: rotate 2s linear infinite;
+  width: 20px; height: 20px;
+}
+
+.btn-loader .path {
+  stroke: var(--text-inverse);
+  stroke-linecap: round;
+  animation: dash 1.5s ease-in-out infinite;
+}

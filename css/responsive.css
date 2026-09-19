@@ -1,0 +1,290 @@
+/* ==========================================================================
+   Responsive Styles — Tailored for Mobile Phones & Tablets
+   ========================================================================== */
+
+@media (max-width: 860px) {
+
+  /* ── App Viewport on Mobile ── */
+  .app-container {
+    padding: 18px 16px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  /* ── Header Centered ── */
+  .site-header {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-3);
+  }
+
+  .brand-symbol {
+    width: 44px;
+    height: 44px;
+  }
+
+  .brand-title {
+    display: none;
+  }
+
+  .brand-title-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .brand-tagline-mobile {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: var(--fw-medium);
+    letter-spacing: -0.01em;
+  }
+
+  /* Hide desktop controls */
+  .nav-controls-desktop {
+    display: none;
+  }
+
+  /* ── Mobile Action Row ── */
+  .mobile-header-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    margin-top: 2px;
+  }
+
+  /* ── Mobile Social Links ── */
+  .social-icons-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+  }
+
+  .mobile-icon-btn {
+    color: var(--text-primary);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(30, 30, 30, 0.04);
+    transition: transform 0.15s ease, background-color 0.15s ease;
+  }
+
+  .mobile-icon-btn:active {
+    transform: scale(0.92);
+    background: rgba(30, 30, 30, 0.1);
+  }
+
+  .mobile-icon-btn img {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* ── Mobile Tab Bar ── */
+  .mobile-tab-bar {
+    display: flex;
+    align-items: center;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    padding: 3px;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .mobile-tab-btn {
+    flex: 1;
+    padding: 8px 10px;
+    font-size: 0.86rem;
+    font-weight: var(--fw-semibold);
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    border-radius: 20px;
+    transition: all var(--dur-normal) var(--smooth);
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .mobile-tab-btn:active {
+    transform: scale(0.96);
+  }
+
+  .mobile-tab-btn.active {
+    background: var(--text-primary);
+    color: var(--text-inverse);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  /* ── Mobile Contact Form Card ── */
+  .contact-card-wrapper {
+    position: absolute;
+    top: 205px;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 360px;
+    display: none;
+    z-index: var(--z-mobile-contact);
+    background: #FFFFFF;
+    border: 2px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: 4px 4px 0px var(--border-color);
+    padding: 20px 18px 16px 18px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  .contact-card-wrapper.mobile-contact-visible {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .contact-card-wrapper .contact-form {
+    width: 100%;
+    max-width: 100%;
+    gap: 16px;
+  }
+
+  .contact-card-wrapper .line-input,
+  .contact-card-wrapper .line-select {
+    font-size: 16px !important; /* Prevents auto-zoom in iOS Safari */
+    padding: 10px 8px;
+  }
+
+  .contact-card-wrapper .submit-btn {
+    padding: 14px 20px;
+    font-size: 1rem;
+    margin-top: 4px;
+    border-radius: 12px;
+  }
+
+  body.mobile-contact-active .cards-playground {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transition: opacity 0.25s ease;
+  }
+
+  /* ── Mobile Neo-Brutalist Cards ── */
+  .neo-card {
+    width: min(calc(100vw - 36px), 330px);
+    max-width: 330px;
+    border-radius: 12px;
+    border-top: 1.5px solid var(--border-color);
+    border-left: 1.5px solid var(--border-color);
+    border-right: 5px solid var(--border-color);
+    border-bottom: 5px solid var(--border-color);
+  }
+
+  .card-inner {
+    padding: 16px 14px;
+    min-height: 205px;
+    gap: 16px;
+  }
+
+  .card-title-link {
+    font-size: 1.05rem;
+    line-height: 1.3;
+  }
+
+  /* ── Mobile Project Detail Modal ── */
+  .modal-card {
+    width: calc(100% - 32px);
+    max-width: 400px;
+    max-height: 85dvh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 24px 18px 20px 18px;
+    border-radius: 16px;
+    box-shadow: 5px 5px 0px var(--border-color);
+    gap: 14px;
+  }
+
+  .modal-title {
+    font-size: 1.35rem;
+    padding-right: 32px;
+  }
+
+  .modal-desc {
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-top: 6px;
+  }
+
+  .modal-action-btn {
+    width: 100%;
+    padding: 13px 16px;
+    font-size: 0.95rem;
+    justify-content: center;
+  }
+
+  .modal-close-btn {
+    top: 16px;
+    right: 16px;
+    width: 34px;
+    height: 34px;
+  }
+}
+
+/* ── Ultra-compact phones (<= 380px) ── */
+@media (max-width: 380px) {
+  .app-container {
+    padding: 14px 12px 12px 12px;
+  }
+
+  .mobile-tab-btn {
+    font-size: 0.8rem;
+    padding: 7px 6px;
+  }
+
+  .contact-card-wrapper {
+    top: 195px;
+    padding: 16px 14px;
+    width: calc(100% - 24px);
+  }
+
+  .card-inner {
+    padding: 14px 12px;
+    min-height: 190px;
+  }
+}
+
+/* ── Landscape Mobile Handheld ── */
+@media (max-height: 520px) and (orientation: landscape) {
+  .app-container {
+    padding: 10px 16px;
+    overflow-y: auto;
+  }
+
+  .contact-card-wrapper {
+    top: 100px;
+    bottom: 10px;
+  }
+
+  .modal-card {
+    max-height: 94dvh;
+    padding: 16px;
+  }
+}

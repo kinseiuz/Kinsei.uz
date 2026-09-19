@@ -1,0 +1,178 @@
+/* ==========================================================================
+   Neo-Brutalist Cards — Figma-exact: clean cards without sticker tags
+   Card: icon + description + brand name + type
+   Border: top/left 1.5px, right/bottom 6px (Figma: 2/6/6/1.5)
+   ========================================================================== */
+
+.neo-card {
+  position: absolute;
+  width: var(--card-width);
+  background-color: var(--bg-card);
+  border-radius: 12px;
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+
+  /* Figma asymmetric border: top 2px, right 6px, bottom 6px, left 1.5px */
+  border-top: 2px solid var(--border-color);
+  border-left: 1.5px solid var(--border-color);
+  border-right: 6px solid var(--border-color);
+  border-bottom: 6px solid var(--border-color);
+
+  will-change: transform, left, top;
+  transition:
+    background-color 0.28s ease,
+    border-width var(--dur-fast) ease,
+    transform var(--dur-slow) var(--spring);
+}
+
+/* Hover: color morph */
+.neo-card:hover {
+  background-color: var(--card-hover-hex, var(--bg-white));
+}
+
+/* Drag press: equalize borders */
+.neo-card:active,
+.neo-card.is-dragging {
+  cursor: grabbing !important;
+  border-width: 3.5px !important;
+  transition: border-width 0.08s ease !important;
+}
+
+/* ── Inner Structure — Figma: padding 16px all, gap 24px ── */
+.card-inner {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 240px;
+  gap: 24px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.card-icon-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.card-icon-img {
+  display: block;
+  max-width: 44px;
+  max-height: 42px;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1;
+}
+
+/* Bold project description (clickable link) */
+.card-title-link {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  line-height: 1.22;
+  color: var(--text-primary);
+  text-decoration: none;
+  cursor: pointer;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-title-link:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+/* Non-clickable brand name */
+.card-brand-name {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-medium);
+  color: var(--text-secondary);
+}
+
+/* Figma: footer with just type text */
+.card-footer {
+  padding-top: 0;
+}
+
+.card-tag {
+  font-size: 0.86rem;
+  font-weight: var(--fw-semibold);
+  color: #333;
+}
+
+/* ── Team Card ── */
+.team-card .card-inner {
+  min-height: 275px;
+}
+
+.team-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-7);
+}
+
+.avatar-box {
+  width: 68px; height: 68px;
+  flex-shrink: 0;
+  border-radius: var(--radius-round);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 2px solid var(--border-color);
+  background: var(--bg-white);
+  padding: 2px;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.team-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.team-member-name {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+}
+
+.team-achievement {
+  font-size: 1.32rem;
+  font-weight: var(--fw-bold);
+  line-height: 1.22;
+  color: var(--text-primary);
+}
+
+.team-footer .tech-stack-text {
+  font-size: 0.88rem;
+  font-weight: var(--fw-medium);
+  color: #444;
+  line-height: 1.35;
+}

@@ -1,0 +1,178 @@
+/* ==========================================================================
+   Project Preview Modal — Neo-Brutalist Drawer
+   ========================================================================== */
+
+.project-modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.project-modal.modal-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-backdrop {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: var(--bg-overlay);
+  backdrop-filter: blur(8px);
+}
+
+.modal-card {
+  position: relative;
+  width: 90%;
+  max-width: 520px;
+  background: var(--bg-white);
+  border-radius: 18px;
+  padding: var(--space-14) var(--space-12);
+  border: 2px solid var(--border-color);
+  box-shadow: 8px 8px 0px var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+  transform: translateY(20px) scale(0.95);
+  transition: transform 0.35s var(--spring);
+  z-index: 2;
+}
+
+.project-modal.modal-open .modal-card {
+  transform: translateY(0) scale(1);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: var(--space-7);
+  right: var(--space-8);
+  width: 32px; height: 32px;
+  border-radius: var(--radius-round);
+  border: var(--stroke-thin) solid var(--border-color);
+  background: transparent;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.modal-close-btn:hover {
+  background: var(--text-primary);
+  color: var(--text-inverse);
+}
+
+.modal-badge-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.modal-tag {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: var(--fw-bold);
+  padding: 3px 10px;
+  background: var(--bg-main);
+  border-radius: var(--radius-sm);
+}
+
+.modal-status {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--accent-green);
+}
+
+.modal-title {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-extrabold);
+  line-height: 1.2;
+}
+
+.modal-desc {
+  font-size: var(--fs-md);
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.modal-tech-box {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background: #F9F9F7;
+  padding: var(--space-6);
+  border-radius: var(--radius-md);
+  border: 1px dashed rgba(30,30,30,0.2);
+}
+
+.tech-title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: var(--fw-bold);
+  color: var(--text-secondary);
+}
+
+.tech-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.tech-pill {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: var(--fw-semibold);
+  padding: var(--space-1) var(--space-3);
+  background: var(--bg-white);
+  border: 1px solid var(--border-dashed);
+  border-radius: var(--radius-sm);
+}
+
+.modal-actions {
+  display: flex;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+}
+
+.modal-action-btn {
+  padding: var(--space-5) var(--space-8);
+  border-radius: var(--radius-md);
+  font-size: 0.94rem;
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.modal-action-btn.primary {
+  background: var(--text-primary);
+  color: var(--text-inverse);
+  border: var(--stroke-thin) solid var(--text-primary);
+}
+
+.modal-action-btn.primary:hover {
+  background: #000;
+  transform: translateY(-2px);
+}
+
+.modal-action-btn.secondary {
+  background: transparent;
+  color: var(--text-primary);
+  border: var(--stroke-thin) solid var(--border-color);
+  font-size: 0.88rem;
+}
+
+.modal-action-btn.secondary:hover { background: #F0F0EC; }
