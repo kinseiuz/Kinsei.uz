@@ -13,6 +13,7 @@ import { initAudio, playSound } from './modules/audio.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // ── Initialize modules ──
+  initDynamicFavicon();
   initAudio();
   initTabs();
   initForm();
@@ -73,3 +74,26 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('teamGroup').classList.remove('active-group');
   randomizeGroupPositions(projectCards, true);
 });
+
+/**
+ * Automatically adapt browser favicon to light / dark browser theme
+ */
+function initDynamicFavicon() {
+  const faviconLink = document.getElementById('dynamicFavicon') || document.querySelector('link[rel="icon"]');
+  if (!faviconLink) return;
+
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+  const updateFavicon = (e) => {
+    const isDark = (e && typeof e.matches === 'boolean') ? e.matches : mediaQuery.matches;
+    faviconLink.href = isDark ? 'assets/favicons/favicon-dark.svg' : 'assets/favicons/favicon-light.svg';
+  };
+
+  updateFavicon(mediaQuery);
+  if (typeof mediaQuery.addEventListener === 'function') {
+    mediaQuery.addEventListener('change', updateFavicon);
+  } else if (typeof mediaQuery.addListener === 'function') {
+    mediaQuery.addListener(updateFavicon);
+  }
+}
+

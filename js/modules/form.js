@@ -6,39 +6,37 @@ import { CONFIG } from '../config.js';
 import { playSound } from './audio.js';
 
 let form, name, phone, service, customGroup, custom, submitBtn;
+let customSelectWrapper, customSelectTrigger, selectedServiceText, customSelectOptions;
 let toastEl, toastTitle, toastMessage;
 let toastTimer = null;
 
 export function formatUzbekPhone(value) {
+  if (!value) return '';
   let digits = value.replace(/\D/g, '');
   if (!digits) return '';
 
-  // If user enters Russian/regional 890... or raw 9-digit local e.g. 90...
-  if (digits.startsWith('8') && digits.length === 10) {
-    digits = '998' + digits.slice(1);
-  } else if (!digits.startsWith('998')) {
-    digits = '998' + digits;
+  let local = '';
+  if (digits.startsWith('998')) {
+    local = digits.slice(3);
+  } else if (digits.startsWith('8') && digits.length === 10) {
+    local = digits.slice(1);
+  } else {
+    local = digits;
   }
 
-  // Cap at 12 digits (998 + 9 local)
-  digits = digits.slice(0, 12);
+  // Cap at 9 local digits (e.g. 90 123 45 67)
+  local = local.slice(0, 9);
+  if (!local) {
+    return digits.startsWith('998') ? '+998 ' : '';
+  }
 
-  let formatted = '+998';
-  if (digits.length > 3) {
-    formatted += ' (' + digits.slice(3, 5);
-  }
-  if (digits.length >= 5) {
-    formatted += ') ';
-  }
-  if (digits.length > 5) {
-    formatted += digits.slice(5, 8);
-  }
-  if (digits.length > 8) {
-    formatted += '-' + digits.slice(8, 10);
-  }
-  if (digits.length > 10) {
-    formatted += '-' + digits.slice(10, 12);
-  }
+  let formatted = '+998 (' + local.slice(0, 2);
+  if (local.length >= 2) formatted += ') ';
+  if (local.length > 2) formatted += local.slice(2, 5);
+  if (local.length >= 5) formatted += '-';
+  if (local.length > 5) formatted += local.slice(5, 7);
+  if (local.length >= 7) formatted += '-';
+  if (local.length > 7) formatted += local.slice(7, 9);
   return formatted;
 }
 
@@ -51,9 +49,56 @@ export function initForm() {
   custom = document.getElementById('customService');
   submitBtn = document.getElementById('submitBtn');
 
+  customSelectWrapper = document.getElementById('customSelectWrapper');
+  customSelectTrigger = document.getElementById('customSelectTrigger');
+  selectedServiceText = document.getElementById('selectedServiceText');
+  customSelectOptions = document.querySelectorAll('.custom-select-option');
+
   toastEl = document.getElementById('toastNotification');
   toastTitle = document.getElementById('toastTitle');
   toastMessage = document.getElementById('toastMessage');
+
+  // Custom dropdown open/close toggle
+  customSelectTrigger?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = customSelectWrapper?.classList.toggle('is-open');
+    customSelectTrigger.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  // Custom dropdown item selection
+  customSelectOptions.forEach(opt => {
+    opt.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const val = opt.dataset.value;
+      if (service) service.value = val;
+      if (selectedServiceText) selectedServiceText.textContent = opt.textContent;
+      customSelectTrigger?.classList.add('has-value');
+      customSelectOptions.forEach(o => o.classList.toggle('is-selected', o === opt));
+      customSelectWrapper?.classList.remove('is-open');
+      customSelectTrigger?.setAttribute('aria-expanded', 'false');
+
+      if (service) {
+        service.dispatchEvent(new Event('change'));
+      }
+      validate();
+    });
+  });
+
+  // Close dropdown on outside click
+  document.addEventListener('click', (e) => {
+    if (customSelectWrapper && !customSelectWrapper.contains(e.target)) {
+      customSelectWrapper.classList.remove('is-open');
+      customSelectTrigger?.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // Close dropdown on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && customSelectWrapper?.classList.contains('is-open')) {
+      customSelectWrapper.classList.remove('is-open');
+      customSelectTrigger?.setAttribute('aria-expanded', 'false');
+    }
+  });
 
   // "Other" slide-down
   service?.addEventListener('change', () => {
@@ -79,6 +124,8 @@ export function initForm() {
 
   // Phone input formatting & mask handling
   if (phone) {
+    phone.setAttribute('inputmode', 'tel');
+
     phone.addEventListener('focus', () => {
       if (!phone.value || phone.value.trim() === '') {
         phone.value = '+998 (';
@@ -96,25 +143,35 @@ export function initForm() {
     phone.addEventListener('keydown', (e) => {
       if (e.key === 'Backspace') {
         const val = phone.value;
+        const digits = val.replace(/\D/g, '');
+
+        // If only prefix is left, clear the entire field on backspace
+        if (digits.length <= 3) {
+          e.preventDefault();
+          phone.value = '';
+          validate();
+          return;
+        }
+
         const selStart = phone.selectionStart;
         const selEnd = phone.selectionEnd;
 
-        // If cursor is right after formatting characters: ') ', '-', ' ('
+        // If deleting right next to a formatting separator ') ', '-', ' ('
         if (selStart === selEnd && selStart > 0) {
           const charBefore = val[selStart - 1];
-          if (charBefore === '-' || charBefore === ' ' || charBefore === ')') {
+          if (charBefore === '-' || charBefore === ' ' || charBefore === ')' || charBefore === '(') {
             e.preventDefault();
-            let digits = val.slice(0, selStart).replace(/\D/g, '');
-            if (digits.length > 3) {
-              digits = digits.slice(0, -1);
-              const remainder = val.slice(selEnd).replace(/\D/g, '');
-              const combined = digits + remainder;
-              phone.value = formatUzbekPhone(combined);
-              validate();
+            let before = val.slice(0, selStart - 1);
+            let digitsBefore = before.replace(/\D/g, '');
+            if (digitsBefore.length > 3) {
+              digitsBefore = digitsBefore.slice(0, -1);
+              const after = val.slice(selEnd);
+              const digitsAfter = after.replace(/\D/g, '');
+              phone.value = formatUzbekPhone(digitsBefore + digitsAfter);
             } else {
               phone.value = '';
-              validate();
             }
+            validate();
           }
         }
       }
@@ -123,12 +180,11 @@ export function initForm() {
     phone.addEventListener('input', () => {
       const raw = phone.value;
       const digits = raw.replace(/\D/g, '');
-      if (digits.length <= 3 && (raw === '' || raw === '+' || raw === '+998')) {
-        if (raw === '') {
-          phone.value = '';
-        } else {
-          phone.value = '+998 (';
-        }
+
+      if (!digits || digits.length === 0) {
+        phone.value = '';
+      } else if (digits.length <= 3 && (raw === '' || raw === '+' || raw.trim() === '+998' || raw.trim() === '+998 (')) {
+        phone.value = raw.includes('998') ? '+998 (' : '';
       } else {
         phone.value = formatUzbekPhone(raw);
       }
@@ -213,6 +269,11 @@ async function handleSubmit(e) {
     playSound('success');
     showToast('Xabaringiz yuborildi!', 'Tez orada siz bilan bog\'lanamiz.');
     form.reset();
+    if (service) service.value = '';
+    if (selectedServiceText) selectedServiceText.textContent = 'Xizmat turi';
+    if (customSelectTrigger) customSelectTrigger.classList.remove('has-value');
+    customSelectOptions?.forEach(o => o.classList.remove('is-selected'));
+    if (customSelectWrapper) customSelectWrapper.classList.remove('is-open');
     if (customGroup) customGroup.classList.remove('expanded');
     validate();
   } else {
@@ -233,6 +294,12 @@ function showToast(title, msg) {
 export function preselectService(type) {
   if (service) {
     service.value = type;
+    const opt = Array.from(customSelectOptions || []).find(o => o.dataset.value === type);
+    if (opt && selectedServiceText) {
+      selectedServiceText.textContent = opt.textContent;
+      customSelectTrigger?.classList.add('has-value');
+      customSelectOptions.forEach(o => o.classList.toggle('is-selected', o === opt));
+    }
     service.dispatchEvent(new Event('change'));
   }
   if (name) name.focus();

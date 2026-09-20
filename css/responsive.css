@@ -24,8 +24,8 @@
   }
 
   .brand-symbol {
-    width: 44px;
-    height: 44px;
+    width: 78px;
+    height: 78px;
   }
 
   .brand-title {
@@ -41,7 +41,7 @@
 
   .brand-tagline-mobile {
     display: block;
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     color: var(--text-secondary);
     font-weight: var(--fw-medium);
     letter-spacing: -0.01em;
@@ -59,63 +59,76 @@
     align-items: center;
     gap: 12px;
     width: 100%;
-    margin-top: 2px;
+    margin-top: 4px;
   }
 
-  /* ── Mobile Social Links ── */
+  /* ── Mobile Social Links (Transparent bg, larger icons) ── */
   .social-icons-mobile {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 18px;
+    gap: 24px;
   }
 
   .mobile-icon-btn {
     color: var(--text-primary);
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    border-radius: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(30, 30, 30, 0.04);
-    transition: transform 0.15s ease, background-color 0.15s ease;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0;
+    transition: transform 0.15s ease;
   }
 
   .mobile-icon-btn:active {
-    transform: scale(0.92);
-    background: rgba(30, 30, 30, 0.1);
+    transform: scale(0.9);
+    background: transparent !important;
   }
 
   .mobile-icon-btn img {
-    width: 20px;
-    height: 20px;
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
   }
 
-  /* ── Mobile Tab Bar ── */
+  /* ── Mobile Tab Bar (Taller container, background-based active state without border) ── */
   .mobile-tab-bar {
     display: flex;
     align-items: center;
     background: var(--bg-subtle);
-    border: 1px solid var(--border-subtle);
+    border: none !important;
+    box-shadow: none !important;
     border-radius: var(--radius-pill);
-    padding: 3px;
+    padding: 5px;
     width: 100%;
-    max-width: 320px;
+    max-width: 340px;
+    min-height: 54px;
+    height: 54px;
   }
 
   .mobile-tab-btn {
     flex: 1;
-    padding: 8px 10px;
-    font-size: 0.86rem;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 12px;
+    font-size: 0.95rem;
     font-weight: var(--fw-semibold);
-    border: none;
+    border: none !important;
+    outline: none !important;
     background: transparent;
     color: var(--text-primary);
-    border-radius: 20px;
+    border-radius: 22px;
     transition: all var(--dur-normal) var(--smooth);
     text-align: center;
     cursor: pointer;
+    box-shadow: none !important;
   }
 
   .mobile-tab-btn:active {
@@ -123,27 +136,32 @@
   }
 
   .mobile-tab-btn.active {
-    background: var(--text-primary);
-    color: var(--text-inverse);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    background: var(--text-primary) !important;
+    color: var(--text-inverse) !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
   }
 
-  /* ── Mobile Contact Form Card ── */
+  /* ── Mobile Contact Form Card (Content-hug: no huge bottom white space) ── */
   .contact-card-wrapper {
     position: absolute;
-    top: 205px;
-    bottom: 16px;
+    top: 195px;
+    bottom: auto;
     left: 50%;
     transform: translateX(-50%);
     width: calc(100% - 32px);
     max-width: 360px;
+    height: auto !important;
+    min-height: auto !important;
+    max-height: calc(100dvh - 215px);
     display: none;
     z-index: var(--z-mobile-contact);
     background: #FFFFFF;
     border: 2px solid var(--border-color);
     border-radius: 16px;
     box-shadow: 4px 4px 0px var(--border-color);
-    padding: 20px 18px 16px 18px;
+    padding: 18px 18px 16px 18px;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
@@ -153,24 +171,28 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    height: auto !important;
+    min-height: auto !important;
   }
 
   .contact-card-wrapper .contact-form {
     width: 100%;
     max-width: 100%;
     gap: 16px;
+    margin-bottom: 0;
   }
 
   .contact-card-wrapper .line-input,
-  .contact-card-wrapper .line-select {
+  .contact-card-wrapper .custom-select-trigger {
     font-size: 16px !important; /* Prevents auto-zoom in iOS Safari */
     padding: 10px 8px;
   }
 
   .contact-card-wrapper .submit-btn {
-    padding: 14px 20px;
+    padding: 13px 20px;
     font-size: 1rem;
     margin-top: 4px;
+    margin-bottom: 0;
     border-radius: 12px;
   }
 
@@ -181,26 +203,43 @@
     transition: opacity 0.25s ease;
   }
 
-  /* ── Mobile Neo-Brutalist Cards ── */
+  /* ── Mobile Neo-Brutalist Cards (Square-ish, 3-line clamp, physical press) ── */
   .neo-card {
-    width: min(calc(100vw - 36px), 330px);
-    max-width: 330px;
+    width: min(calc(100vw - 110px), 242px);
+    max-width: 242px;
     border-radius: 12px;
     border-top: 1.5px solid var(--border-color);
     border-left: 1.5px solid var(--border-color);
     border-right: 5px solid var(--border-color);
     border-bottom: 5px solid var(--border-color);
+    background-color: #FFFFFF;
+    opacity: 1 !important;
+  }
+
+  .neo-card:active,
+  .neo-card.is-dragging {
+    border-top-width: 1.5px !important;
+    border-left-width: 1.5px !important;
+    border-right-width: 1.5px !important;
+    border-bottom-width: 1.5px !important;
+    transform: translate(3.5px, 3.5px) rotate(var(--curr-rot, 0deg)) !important;
   }
 
   .card-inner {
     padding: 16px 14px;
-    min-height: 205px;
-    gap: 16px;
+    min-height: 245px;
+    gap: 14px;
   }
 
+  /* Exactly 3 lines max for bold description on mobile (never 2, never 4) */
   .card-title-link {
     font-size: 1.05rem;
-    line-height: 1.3;
+    line-height: 1.25;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-height: calc(1.05rem * 1.25 * 3);
   }
 
   /* ── Mobile Project Detail Modal ── */

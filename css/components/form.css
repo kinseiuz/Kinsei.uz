@@ -1,6 +1,9 @@
 /* ==========================================================================
-   Contact Form — Figma-exact: 4 fields + 2 buttons (ghost + solid)
-   No budget chips, no TEZKOR SO'ROV badge
+   Contact Form — Neo-Brutalist Monochrome System
+   Gray underlines, gray default service text & chevron.
+   Zero blue/sky-blue colors.
+   Physical stroke submit button.
+   Custom Neo-Brutalist Dropdown (no OS/browser native UI).
    ========================================================================== */
 
 .contact-form {
@@ -17,75 +20,170 @@
   width: 100%;
 }
 
-/* ── Underline Input ── */
-.line-input,
-.line-select {
+/* ── Underline Input (Gray by default, Black on focus) ── */
+.line-input {
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: var(--stroke-thin) solid var(--border-color);
+  border-bottom: 1.5px solid var(--border-ghost, #B0B0A8);
   padding: 9px 8px;
   border-radius: 4px 4px 0 0;
   font-family: var(--font-primary);
   font-size: var(--fs-base);
   font-weight: var(--fw-medium);
   color: var(--text-primary);
-  outline: none;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  outline: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  box-shadow: none !important;
+  transition: border-color 0.2s ease;
 }
 
 .line-input::placeholder {
-  color: var(--text-muted);
+  color: var(--text-muted, #888888);
   font-weight: var(--fw-regular);
 }
 
-/* Light blue on focus */
+/* Strictly Monochrome Focus: No blue color, crisp black underline */
 .line-input:focus,
-.line-select:focus {
-  background-color: rgba(203, 228, 254, 0.45);
-  border-bottom-width: 2.5px;
-  border-bottom-color: var(--text-primary);
+.line-input:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+  border-bottom-width: 2px !important;
+  border-bottom-color: var(--text-primary, #1E1E1E) !important;
 }
 
-/* Light blue when filled */
-.line-input.is-filled,
-.line-select.is-filled {
-  background-color: rgba(203, 228, 254, 0.45);
+.line-input.is-filled {
+  border-bottom-color: var(--text-primary, #1E1E1E);
 }
 
-/* Consistent light blue for Chrome/Edge autofill matching the theme */
+/* Pure monochrome for autofill */
 .line-input:-webkit-autofill,
 .line-input:-webkit-autofill:hover,
-.line-input:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0px 1000px #E1EFFF inset !important;
-  -webkit-text-fill-color: var(--text-primary) !important;
+.line-input:-webkit-autofill:focus,
+.line-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px #FFFFFF inset !important;
+  -webkit-text-fill-color: var(--text-primary, #1E1E1E) !important;
+  caret-color: var(--text-primary, #1E1E1E) !important;
   border-radius: 4px 4px 0 0;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
-/* ── Custom Select ── */
-.select-group { position: relative; }
+/* ── Custom Neo-Brutalist Select Dropdown ── */
+.custom-select-wrapper {
+  position: relative;
+  width: 100%;
+}
 
-.line-select {
-  appearance: none;
-  -webkit-appearance: none;
+.custom-select-trigger {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid var(--border-ghost, #B0B0A8);
+  padding: 9px 8px;
+  border-radius: 4px 4px 0 0;
+  font-family: var(--font-primary);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-medium);
+  color: var(--text-muted, #888888); /* Default gray */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   cursor: pointer;
-  padding-right: 28px;
+  outline: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  box-shadow: none !important;
+  text-align: left;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.custom-select-trigger:focus,
+.custom-select-wrapper.is-open .custom-select-trigger {
+  border-bottom-width: 2px;
+  border-bottom-color: var(--text-primary, #1E1E1E);
+}
+
+.custom-select-trigger.has-value {
+  color: var(--text-primary, #1E1E1E);
+  border-bottom-color: var(--text-primary, #1E1E1E);
+}
+
+.custom-select-trigger .selected-text {
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .select-chevron {
-  position: absolute;
-  right: 0;
-  bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted, #888888); /* Gray arrow */
+  transition: transform 0.22s var(--smooth);
   pointer-events: none;
-  color: var(--text-primary);
-  transition: transform var(--dur-normal) var(--smooth);
+  margin-left: 8px;
 }
 
-.line-select:focus + .select-chevron {
+.custom-select-wrapper.is-open .select-chevron {
   transform: rotate(180deg);
 }
 
-/* ── "Other" slide-down ── */
+/* ── Custom Dropdown Menu (KINSEI Design System) ── */
+.custom-select-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 100%;
+  background: #FFFFFF;
+  border: 2px solid var(--border-color, #1E1E1E);
+  border-radius: 10px;
+  box-shadow: 3px 3px 0px var(--border-color, #1E1E1E);
+  z-index: 90;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 5px 0;
+}
+
+.custom-select-wrapper.is-open .custom-select-menu {
+  display: flex;
+  animation: dropMenuFade 0.16s ease-out;
+}
+
+@keyframes dropMenuFade {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.custom-select-option {
+  padding: 10px 14px;
+  font-size: 0.92rem;
+  font-weight: var(--fw-medium);
+  color: var(--text-primary, #1E1E1E);
+  cursor: pointer;
+  transition: background-color 0.14s ease;
+  user-select: none;
+}
+
+.custom-select-option:hover,
+.custom-select-option.is-highlighted {
+  background-color: #F0F0EB;
+}
+
+.custom-select-option.is-selected {
+  background-color: var(--text-primary, #1E1E1E);
+  color: var(--text-inverse, #FFFFFF);
+  font-weight: var(--fw-bold);
+}
+
+/* ── "Other" slide-down field ── */
 .custom-service-group {
   max-height: 0;
   opacity: 0;
@@ -100,45 +198,55 @@
   margin-top: 0;
 }
 
-/* ── Submit Button ── */
+/* ── Submit Button with Physical Neo-Brutalist Stroke ── */
 .submit-btn {
   width: 100%;
   padding: 13px 20px;
-  border-radius: var(--radius-btn);
+  border-radius: var(--radius-btn, 12px);
   font-size: 0.98rem;
   font-weight: var(--fw-bold);
-  transition: all 0.25s var(--smooth);
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  outline: none;
 
-  /* Disabled state: ghost button */
+  /* Disabled State: physical subtle stroke */
   background-color: transparent;
-  color: var(--text-muted);
-  border: 1.5px solid var(--border-ghost);
+  color: var(--text-muted, #888888);
+  border-top: 1.5px solid var(--border-ghost, #C0C0BA);
+  border-left: 1.5px solid var(--border-ghost, #C0C0BA);
+  border-right: 4px solid var(--border-ghost, #C0C0BA);
+  border-bottom: 4px solid var(--border-ghost, #C0C0BA);
   cursor: not-allowed;
+  transition: all 0.2s var(--smooth);
 }
 
-/* When all fields are filled ("hammasi to'ldirilgach"): Ochiq ko'k (Light Blue) */
+/* Ready to Submit: Monochrome Black with Physical Stroke */
 .submit-btn.ready-to-submit {
-  background-color: #CBE4FE;
-  color: var(--text-primary);
-  border: 2px solid var(--border-color);
-  box-shadow: 0 4px 14px rgba(160, 205, 255, 0.4);
+  background-color: var(--text-primary, #1E1E1E);
+  color: var(--text-inverse, #FFFFFF);
+  border-top: 1.5px solid var(--text-primary, #1E1E1E);
+  border-left: 1.5px solid var(--text-primary, #1E1E1E);
+  border-right: 5px solid #000000;
+  border-bottom: 5px solid #000000;
   cursor: pointer;
+  transition: border-width 0.08s ease, transform 0.08s ease, background-color 0.15s ease;
 }
 
 .submit-btn.ready-to-submit:hover {
-  transform: translateY(-2px);
-  background-color: #B5D8FE;
-  box-shadow: 0 6px 18px rgba(160, 205, 255, 0.55);
+  background-color: #000000;
+  transform: translate(-1px, -1px);
 }
 
+/* Physical button press: thin sides (1.5px) remain unchanged, thick borders thin down from 5px to 1.5px */
 .submit-btn.ready-to-submit:active {
-  transform: translateY(0);
-  background-color: #9ECBFE;
+  border-top-width: 1.5px !important;
+  border-left-width: 1.5px !important;
+  border-right-width: 1.5px !important;
+  border-bottom-width: 1.5px !important;
+  transform: translate(3.5px, 3.5px) !important;
 }
 
 /* ── Spinner ── */

@@ -12,48 +12,75 @@ import { state } from '../state.js';
 export function calculateSafeCardPosition(card, index, totalCards) {
   const vpW = window.innerWidth;
   const vpH = window.innerHeight;
-  const cardW = card.offsetWidth || 320;
-  const cardH = card.offsetHeight || 260;
   const isMobile = vpW <= 860;
+  const cardW = card.offsetWidth || (isMobile ? 242 : 320);
+  const cardH = card.offsetHeight || (isMobile ? 245 : 260);
 
-  let minX, maxX, minY, maxY;
+  let x, y, rotation;
 
   if (isMobile) {
-    minX = Math.max(10, (vpW - cardW) / 2 - 14);
-    maxX = Math.min(vpW - cardW - 10, (vpW - cardW) / 2 + 14);
     const headerEl = document.getElementById('siteHeader');
-    const headerBottom = headerEl ? headerEl.getBoundingClientRect().bottom : 190;
-    const topSafe = Math.max(180, headerBottom + 12);
-    minY = Math.min(topSafe + index * 16, Math.max(topSafe, vpH - cardH - 30));
-    maxY = Math.min(minY + 20, Math.max(topSafe + 10, vpH - cardH - 15));
+    const headerBottom = headerEl ? headerEl.getBoundingClientRect().bottom : 205;
+    const topSafe = Math.max(195, headerBottom + 12);
+    const bottomSafe = Math.max(topSafe + 160, vpH - cardH * 0.72);
+    const availableY = Math.max(60, bottomSafe - topSafe);
+
+    if (totalCards <= 2) {
+      // Team cards (2 members) - spread comfortably left & right
+      const isFirst = index === 0;
+      const targetX = isFirst ? 20 : (vpW - cardW - 20);
+      x = Math.round(targetX + (Math.random() - 0.5) * 20);
+      y = Math.round(topSafe + (isFirst ? 0.15 : 0.55) * availableY + (Math.random() - 0.5) * 20);
+      rotation = Math.round((isFirst ? -6 : 6) + (Math.random() - 0.5) * 4);
+    } else {
+      // 5 Project Cards - balanced staggered placement across full canvas
+      // Index 0: upper-left, Index 1: upper-right, Index 2: mid-left, Index 3: mid-right, Index 4: lower-center
+      const horizontalAnchors = [
+        -20,                       // Card 0: slightly sticking out on left
+        vpW - cardW + 15,          // Card 1: sticking out on right
+        (vpW - cardW) / 2 - 40,    // Card 2: center-left
+        vpW - cardW - 15,          // Card 3: lower-right
+        25                         // Card 4: lower-left
+      ];
+      const verticalFractions = [0.05, 0.28, 0.50, 0.72, 0.94];
+      const rotAngles = [-8, 7, -5, 6, -3];
+
+      const anchorX = horizontalAnchors[index % horizontalAnchors.length];
+      const fractionY = verticalFractions[index % verticalFractions.length];
+      const baseRot = rotAngles[index % rotAngles.length];
+
+      x = Math.round(anchorX + (Math.random() - 0.5) * 24);
+      y = Math.round(topSafe + fractionY * availableY + (Math.random() - 0.5) * 16);
+      rotation = Math.round(baseRot + (Math.random() - 0.5) * 5);
+    }
   } else {
-    const slotWidth = (vpW - 100) / totalCards;
-    const slotLeft = 50 + index * slotWidth;
-    minX = slotLeft - 40;
-    maxX = slotLeft + (slotWidth - cardW) + 40;
-    minY = Math.max(220, vpH * 0.42);
-    maxY = Math.max(minY + 40, vpH - cardH - 40);
+    const slotWidth = (vpW - 120) / totalCards;
+    const slotLeft = 60 + index * slotWidth;
+    const minX = slotLeft - 30;
+    const maxX = slotLeft + (slotWidth - cardW) + 30;
+    const minY = Math.max(220, vpH * 0.40);
+    const maxY = Math.max(minY + 30, vpH - cardH - 35);
+
+    x = Math.round(minX + Math.random() * (maxX - minX));
+    y = Math.round(minY + Math.random() * (maxY - minY));
+    rotation = Math.round(Math.random() * CONFIG.rotationRange - CONFIG.rotationRange / 2);
   }
 
-  // 70% viewport retention clamp
-  const clampMinX = -cardW * (1 - CONFIG.viewportRetention);
-  const clampMaxX = vpW - cardW * CONFIG.viewportRetention;
-  const clampMinY = -cardH * (1 - CONFIG.viewportRetention);
-  const clampMaxY = vpH - cardH * CONFIG.viewportRetention;
+  // Strict 70% viewport retention clamp (up to 30% card size may peak past screen edges)
+  const r = CONFIG.viewportRetention;
+  const clampMinX = -cardW * (1 - r);
+  const clampMaxX = vpW - cardW * r;
+  const clampMinY = isMobile ? 180 : 0;
+  const clampMaxY = vpH - cardH * r;
 
-  minX = Math.max(clampMinX, minX);
-  maxX = Math.min(clampMaxX, maxX);
-  if (minX > maxX) maxX = minX;
-
-  minY = Math.max(clampMinY, minY);
-  maxY = Math.min(clampMaxY, maxY);
-  if (minY > maxY) maxY = minY;
+  x = Math.max(clampMinX, Math.min(clampMaxX, x));
+  y = Math.max(clampMinY, Math.min(clampMaxY, y));
 
   return {
-    x: Math.round(minX + Math.random() * (maxX - minX)),
-    y: Math.round(minY + Math.random() * (maxY - minY)),
-    rotation: Math.round(Math.random() * CONFIG.rotationRange - CONFIG.rotationRange / 2),
-    baseZIndex: 5 + Math.floor(Math.random() * 15),
+    x,
+    y,
+    rotation,
+    baseZIndex: 5 + index * 4 + Math.floor(Math.random() * 2),
   };
 }
 

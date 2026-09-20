@@ -7,36 +7,69 @@
 .neo-card {
   position: absolute;
   width: var(--card-width);
-  background-color: var(--bg-card);
+  background-color: #FFFFFF;
   border-radius: 12px;
   pointer-events: auto;
   cursor: grab;
   touch-action: none;
+  opacity: 1 !important;
+  isolation: isolate;
 
-  /* Figma asymmetric border: top 2px, right 6px, bottom 6px, left 1.5px */
-  border-top: 2px solid var(--border-color);
+  /* Figma asymmetric border: top/left 1.5px, right/bottom 5.5px */
+  border-top: 1.5px solid var(--border-color);
   border-left: 1.5px solid var(--border-color);
-  border-right: 6px solid var(--border-color);
-  border-bottom: 6px solid var(--border-color);
+  border-right: 5.5px solid var(--border-color);
+  border-bottom: 5.5px solid var(--border-color);
 
   will-change: transform, left, top;
   transition:
-    background-color 0.28s ease,
+    background-color 0.22s ease,
     border-width var(--dur-fast) ease,
     transform var(--dur-slow) var(--spring);
 }
 
-/* Hover: color morph */
+/* Hover: 100% solid color morph, rises to highest layer */
 .neo-card:hover {
-  background-color: var(--card-hover-hex, var(--bg-white));
+  background-color: var(--card-hover-hex, #FFFFFF) !important;
+  z-index: 100 !important;
 }
 
-/* Drag press: equalize borders */
+/* Instagram card hover: solid black card, white inner elements */
+.card-instagram:hover,
+#cardHojixkbar:hover {
+  background-color: #000000 !important;
+}
+
+.card-instagram:hover .card-title-link,
+#cardHojixkbar:hover .card-title-link {
+  color: #FFFFFF !important;
+}
+
+.card-instagram:hover .card-brand-name,
+#cardHojixkbar:hover .card-brand-name {
+  color: #FFFFFF !important;
+}
+
+.card-instagram:hover .card-tag,
+#cardHojixkbar:hover .card-tag {
+  color: #FFFFFF !important;
+}
+
+.card-instagram:hover .card-icon-img,
+#cardHojixkbar:hover .card-icon-img {
+  filter: brightness(0) invert(1) !important;
+}
+
+/* Physical press: thin sides remain unchanged (1.5px), thick borders thin down to 1.5px */
 .neo-card:active,
 .neo-card.is-dragging {
   cursor: grabbing !important;
-  border-width: 3.5px !important;
-  transition: border-width 0.08s ease !important;
+  border-top-width: 1.5px !important;
+  border-left-width: 1.5px !important;
+  border-right-width: 1.5px !important;
+  border-bottom-width: 1.5px !important;
+  transform: translate(4px, 4px) rotate(var(--curr-rot, 0deg)) !important;
+  transition: border-width 0.08s ease, transform 0.08s ease !important;
 }
 
 /* ── Inner Structure — Figma: padding 16px all, gap 24px ── */
@@ -71,6 +104,7 @@
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
+  transition: filter 0.2s ease;
 }
 
 .card-content {
@@ -92,6 +126,7 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  transition: color 0.2s ease;
 }
 
 .card-title-link:hover {
@@ -105,9 +140,10 @@
   font-size: var(--fs-base);
   font-weight: var(--fw-medium);
   color: var(--text-secondary);
+  transition: color 0.2s ease;
 }
 
-/* Figma: footer with just type text */
+/* Figma: footer with just type text (gray, not black) */
 .card-footer {
   padding-top: 0;
 }
@@ -115,7 +151,8 @@
 .card-tag {
   font-size: 0.86rem;
   font-weight: var(--fw-semibold);
-  color: #333;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
 }
 
 /* ── Team Card ── */

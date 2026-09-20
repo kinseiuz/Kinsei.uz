@@ -9,7 +9,7 @@ import { playSound } from './audio.js';
 
 let projectCards, teamCards;
 let projectsGroup, teamGroup, contactSection;
-let desktopTabProjects, desktopTabTeam;
+let desktopTabProjects, desktopTabTeam, desktopTabContact;
 let mobTabProjects, mobTabTeam, mobTabContact;
 
 export function initTabs() {
@@ -20,12 +20,17 @@ export function initTabs() {
   contactSection = document.getElementById('contactSection');
   desktopTabProjects = document.getElementById('tabProjects');
   desktopTabTeam = document.getElementById('tabTeam');
+  desktopTabContact = document.getElementById('tabContact');
   mobTabProjects = document.getElementById('mobTabProjects');
   mobTabTeam = document.getElementById('mobTabTeam');
   mobTabContact = document.getElementById('mobTabContact');
 
   desktopTabProjects?.addEventListener('click', () => setActiveTab('projects'));
   desktopTabTeam?.addEventListener('click', () => setActiveTab('team'));
+  desktopTabContact?.addEventListener('click', () => {
+    setActiveTab('contact');
+    document.getElementById('clientName')?.focus();
+  });
   mobTabProjects?.addEventListener('click', () => setActiveTab('projects'));
   mobTabTeam?.addEventListener('click', () => setActiveTab('team'));
   mobTabContact?.addEventListener('click', () => setActiveTab('contact'));
@@ -40,6 +45,7 @@ export function setActiveTab(tabName) {
   // Update button states
   desktopTabProjects?.classList.toggle('active', tabName === 'projects');
   desktopTabTeam?.classList.toggle('active', tabName === 'team');
+  desktopTabContact?.classList.toggle('active', tabName === 'contact');
   mobTabProjects?.classList.toggle('active', tabName === 'projects');
   mobTabTeam?.classList.toggle('active', tabName === 'team');
   mobTabContact?.classList.toggle('active', tabName === 'contact');

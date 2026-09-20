@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>KINSEI — Pikselni ham, kodni ham ayamaymiz</title>
   <meta name="description" content="KINSEI - Zamonaviy veb-saytlar, mobil ilovalar va kreativ dizayn agentligi. Pikselni ham, kodni ham ayamaymiz.">
-  <link rel="icon" type="image/svg+xml" href="assets/favicons/favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="assets/favicons/favicon.svg" id="dynamicFavicon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -63,6 +63,9 @@
           </button>
           <button type="button" class="tab-btn" id="tabTeam" role="tab" aria-selected="false" data-tab="team">
             Jamoa
+          </button>
+          <button type="button" class="tab-btn" id="tabContact" role="tab" aria-selected="false" data-tab="contact">
+            Aloqa
           </button>
         </div>
 
@@ -127,25 +130,27 @@
           <label for="clientPhone" class="sr-only">Telefon raqamingiz</label>
           <input type="tel" id="clientPhone" name="phone" class="line-input" placeholder="+998 (90) 123-45-67" maxlength="19" autocomplete="tel" required>
         </div>
-        <div class="input-group select-group">
-          <label for="serviceType" class="sr-only">Xizmat turi</label>
-          <select id="serviceType" name="service" class="line-select" required>
-            <option value="" disabled selected hidden>Xizmat turi</option>
-            <option value="Websites">Websites (Veb-saytlar)</option>
-            <option value="Mobile apps">Mobile apps (Mobil ilovalar)</option>
-            <option value="Other">Other (Boshqa turdagi loyiha)</option>
-          </select>
-          <span class="select-chevron">
-            <svg width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="1 1.5 6 6.5 11 1.5"></polyline>
-            </svg>
-          </span>
+        <div class="input-group custom-select-wrapper" id="customSelectWrapper">
+          <input type="hidden" id="serviceType" name="service" value="" required>
+          <button type="button" class="line-select custom-select-trigger" id="customSelectTrigger" aria-haspopup="listbox" aria-expanded="false">
+            <span class="selected-text" id="selectedServiceText">Xizmat turi</span>
+            <span class="select-chevron">
+              <svg width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="1 1.5 6 6.5 11 1.5"></polyline>
+              </svg>
+            </span>
+          </button>
+          <div class="custom-select-menu" id="customSelectMenu" role="listbox" aria-label="Xizmat turi">
+            <div class="custom-select-option" role="option" data-value="Websites">Websites (Veb-saytlar)</div>
+            <div class="custom-select-option" role="option" data-value="Mobile apps">Mobile apps (Mobil ilovalar)</div>
+            <div class="custom-select-option" role="option" data-value="Other">Other (Boshqa turdagi loyiha)</div>
+          </div>
         </div>
         <div class="input-group custom-service-group" id="customServiceGroup">
           <label for="customService" class="sr-only">Qo'shimcha</label>
           <input type="text" id="customService" name="custom_service" class="line-input" placeholder="Loyiha yoki g'oyangiz haqida">
         </div>
-        <!-- Submit button: turns light blue when all fields are filled -->
+        <!-- Submit button: turns ready when all fields are filled -->
         <button type="submit" class="submit-btn" id="submitBtn" disabled>
           <span class="btn-text">Jo'natish</span>
           <span class="btn-loader" style="display: none;">
@@ -161,8 +166,8 @@
       <!-- === PROJECTS (5 cards) === -->
       <div class="cards-group active-group" id="projectsGroup">
 
-        <!-- Card 1: Chaq-Chuq — Figma exact -->
-        <article class="neo-card project-card" id="cardChaqChuq" data-card-id="chaq-chuq" data-hover-color="#FFF0DF">
+        <!-- Card 1: Chaq-Chuq — 100% Solid HEX #FFC848 -->
+        <article class="neo-card project-card" id="cardChaqChuq" data-card-id="chaq-chuq" data-hover-color="#FFC848">
           <div class="card-inner">
             <div class="card-header">
               <span class="card-icon-badge">
@@ -181,8 +186,8 @@
           </div>
         </article>
 
-        <!-- Card 2: UrDU -->
-        <article class="neo-card project-card" id="cardUrDu" data-card-id="urdu" data-hover-color="#E5F3FF">
+        <!-- Card 2: UrDU — 100% Solid HEX #41FF67 -->
+        <article class="neo-card project-card" id="cardUrDu" data-card-id="urdu" data-hover-color="#41FF67">
           <div class="card-inner">
             <div class="card-header">
               <span class="card-icon-badge">
@@ -201,8 +206,8 @@
           </div>
         </article>
 
-        <!-- Card 3: Crystal Icons -->
-        <article class="neo-card project-card" id="cardCrystalIcons" data-card-id="crystal-icons" data-hover-color="#EFE8FF">
+        <!-- Card 3: Crystal Icons — 100% Solid HEX #48FFFF -->
+        <article class="neo-card project-card" id="cardCrystalIcons" data-card-id="crystal-icons" data-hover-color="#48FFFF">
           <div class="card-inner">
             <div class="card-header">
               <span class="card-icon-badge">
@@ -221,8 +226,8 @@
           </div>
         </article>
 
-        <!-- Card 4: Teahouse -->
-        <article class="neo-card project-card" id="cardTeahouse" data-card-id="teahouse" data-hover-color="#E3F8EB">
+        <!-- Card 4: Teahouse — 100% Solid HEX #72C7FF -->
+        <article class="neo-card project-card" id="cardTeahouse" data-card-id="teahouse" data-hover-color="#72C7FF">
           <div class="card-inner">
             <div class="card-header">
               <span class="card-icon-badge">
@@ -241,8 +246,8 @@
           </div>
         </article>
 
-        <!-- Card 5: hojixkbar Instagram -->
-        <article class="neo-card project-card" id="cardHojixkbar" data-card-id="hojixkbar" data-hover-color="#FCE7F0">
+        <!-- Card 5: hojixkbar Instagram — Solid Black Card, White inner content -->
+        <article class="neo-card project-card card-instagram" id="cardHojixkbar" data-card-id="hojixkbar" data-hover-color="#000000">
           <div class="card-inner">
             <div class="card-header">
               <span class="card-icon-badge">
