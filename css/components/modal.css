@@ -10,13 +10,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
 }
 
 .project-modal.modal-open {
-  opacity: 1;
   pointer-events: auto;
 }
 
@@ -24,8 +21,24 @@
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
+  z-index: 1;
   background: var(--bg-overlay);
+  opacity: 0;
+  cursor: pointer;
+  pointer-events: none;
+  backdrop-filter: blur(0);
+  -webkit-backdrop-filter: blur(0);
+  transition:
+    opacity 0.35s ease,
+    backdrop-filter 0.35s ease,
+    -webkit-backdrop-filter 0.35s ease;
+}
+
+.project-modal.modal-open .modal-backdrop {
+  opacity: 1;
+  pointer-events: auto;
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .modal-card {
@@ -40,12 +53,14 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-7);
-  transform: translateY(20px) scale(0.95);
-  transition: transform 0.35s var(--spring);
+  opacity: 0;
+  transform: translateY(16px) scale(0.97);
+  transition: transform 0.35s ease, opacity 0.35s ease;
   z-index: 2;
 }
 
 .project-modal.modal-open .modal-card {
+  opacity: 1;
   transform: translateY(0) scale(1);
 }
 
@@ -56,13 +71,26 @@
   width: 32px; height: 32px;
   border-radius: var(--radius-round);
   border: var(--stroke-thin) solid var(--border-color);
-  background: transparent;
+  background: #FFFFFF;
+  color: #111111;
   font-size: var(--fs-md);
   font-weight: var(--fw-bold);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
   transition: all 0.2s;
+}
+
+.modal-close-btn svg {
+  display: block;
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  pointer-events: none;
 }
 
 .modal-close-btn:hover {
@@ -70,71 +98,17 @@
   color: var(--text-inverse);
 }
 
-.modal-badge-row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-}
-
-.modal-tag {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: var(--fw-bold);
-  padding: 3px 10px;
-  background: var(--bg-main);
-  border-radius: var(--radius-sm);
-}
-
-.modal-status {
-  font-family: var(--font-mono);
-  font-size: var(--fs-sm);
-  font-weight: var(--fw-semibold);
-  color: var(--accent-green);
-}
-
 .modal-title {
   font-size: var(--fs-2xl);
   font-weight: var(--fw-extrabold);
   line-height: 1.2;
+  padding-right: 36px;
 }
 
 .modal-desc {
   font-size: var(--fs-md);
   color: var(--text-secondary);
   line-height: 1.45;
-}
-
-.modal-tech-box {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  background: #F9F9F7;
-  padding: var(--space-6);
-  border-radius: var(--radius-md);
-  border: 1px dashed rgba(30,30,30,0.2);
-}
-
-.tech-title {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: var(--fw-bold);
-  color: var(--text-secondary);
-}
-
-.tech-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-
-.tech-pill {
-  font-family: var(--font-mono);
-  font-size: 0.76rem;
-  font-weight: var(--fw-semibold);
-  padding: var(--space-1) var(--space-3);
-  background: var(--bg-white);
-  border: 1px solid var(--border-dashed);
-  border-radius: var(--radius-sm);
 }
 
 .modal-actions {
@@ -155,6 +129,7 @@
   gap: var(--space-2);
   text-decoration: none;
   transition: all 0.2s;
+  width: 100%;
 }
 
 .modal-action-btn.primary {

@@ -13,8 +13,8 @@ export function calculateSafeCardPosition(card, index, totalCards) {
   const vpW = window.innerWidth;
   const vpH = window.innerHeight;
   const isMobile = vpW <= 860;
-  const cardW = card.offsetWidth || (isMobile ? 242 : 320);
-  const cardH = card.offsetHeight || (isMobile ? 245 : 260);
+  const cardW = card.offsetWidth || (isMobile ? 248 : 320);
+  const cardH = card.offsetHeight || (isMobile ? 210 : 260);
 
   let x, y, rotation;
 
@@ -80,38 +80,81 @@ export function calculateSafeCardPosition(card, index, totalCards) {
     x,
     y,
     rotation,
-    baseZIndex: 5 + index * 4 + Math.floor(Math.random() * 2),
+    baseZIndex: 0,
   };
 }
 
 /**
  * Apply position, rotation, z-index, and hover-color to a card DOM element.
+ * When animated, the card is thrown from a shared origin (like a hand dealing).
  */
-export function applyCardTransform(card, pos, animated = true) {
+export function applyCardTransform(card, pos, animated = true, delayMs = 0, origin = null) {
   card.style.setProperty('--curr-rot', `${pos.rotation}deg`);
   card.style.left = `${pos.x}px`;
   card.style.top = `${pos.y}px`;
-  card.style.transform = `rotate(${pos.rotation}deg)`;
-  card.style.zIndex = pos.baseZIndex;
+  card.style.transform = `rotate(${pos.rotation}deg) translateZ(0)`;
+  card.dataset.baseZ = String(pos.baseZIndex);
+  card.style.zIndex = String(pos.baseZIndex);
 
   const hoverHex = card.dataset.hoverColor || '#FFFFFF';
   card.style.setProperty('--card-hover-hex', hoverHex);
 
   if (animated) {
-    card.classList.add('card-entering');
-    card.addEventListener('animationend', () => card.classList.remove('card-entering'), { once: true });
+    const handX = origin?.x ?? window.innerWidth * 0.5;
+    const handY = origin?.y ?? window.innerHeight + 120;
+    const spin = (Math.random() < 0.5 ? -1 : 1) * (90 + Math.random() * 130);
+
+    card.style.setProperty('--throw-x', `${Math.round(handX - pos.x)}px`);
+    card.style.setProperty('--throw-y', `${Math.round(handY - pos.y)}px`);
+    card.style.setProperty('--throw-rot', `${pos.rotation + spin}deg`);
+    card.style.setProperty('--throw-dur', `${(0.5 + Math.random() * 0.14).toFixed(2)}s`);
+
+    card.classList.remove('card-entering', 'is-dealt');
+    void card.offsetWidth;
+    card.style.animationDelay = `${delayMs}ms`;
+    card.classList.add('card-entering', 'is-dealt');
+    card.addEventListener('animationend', (e) => {
+      if (e.target !== card) return;
+      card.classList.remove('card-entering');
+      card.style.animationDelay = '';
+    }, { once: true });
+  } else {
+    card.classList.add('is-dealt');
   }
+}
+
+function shuffledIndices(n) {
+  const slots = Array.from({ length: n }, (_, i) => i);
+  for (let i = n - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [slots[i], slots[j]] = [slots[j], slots[i]];
+  }
+  return slots;
 }
 
 /**
  * Randomize all cards in a group.
+ * Thrown from one origin so they land like a handful of cards tossed on a table.
  */
 export function randomizeGroupPositions(cards, animated = true) {
   const total = cards.length;
+  const slots = shuffledIndices(total);
+  const delays = shuffledIndices(total).map((rank) => rank * 55);
+  const origin = {
+    x: window.innerWidth * 0.5 + (Math.random() - 0.5) * 36,
+    y: window.innerHeight + 110,
+  };
+  state.hoveredCard = null;
+  state.skipHoverCard = null;
+  cards.forEach((card) => card.classList.remove('is-hovered', 'is-dragging'));
+
+  const layers = shuffledIndices(total);
+
   cards.forEach((card, i) => {
-    const pos = calculateSafeCardPosition(card, i, total);
+    const pos = calculateSafeCardPosition(card, slots[i], total);
+    pos.baseZIndex = 1 + layers[i];
     state.cardStates.set(card, pos);
-    applyCardTransform(card, pos, animated);
+    applyCardTransform(card, pos, animated, animated ? delays[i] : 0, origin);
   });
 }
 
@@ -121,18 +164,36 @@ export function randomizeGroupPositions(cards, animated = true) {
 export function exitCards(cards, direction, callback) {
   if (cards.length === 0) { callback?.(); return; }
 
-  let done = 0;
+  let finished = false;
+  const finish = () => {
+    if (finished) return;
+    finished = true;
+    callback?.();
+    cards.forEach((card) => {
+      card.classList.remove('card-entering', 'card-exiting-down', 'card-exiting-side');
+      card.style.animationDelay = '';
+      card.style.removeProperty('--exit-x-offset');
+    });
+  };
+
   const cls = direction === 'side' ? 'card-exiting-side' : 'card-exiting-down';
+  let done = 0;
+  const leaveX = window.innerWidth + 160;
 
   cards.forEach((card, i) => {
-    const offset = (i % 2 === 0 ? 1 : -1) * (350 + Math.random() * 100);
+    const offset = (i % 2 === 0 ? 1 : -1) * leaveX;
     card.style.setProperty('--exit-x-offset', `${offset}px`);
+    card.style.animationDelay = '0ms';
+    card.classList.remove('card-entering');
+    void card.offsetWidth;
     card.classList.add(cls);
 
-    card.addEventListener('animationend', () => {
-      card.classList.remove(cls);
+    card.addEventListener('animationend', (e) => {
+      if (e.target !== card) return;
       done++;
-      if (done === cards.length) callback?.();
+      if (done === cards.length) finish();
     }, { once: true });
   });
+
+  setTimeout(finish, 720);
 }

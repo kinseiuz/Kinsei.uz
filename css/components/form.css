@@ -8,10 +8,10 @@
 
 .contact-form {
   width: 100%;
-  max-width: 340px;
+  max-width: 268px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: var(--space-4);
   background: transparent;
 }
 
@@ -25,11 +25,11 @@
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 1.5px solid var(--border-ghost, #B0B0A8);
-  padding: 9px 8px;
+  border-bottom: 1.5px solid var(--text-muted, #777777);
+  padding: 7px 6px;
   border-radius: 4px 4px 0 0;
   font-family: var(--font-primary);
-  font-size: var(--fs-base);
+  font-size: 0.9rem;
   font-weight: var(--fw-medium);
   color: var(--text-primary);
   outline: none !important;
@@ -42,7 +42,7 @@
 }
 
 .line-input::placeholder {
-  color: var(--text-muted, #888888);
+  color: var(--text-muted, #777777);
   font-weight: var(--fw-regular);
 }
 
@@ -82,13 +82,13 @@
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 1.5px solid var(--border-ghost, #B0B0A8);
-  padding: 9px 8px;
+  border-bottom: 1.5px solid var(--text-muted, #777777);
+  padding: 7px 6px;
   border-radius: 4px 4px 0 0;
   font-family: var(--font-primary);
-  font-size: var(--fs-base);
+  font-size: 0.9rem;
   font-weight: var(--fw-medium);
-  color: var(--text-muted, #888888); /* Default gray */
+  color: var(--text-muted, #777777); /* Default gray */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -125,7 +125,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted, #888888); /* Gray arrow */
+  color: var(--text-muted, #777777); /* Gray arrow */
   transition: transform 0.22s var(--smooth);
   pointer-events: none;
   margin-left: 8px;
@@ -150,6 +150,11 @@
   flex-direction: column;
   overflow: hidden;
   padding: 5px 0;
+}
+
+.custom-select-menu.is-fixed {
+  position: fixed;
+  z-index: 200;
 }
 
 .custom-select-wrapper.is-open .custom-select-menu {
@@ -201,9 +206,9 @@
 /* ── Submit Button with Physical Neo-Brutalist Stroke ── */
 .submit-btn {
   width: 100%;
-  padding: 13px 20px;
+  padding: 10px 16px;
   border-radius: var(--radius-btn, 12px);
-  font-size: 0.98rem;
+  font-size: 0.9rem;
   font-weight: var(--fw-bold);
   position: relative;
   overflow: hidden;
@@ -211,32 +216,38 @@
   align-items: center;
   justify-content: center;
   outline: none;
+  -webkit-appearance: none;
+  appearance: none;
 
-  /* Disabled State: physical subtle stroke */
+  /* Idle: same gray for stroke and text as unfilled fields */
   background-color: transparent;
-  color: var(--text-muted, #888888);
-  border-top: 1.5px solid var(--border-ghost, #C0C0BA);
-  border-left: 1.5px solid var(--border-ghost, #C0C0BA);
-  border-right: 4px solid var(--border-ghost, #C0C0BA);
-  border-bottom: 4px solid var(--border-ghost, #C0C0BA);
+  color: var(--text-muted, #777777);
+  -webkit-text-fill-color: var(--text-muted, #777777);
+  border-top: 1.5px solid var(--text-muted, #777777);
+  border-left: 1.5px solid var(--text-muted, #777777);
+  border-right: 4px solid var(--text-muted, #777777);
+  border-bottom: 4px solid var(--text-muted, #777777);
   cursor: not-allowed;
+  opacity: 1;
   transition: all 0.2s var(--smooth);
 }
 
-/* Ready to Submit: Monochrome Black with Physical Stroke */
+/* Ready to Submit: white fill, black stroke, black text */
 .submit-btn.ready-to-submit {
-  background-color: var(--text-primary, #1E1E1E);
-  color: var(--text-inverse, #FFFFFF);
-  border-top: 1.5px solid var(--text-primary, #1E1E1E);
-  border-left: 1.5px solid var(--text-primary, #1E1E1E);
-  border-right: 5px solid #000000;
-  border-bottom: 5px solid #000000;
+  background-color: #FFFFFF !important;
+  color: #111111 !important;
+  -webkit-text-fill-color: #111111;
+  border-top: 1.5px solid #111111;
+  border-left: 1.5px solid #111111;
+  border-right: 5px solid #111111;
+  border-bottom: 5px solid #111111;
   cursor: pointer;
+  opacity: 1;
   transition: border-width 0.08s ease, transform 0.08s ease, background-color 0.15s ease;
 }
 
 .submit-btn.ready-to-submit:hover {
-  background-color: #000000;
+  background-color: #FFFFFF;
   transform: translate(-1px, -1px);
 }
 
@@ -256,7 +267,7 @@
 }
 
 .btn-loader .path {
-  stroke: var(--text-inverse);
+  stroke: #111111;
   stroke-linecap: round;
   animation: dash 1.5s ease-in-out infinite;
 }

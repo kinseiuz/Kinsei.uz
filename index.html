@@ -2,93 +2,107 @@
 <html lang="uz">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>KINSEI — Pikselni ham, kodni ham ayamaymiz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
+  <title>KINSEI. BIZNESINGIZNI YAXSHIROQ NAMOYON QILING</title>
   <meta name="description" content="KINSEI - Zamonaviy veb-saytlar, mobil ilovalar va kreativ dizayn agentligi. Pikselni ham, kodni ham ayamaymiz.">
-  <link rel="icon" type="image/svg+xml" href="assets/favicons/favicon.svg" id="dynamicFavicon">
+  <link rel="icon" type="image/png" href="assets/favicons/favicon.png" id="dynamicFavicon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Noto+Sans+JP:wght@700;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <!-- Design System (modular CSS) -->
-  <link rel="stylesheet" href="css/variables.css?v=4">
-  <link rel="stylesheet" href="css/base.css?v=4">
-  <link rel="stylesheet" href="css/layout.css?v=4">
-  <link rel="stylesheet" href="css/components/cards.css?v=4">
-  <link rel="stylesheet" href="css/components/tabs.css?v=4">
-  <link rel="stylesheet" href="css/components/form.css?v=4">
-  <link rel="stylesheet" href="css/components/modal.css?v=4">
-  <link rel="stylesheet" href="css/components/toast.css?v=4">
-  <link rel="stylesheet" href="css/animations.css?v=4">
-  <link rel="stylesheet" href="css/responsive.css?v=4">
+  <link rel="stylesheet" href="css/variables.css?v=22">
+  <link rel="stylesheet" href="css/base.css?v=18">
+  <link rel="stylesheet" href="css/layout.css?v=29">
+  <link rel="stylesheet" href="css/components/cards.css?v=19">
+  <link rel="stylesheet" href="css/components/tabs.css?v=10">
+  <link rel="stylesheet" href="css/components/form.css?v=13">
+  <link rel="stylesheet" href="css/components/modal.css?v=23">
+  <link rel="stylesheet" href="css/components/toast.css?v=9">
+  <link rel="stylesheet" href="css/animations.css?v=14">
+  <link rel="stylesheet" href="css/responsive.css?v=19">
 </head>
-<body>
+<body class="solo-team">
 
   <!-- Root App Viewport (Strict 100vh / No Scroll) -->
   <div id="app" class="app-container">
 
-    <!-- Top-Right Sound Control Button -->
-    <button type="button" id="soundToggleBtn" class="sound-toggle-btn" aria-label="Ovozni o'chirish" title="Ovozni o'chirish" data-muted="false">
-      <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-      </svg>
-      <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-        <line x1="23" y1="9" x2="17" y2="15"></line>
-        <line x1="17" y1="9" x2="23" y2="15"></line>
-      </svg>
-    </button>
+    <!-- Top-Right: language + sound -->
+    <div class="top-right-controls">
+      <div class="lang-switcher" id="langSwitcher">
+        <button type="button" id="langTrigger" class="lang-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Til" data-i18n-aria="language">
+          <span id="langCurrent">UZ</span>
+        </button>
+        <div class="lang-menu" id="langMenu" role="listbox">
+          <button type="button" class="lang-option" role="option" data-lang="uz">UZ</button>
+          <button type="button" class="lang-option" role="option" data-lang="en">EN</button>
+          <button type="button" class="lang-option" role="option" data-lang="ru">RU</button>
+        </div>
+      </div>
+      <button type="button" id="soundToggleBtn" class="sound-toggle-btn" aria-label="Ovozni o'chirish" title="Ovozni o'chirish" data-muted="false">
+        <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+        </svg>
+        <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <line x1="23" y1="9" x2="17" y2="15"></line>
+          <line x1="17" y1="9" x2="23" y2="15"></line>
+        </svg>
+      </button>
+    </div>
 
     <!-- TOP HEADER & BRANDING -->
     <header class="site-header" id="siteHeader">
 
       <!-- Logo Symbol — Figma: X-shaped geometric mark -->
       <div class="brand-symbol" id="brandLogo" title="KINSEI Studio">
-        <img src="img/logo-kinsei.png" alt="KINSEI" width="44" height="44" class="brand-logo-img">
+        <svg class="brand-logo-mark" id="brandLogoMark" viewBox="0 0 800 800" role="img" aria-label="KINSEI" focusable="false">
+          <path id="brandLogoPath" d="M680,120L513,400L680,680L400,513L120,680L287,400L120,287L373,287L373,369L452,257Z"></path>
+        </svg>
       </div>
 
       <!-- Main Headline -->
       <div class="brand-title-group">
-        <h1 class="brand-title">KINSEI — PIKSELNI HAM,<br>KODNI HAM AYAMAYMIZ</h1>
-        <p class="brand-tagline-mobile">Pikselni ham, kodni ham ayamaymiz</p>
+        <h1 class="brand-title">
+          <span data-i18n="titleLine1">KINSEI. BIZNESINGIZNI</span>
+          <span data-i18n="titleLine2">YAXSHIROQ NAMOYON QILING</span>
+        </h1>
+        <p class="brand-tagline-mobile" data-i18n="titleMobile">BIZNESINGIZNI YAXSHIROQ NAMOYON QILING</p>
       </div>
 
       <!-- Navigation & Social Links (Desktop) -->
       <div class="nav-controls-desktop">
         <!-- Tab Switcher — Figma: oddiy text, icon va counter yo'q -->
         <div class="tab-switcher" role="tablist">
-          <button type="button" class="tab-btn active" id="tabProjects" role="tab" aria-selected="true" data-tab="projects">
+          <button type="button" class="tab-btn active" id="tabProjects" role="tab" aria-selected="true" data-tab="projects" data-i18n="tabProjects">
             Loyihalar
           </button>
-          <button type="button" class="tab-btn" id="tabTeam" role="tab" aria-selected="false" data-tab="team">
+          <button type="button" class="tab-btn" id="tabTeam" role="tab" aria-selected="false" data-tab="team" data-i18n="tabTeam">
             Jamoa
-          </button>
-          <button type="button" class="tab-btn" id="tabContact" role="tab" aria-selected="false" data-tab="contact">
-            Aloqa
           </button>
         </div>
 
         <!-- Social Links — Figma: icon + text + ↗ -->
         <div class="social-links-desktop">
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-link" title="GitHub">
+          <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-link social-github" title="GitHub">
             <img src="img/icon-github.png" alt="GitHub" width="18" height="18" class="link-icon">
             <span>GitHub</span>
             <span class="arrow">↗</span>
           </a>
-          <a href="https://instagram.com/hojixkbar" target="_blank" rel="noopener noreferrer" class="social-link" title="Instagram">
+          <a href="https://www.instagram.com/hojixkbar?stkn=aTd3NThzMjhodDcy&utm_source=qr" target="_blank" rel="noopener noreferrer" class="social-link" title="Instagram">
             <img src="img/icon-instagram.png" alt="Instagram" width="18" height="18" class="link-icon">
             <span>Instagram</span>
             <span class="arrow">↗</span>
           </a>
-          <a href="https://t.me" target="_blank" rel="noopener noreferrer" class="social-link" title="Telegram">
+          <a href="https://t.me/hojixkbar" target="_blank" rel="noopener noreferrer" class="social-link" title="Telegram">
             <img src="img/icon-telegram.png" alt="Telegram" width="18" height="18" class="link-icon">
             <span>Telegram</span>
             <span class="arrow">↗</span>
           </a>
-          <a href="tel:+998901234567" class="social-link" title="Telefon">
+          <a href="tel:+998901234567" class="social-link social-phone" title="Telefon" data-i18n-aria="phone">
             <img src="img/icon-phone.png" alt="Telefon" width="18" height="18" class="link-icon">
-            <span>Telefon</span>
+            <span data-i18n="phone">Telefon</span>
             <span class="arrow">↗</span>
           </a>
         </div>
@@ -97,23 +111,24 @@
       <!-- MOBILE: Social Icons + Tab Bar -->
       <div class="mobile-header-actions">
         <div class="social-icons-mobile">
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="mobile-icon-btn" aria-label="GitHub">
+          <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="mobile-icon-btn social-github" aria-label="GitHub">
             <img src="img/icon-github.png" alt="GitHub" width="20" height="20">
           </a>
-          <a href="https://instagram.com/hojixkbar" target="_blank" rel="noopener noreferrer" class="mobile-icon-btn" aria-label="Instagram">
+          <a href="https://www.instagram.com/hojixkbar?stkn=aTd3NThzMjhodDcy&utm_source=qr" target="_blank" rel="noopener noreferrer" class="mobile-icon-btn" aria-label="Instagram">
             <img src="img/icon-instagram.png" alt="Instagram" width="20" height="20">
           </a>
-          <a href="https://t.me" target="_blank" rel="noopener noreferrer" class="mobile-icon-btn" aria-label="Telegram">
+          <a href="https://t.me/hojixkbar" target="_blank" rel="noopener noreferrer" class="mobile-icon-btn" aria-label="Telegram">
             <img src="img/icon-telegram.png" alt="Telegram" width="20" height="20">
           </a>
-          <a href="tel:+998901234567" class="mobile-icon-btn" aria-label="Telefon">
+          <a href="tel:+998901234567" class="mobile-icon-btn social-phone" aria-label="Telefon" data-i18n-aria="phone">
             <img src="img/icon-phone.png" alt="Telefon" width="20" height="20">
           </a>
         </div>
         <div class="mobile-tab-bar" role="tablist">
-          <button type="button" class="mobile-tab-btn active" id="mobTabProjects" data-tab="projects">Loyihalar</button>
-          <button type="button" class="mobile-tab-btn" id="mobTabTeam" data-tab="team">Jamoa</button>
-          <button type="button" class="mobile-tab-btn" id="mobTabContact" data-tab="contact">Aloqa</button>
+          <span class="mobile-tab-pill" id="mobileTabPill" aria-hidden="true"></span>
+          <button type="button" class="mobile-tab-btn active" id="mobTabProjects" data-tab="projects" data-i18n="tabProjects">Loyihalar</button>
+          <button type="button" class="mobile-tab-btn" id="mobTabTeam" data-tab="team" data-i18n="tabTeam">Jamoa</button>
+          <button type="button" class="mobile-tab-btn" id="mobTabContact" data-tab="contact" data-i18n="tabContact">Aloqa</button>
         </div>
       </div>
 
@@ -123,11 +138,11 @@
     <aside class="contact-card-wrapper" id="contactSection">
       <form class="contact-form" id="contactForm" autocomplete="off" novalidate>
         <div class="input-group">
-          <label for="clientName" class="sr-only">Ismingiz</label>
-          <input type="text" id="clientName" name="name" class="line-input" placeholder="Ismingiz" required>
+          <label for="clientName" class="sr-only" data-i18n="namePlaceholder">Ismingiz</label>
+          <input type="text" id="clientName" name="name" class="line-input" placeholder="Ismingiz" data-i18n-placeholder="namePlaceholder" required>
         </div>
         <div class="input-group">
-          <label for="clientPhone" class="sr-only">Telefon raqamingiz</label>
+          <label for="clientPhone" class="sr-only" data-i18n="phoneLabel">Telefon raqamingiz</label>
           <input type="tel" id="clientPhone" name="phone" class="line-input" placeholder="+998 (90) 123-45-67" maxlength="19" autocomplete="tel" required>
         </div>
         <div class="input-group custom-select-wrapper" id="customSelectWrapper">
@@ -140,19 +155,20 @@
               </svg>
             </span>
           </button>
-          <div class="custom-select-menu" id="customSelectMenu" role="listbox" aria-label="Xizmat turi">
-            <div class="custom-select-option" role="option" data-value="Websites">Websites (Veb-saytlar)</div>
-            <div class="custom-select-option" role="option" data-value="Mobile apps">Mobile apps (Mobil ilovalar)</div>
-            <div class="custom-select-option" role="option" data-value="Other">Other (Boshqa turdagi loyiha)</div>
+          <div class="custom-select-menu" id="customSelectMenu" role="listbox" aria-label="Xizmat turi" data-i18n-aria="serviceType">
+            <div class="custom-select-option" role="option" data-value="brand" data-i18n="serviceBrand">Brend dizayn</div>
+            <div class="custom-select-option" role="option" data-value="web" data-i18n="serviceWeb">Veb dizayn</div>
+            <div class="custom-select-option" role="option" data-value="poster" data-i18n="servicePoster">Poster (Ijtimoiy tarmoqlar)</div>
+            <div class="custom-select-option" role="option" data-value="other" data-i18n="serviceOther">Boshqa</div>
           </div>
         </div>
         <div class="input-group custom-service-group" id="customServiceGroup">
-          <label for="customService" class="sr-only">Qo'shimcha</label>
-          <input type="text" id="customService" name="custom_service" class="line-input" placeholder="Loyiha yoki g'oyangiz haqida">
+          <label for="customService" class="sr-only" data-i18n="extraPlaceholder">Qo'shimcha</label>
+          <input type="text" id="customService" name="custom_service" class="line-input" placeholder="Loyiha yoki g'oyangiz haqida" data-i18n-placeholder="extraPlaceholder">
         </div>
         <!-- Submit button: turns ready when all fields are filled -->
         <button type="submit" class="submit-btn" id="submitBtn" disabled>
-          <span class="btn-text">Jo'natish</span>
+          <span class="btn-text" data-i18n="submit">Jo'natish</span>
           <span class="btn-loader" style="display: none;">
             <svg class="spinner" viewBox="0 0 50 50"><circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle></svg>
           </span>
@@ -167,7 +183,7 @@
       <div class="cards-group active-group" id="projectsGroup">
 
         <!-- Card 1: Chaq-Chuq — 100% Solid HEX #FFC848 -->
-        <article class="neo-card project-card" id="cardChaqChuq" data-card-id="chaq-chuq" data-hover-color="#FFC848">
+        <article class="neo-card project-card" id="cardChaqChuq" data-card-id="chaq-chuq" data-project-preview="chaq-chuq" data-hover-color="#FFC848">
           <div class="card-inner">
             <div class="card-header">
               <span class="card-icon-badge">
@@ -175,19 +191,19 @@
               </span>
             </div>
             <div class="card-content">
-              <a href="#chaq-chuq-preview" class="card-title-link" data-project-preview="chaq-chuq">
+              <p class="card-title" data-i18n="cardChaqChuq">
                 Sifatli quruq meva va yong'oqlarni yetkazib beruvchi mahalliy brend
-              </a>
+              </p>
               <span class="card-brand-name">Chaq-Chuq</span>
             </div>
             <div class="card-footer">
-              <span class="card-tag">Veb-sayt</span>
+              <span class="card-tag" data-i18n="tagWebsite">Veb-sayt</span>
             </div>
           </div>
         </article>
 
-        <!-- Card 2: UrDU — 100% Solid HEX #41FF67 -->
-        <article class="neo-card project-card" id="cardUrDu" data-card-id="urdu" data-hover-color="#41FF67">
+        <!-- Card 2: UrDU — soft mint hover -->
+        <article class="neo-card project-card" id="cardUrDu" data-card-id="urdu" data-project-preview="urdu" data-hover-color="#8ED9A4">
           <div class="card-inner">
             <div class="card-header">
               <span class="card-icon-badge">
@@ -195,19 +211,19 @@
               </span>
             </div>
             <div class="card-content">
-              <a href="#urdu-preview" class="card-title-link" data-project-preview="urdu">
+              <p class="card-title" data-i18n="cardUrdu">
                 UrDU talabalari uchun tadbirlar va imkoniyatlar platformasi
-              </a>
+              </p>
               <span class="card-brand-name">UrDu</span>
             </div>
             <div class="card-footer">
-              <span class="card-tag">Veb-sayt</span>
+              <span class="card-tag" data-i18n="tagWebsite">Veb-sayt</span>
             </div>
           </div>
         </article>
 
         <!-- Card 3: Crystal Icons — 100% Solid HEX #48FFFF -->
-        <article class="neo-card project-card" id="cardCrystalIcons" data-card-id="crystal-icons" data-hover-color="#48FFFF">
+        <article class="neo-card project-card" id="cardCrystalIcons" data-card-id="crystal-icons" data-project-preview="crystal" data-hover-color="#48FFFF">
           <div class="card-inner">
             <div class="card-header">
               <span class="card-icon-badge">
@@ -215,19 +231,19 @@
               </span>
             </div>
             <div class="card-content">
-              <a href="#crystal-preview" class="card-title-link" data-project-preview="crystal">
+              <p class="card-title" data-i18n="cardCrystal">
                 Figma, React va vanilla JS uchun ochiq manbali ikonalar kutubxonasi
-              </a>
+              </p>
               <span class="card-brand-name">Crystal Icons</span>
             </div>
             <div class="card-footer">
-              <span class="card-tag">Veb-sayt</span>
+              <span class="card-tag" data-i18n="tagWebsite">Veb-sayt</span>
             </div>
           </div>
         </article>
 
         <!-- Card 4: Teahouse — 100% Solid HEX #72C7FF -->
-        <article class="neo-card project-card" id="cardTeahouse" data-card-id="teahouse" data-hover-color="#72C7FF">
+        <article class="neo-card project-card" id="cardTeahouse" data-card-id="teahouse" data-project-preview="teahouse" data-hover-color="#72C7FF">
           <div class="card-inner">
             <div class="card-header">
               <span class="card-icon-badge">
@@ -235,19 +251,19 @@
               </span>
             </div>
             <div class="card-content">
-              <a href="#teahouse-preview" class="card-title-link" data-project-preview="teahouse">
+              <p class="card-title" data-i18n="cardTeahouse">
                 Kerakli odamlar bilan tasodifiy bo'lmagan tanishuvlar
-              </a>
+              </p>
               <span class="card-brand-name">Teahouse</span>
             </div>
             <div class="card-footer">
-              <span class="card-tag">Veb-sayt</span>
+              <span class="card-tag" data-i18n="tagWebsite">Veb-sayt</span>
             </div>
           </div>
         </article>
 
         <!-- Card 5: hojixkbar Instagram — Solid Black Card, White inner content -->
-        <article class="neo-card project-card card-instagram" id="cardHojixkbar" data-card-id="hojixkbar" data-hover-color="#000000">
+        <article class="neo-card project-card card-instagram" id="cardHojixkbar" data-card-id="hojixkbar" data-project-preview="hojixkbar" data-hover-color="#000000">
           <div class="card-inner">
             <div class="card-header">
               <span class="card-icon-badge">
@@ -255,9 +271,9 @@
               </span>
             </div>
             <div class="card-content">
-              <a href="https://instagram.com/hojixkbar" target="_blank" rel="noopener noreferrer" class="card-title-link">
+              <p class="card-title" data-i18n="cardHojixkbar">
                 Korusellar orqali kreativ tarzda jonlantirilgan iqtiboslar
-              </a>
+              </p>
               <span class="card-brand-name">hojixkbar</span>
             </div>
             <div class="card-footer">
@@ -272,18 +288,18 @@
       <div class="cards-group" id="teamGroup">
 
         <!-- Team Card 1: Mansur -->
-        <article class="neo-card team-card" id="cardMansur" data-card-id="mansur" data-hover-color="#E8F1FD">
+        <article class="neo-card team-card" id="cardMansur" data-card-id="mansur" data-hover-color="#C084FC">
           <div class="card-inner">
             <div class="team-card-header">
               <div class="avatar-box">
-                <img src="img/avatar-mansur.png" alt="Mansur" width="68" height="68" class="avatar-img">
+                <img src="img/avatar-mansur.png?v=2" alt="Mansur" width="68" height="68" class="avatar-img">
               </div>
               <div class="team-meta">
                 <h3 class="team-member-name">Mansur, 20</h3>
               </div>
             </div>
             <div class="card-content">
-              <p class="team-achievement">2x Xalqaro va 9x Milliy dasturlash chempionati g'olibi</p>
+              <p class="team-achievement" data-i18n="teamMansur">2x Xalqaro va 9x Milliy dasturlash chempionati g'olibi</p>
             </div>
             <div class="card-footer team-footer">
               <span class="tech-stack-text">Node Js · Java · C++ · TypeScript · Python</span>
@@ -292,18 +308,18 @@
         </article>
 
         <!-- Team Card 2: Hojiakbar -->
-        <article class="neo-card team-card" id="cardHojiakbar" data-card-id="hojiakbar" data-hover-color="#FFF0E3">
+        <article class="neo-card team-card" id="cardHojiakbar" data-card-id="hojiakbar" data-hover-color="#FF8A4C">
           <div class="card-inner">
             <div class="team-card-header">
               <div class="avatar-box">
-                <img src="img/avatar-hojiakbar.png" alt="Hojiakbar" width="68" height="68" class="avatar-img">
+                <img src="img/avatar-hojiakbar.png?v=2" alt="Hojiakbar" width="68" height="68" class="avatar-img">
               </div>
               <div class="team-meta">
                 <h3 class="team-member-name">Hojiakbar, 21</h3>
               </div>
             </div>
             <div class="card-content">
-              <p class="team-achievement">Figma'da yashaydi, Mansurga motivatsiya berib turadi</p>
+              <p class="team-achievement" data-i18n="teamHojiakbar">Figma'da yashaydi, Mansurga motivatsiya berib turadi</p>
             </div>
             <div class="card-footer team-footer">
               <span class="tech-stack-text">Figma · Photoshop · Framer · Illustrator</span>
@@ -319,27 +335,18 @@
     <div class="project-modal" id="projectModal" aria-hidden="true">
       <div class="modal-backdrop" id="modalBackdrop"></div>
       <div class="modal-card">
-        <button type="button" class="modal-close-btn" id="modalCloseBtn" aria-label="Yopish">✕</button>
-        <div class="modal-badge-row">
-          <span class="modal-tag" id="modalTag">Veb-sayt</span>
-          <span class="modal-status">● Jonli Loyiha</span>
-        </div>
-        <h2 class="modal-title" id="modalTitle">Loyiha sarlavhasi</h2>
+        <button type="button" class="modal-close-btn" id="modalCloseBtn" aria-label="Yopish" data-i18n-aria="close">
+          <svg viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <h2 class="modal-title" id="modalTitle">Loyiha nomi</h2>
         <p class="modal-desc" id="modalDesc">Loyiha haqida to'liq tavsif.</p>
-        <div class="modal-tech-box">
-          <span class="tech-title">Texnologiyalar & Stack:</span>
-          <div class="tech-pills" id="modalTechPills">
-            <span class="tech-pill">Next.js</span>
-          </div>
-        </div>
         <div class="modal-actions">
           <a href="#" target="_blank" rel="noopener noreferrer" class="modal-action-btn primary" id="modalLiveBtn">
-            <span>Saytga o'tish</span>
+            <span data-i18n="visitSite">Saytga o'tish</span>
             <span class="arrow">↗</span>
           </a>
-          <button type="button" class="modal-action-btn secondary" id="modalOrderBtn">
-            <span>Shunga o'xshash loyiha buyurtma qilish</span>
-          </button>
         </div>
       </div>
     </div>
@@ -357,6 +364,6 @@
 
   </div>
 
-  <script type="module" src="js/main.js?v=4"></script>
+  <script type="module" src="js/main.js?v=51"></script>
 </body>
 </html>

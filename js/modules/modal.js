@@ -1,67 +1,76 @@
 /**
- * KINSEI Studio — Project Detail Modal (Figma-exact)
- * No SFX sounds
+ * KINSEI Studio — Project Detail Modal
  */
 
-import { preselectService } from './form.js';
-import { PROJECT_DATA } from '../data/projects.js';
-import { playSound } from './audio.js';
-import { setActiveTab } from './tabs.js';
+import { PROJECT_DATA } from '../data/projects.js?v=19';
+import { playSound } from './audio.js?v=17';
+import { t } from './i18n.js?v=2';
+import { MODAL_DESC_KEYS } from '../data/i18n.js?v=2';
 
-let modal, backdrop, closeBtn, title, desc, tag, pills, liveBtn, orderBtn;
+let modal, closeBtn, title, desc, liveBtn, card;
+let closeLocked = false;
+let lastProjectId = null;
 
 export function initModal() {
   modal = document.getElementById('projectModal');
-  backdrop = document.getElementById('modalBackdrop');
   closeBtn = document.getElementById('modalCloseBtn');
   title = document.getElementById('modalTitle');
   desc = document.getElementById('modalDesc');
-  tag = document.getElementById('modalTag');
-  pills = document.getElementById('modalTechPills');
   liveBtn = document.getElementById('modalLiveBtn');
-  orderBtn = document.getElementById('modalOrderBtn');
+  card = modal?.querySelector('.modal-card');
 
-  closeBtn?.addEventListener('click', () => {
+  closeBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     playSound('click');
     closeModal();
   });
-  backdrop?.addEventListener('click', () => {
+
+  card?.addEventListener('pointerdown', (e) => e.stopPropagation());
+  card?.addEventListener('click', (e) => e.stopPropagation());
+
+  modal?.addEventListener('pointerdown', (e) => {
+    if (!modal.classList.contains('modal-open')) return;
+    if (e.target.closest?.('.modal-card')) return;
     playSound('click');
     closeModal();
   });
+}
+
+function fillModal(projectId) {
+  const data = PROJECT_DATA[projectId];
+  if (!data || !modal) return;
+
+  const descKey = MODAL_DESC_KEYS[projectId];
+  title.textContent = data.title;
+  desc.textContent = descKey ? t(descKey) : data.desc;
+  liveBtn.href = data.url;
+  const ctaKey = data.cta === 'profile' ? 'visitProfile' : 'visitSite';
+  const ctaLabel = liveBtn.querySelector('[data-i18n]');
+  if (ctaLabel) {
+    ctaLabel.dataset.i18n = ctaKey;
+    ctaLabel.textContent = t(ctaKey);
+  }
 }
 
 export function openProjectModal(projectId) {
-  const data = PROJECT_DATA[projectId];
-  if (!data) return;
+  if (!PROJECT_DATA[projectId] || !modal) return;
 
-  title.textContent = data.title;
-  tag.textContent = data.tag;
-  desc.textContent = data.desc;
-  liveBtn.href = data.url;
+  lastProjectId = projectId;
+  fillModal(projectId);
 
-  pills.innerHTML = '';
-  data.stack.forEach(t => {
-    const el = document.createElement('span');
-    el.className = 'tech-pill';
-    el.textContent = t;
-    pills.appendChild(el);
-  });
-
-  orderBtn.onclick = () => {
-    playSound('click');
-    closeModal();
-    if (window.innerWidth <= 860) {
-      setActiveTab('contact');
-    }
-    preselectService(data.serviceType);
-  };
-
+  closeLocked = true;
   modal.classList.add('modal-open');
   modal.setAttribute('aria-hidden', 'false');
+  window.setTimeout(() => { closeLocked = false; }, 180);
 }
 
 export function closeModal() {
+  if (!modal || closeLocked) return;
   modal.classList.remove('modal-open');
   modal.setAttribute('aria-hidden', 'true');
+}
+
+export function isModalOpen() {
+  return !!modal?.classList.contains('modal-open');
 }

@@ -24,6 +24,13 @@ html, body {
   -webkit-user-select: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  cursor: url("../assets/cursors/cursor.png") 0 0, auto;
+}
+
+html *,
+html *::before,
+html *::after {
+  cursor: url("../assets/cursors/cursor.png") 0 0, auto !important;
 }
 
 a {

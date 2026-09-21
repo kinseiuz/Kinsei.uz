@@ -8,68 +8,97 @@
   position: absolute;
   width: var(--card-width);
   background-color: #FFFFFF;
+  background-clip: padding-box;
   border-radius: 12px;
   pointer-events: auto;
-  cursor: grab;
   touch-action: none;
-  opacity: 1 !important;
+  opacity: 1;
   isolation: isolate;
 
-  /* Figma asymmetric border: top/left 1.5px, right/bottom 5.5px */
-  border-top: 1.5px solid var(--border-color);
-  border-left: 1.5px solid var(--border-color);
-  border-right: 5.5px solid var(--border-color);
-  border-bottom: 5.5px solid var(--border-color);
+  /* Even stroke + offset shadow so rotated edges stay anti-aliased */
+  border: 1.5px solid var(--border-color);
+  box-shadow: 4px 4px 0 var(--border-color);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  transform: rotate(var(--curr-rot, 0deg)) translateZ(0);
 
   will-change: transform, left, top;
-  transition:
-    background-color 0.22s ease,
-    border-width var(--dur-fast) ease,
-    transform var(--dur-slow) var(--spring);
+  /* Hover-out: fill color only. Layer, type, and copy snap instantly. */
+  transition: background-color 0.25s ease;
 }
 
-/* Hover: 100% solid color morph, rises to highest layer */
-.neo-card:hover {
+/* Park cards until JS deals them — otherwise they stack at 0,0 on first paint. */
+.neo-card:not(.is-dealt):not(.card-entering):not(.card-exiting-down):not(.card-exiting-side) {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Hover / drag: fill is instant in, 0.25s out */
+.neo-card.is-hovered,
+.neo-card.is-dragging {
   background-color: var(--card-hover-hex, #FFFFFF) !important;
-  z-index: 100 !important;
+  transition-duration: 0s;
+}
+
+/* Hover: gray name/type match the description color — instant both ways */
+.neo-card.is-hovered .card-brand-name,
+.neo-card.is-hovered .card-tag,
+.neo-card.is-hovered .tech-stack-text,
+.neo-card.is-dragging .card-brand-name,
+.neo-card.is-dragging .card-tag,
+.neo-card.is-dragging .tech-stack-text {
+  color: var(--text-primary);
 }
 
 /* Instagram card hover: solid black card, white inner elements */
-.card-instagram:hover,
-#cardHojixkbar:hover {
+.card-instagram.is-hovered,
+.card-instagram.is-dragging,
+#cardHojixkbar.is-hovered,
+#cardHojixkbar.is-dragging {
   background-color: #000000 !important;
 }
 
-.card-instagram:hover .card-title-link,
-#cardHojixkbar:hover .card-title-link {
+.card-instagram.is-hovered .card-title,
+.card-instagram.is-hovered .card-brand-name,
+.card-instagram.is-hovered .card-tag,
+.card-instagram.is-dragging .card-title,
+.card-instagram.is-dragging .card-brand-name,
+.card-instagram.is-dragging .card-tag,
+#cardHojixkbar.is-hovered .card-title,
+#cardHojixkbar.is-hovered .card-brand-name,
+#cardHojixkbar.is-hovered .card-tag,
+#cardHojixkbar.is-dragging .card-title,
+#cardHojixkbar.is-dragging .card-brand-name,
+#cardHojixkbar.is-dragging .card-tag {
   color: #FFFFFF !important;
 }
 
-.card-instagram:hover .card-brand-name,
-#cardHojixkbar:hover .card-brand-name {
-  color: #FFFFFF !important;
-}
-
-.card-instagram:hover .card-tag,
-#cardHojixkbar:hover .card-tag {
-  color: #FFFFFF !important;
-}
-
-.card-instagram:hover .card-icon-img,
-#cardHojixkbar:hover .card-icon-img {
+.card-instagram.is-hovered .card-icon-img,
+.card-instagram.is-dragging .card-icon-img,
+#cardHojixkbar.is-hovered .card-icon-img,
+#cardHojixkbar.is-dragging .card-icon-img {
   filter: brightness(0) invert(1) !important;
 }
 
-/* Physical press: thin sides remain unchanged (1.5px), thick borders thin down to 1.5px */
-.neo-card:active,
-.neo-card.is-dragging {
+/* Beat the global custom cursor so hover/drag show the grab hand */
+html .neo-card,
+html .neo-card *,
+html .neo-card *::before,
+html .neo-card *::after {
+  cursor: grab !important;
+}
+
+html .neo-card.is-dragging,
+html .neo-card.is-dragging *,
+html .neo-card.is-dragging *::before,
+html .neo-card.is-dragging *::after {
   cursor: grabbing !important;
-  border-top-width: 1.5px !important;
-  border-left-width: 1.5px !important;
-  border-right-width: 1.5px !important;
-  border-bottom-width: 1.5px !important;
-  transform: translate(4px, 4px) rotate(var(--curr-rot, 0deg)) !important;
-  transition: border-width 0.08s ease, transform 0.08s ease !important;
+}
+
+/* Keep size and type layout locked while dragging */
+.neo-card.is-dragging {
+  box-shadow: 4px 4px 0 var(--border-color);
 }
 
 /* ── Inner Structure — Figma: padding 16px all, gap 24px ── */
@@ -104,7 +133,6 @@
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
-  transition: filter 0.2s ease;
 }
 
 .card-content {
@@ -114,25 +142,17 @@
   flex-grow: 1;
 }
 
-/* Bold project description (clickable link) */
-.card-title-link {
+/* Bold project description — plain text, click opens the popup */
+.card-title {
   font-size: var(--fs-lg);
   font-weight: var(--fw-bold);
   line-height: 1.22;
   color: var(--text-primary);
-  text-decoration: none;
-  cursor: pointer;
+  margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  transition: color 0.2s ease;
-}
-
-.card-title-link:hover {
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 3px;
 }
 
 /* Non-clickable brand name */
@@ -140,7 +160,6 @@
   font-size: var(--fs-base);
   font-weight: var(--fw-medium);
   color: var(--text-secondary);
-  transition: color 0.2s ease;
 }
 
 /* Figma: footer with just type text (gray, not black) */
@@ -152,7 +171,6 @@
   font-size: 0.86rem;
   font-weight: var(--fw-semibold);
   color: var(--text-secondary);
-  transition: color 0.2s ease;
 }
 
 /* ── Team Card ── */
@@ -167,16 +185,16 @@
 }
 
 .avatar-box {
-  width: 68px; height: 68px;
+  width: 68px;
+  height: 68px;
   flex-shrink: 0;
-  border-radius: var(--radius-round);
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  border: 2px solid var(--border-color);
-  background: var(--bg-white);
-  padding: 2px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  overflow: visible;
 }
 
 .avatar-img {

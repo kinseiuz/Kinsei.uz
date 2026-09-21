@@ -3,6 +3,7 @@
  * Zero external audio files; all sounds generated procedurally via Web Audio API.
  */
 
+import { t } from './i18n.js?v=1';
 import { state } from '../state.js';
 
 let audioCtx = null;
@@ -53,6 +54,10 @@ export function initAudio() {
       toggleSound();
     });
   }
+
+  window.addEventListener('kinsei-lang', () => {
+    updateSoundToggleUI(document.getElementById('soundToggleBtn'));
+  });
 }
 
 export function toggleSound() {
@@ -75,8 +80,8 @@ function updateSoundToggleUI(btn) {
   if (!btn) return;
   const isMuted = !state.sfxEnabled;
   btn.setAttribute('data-muted', isMuted ? 'true' : 'false');
-  btn.setAttribute('aria-label', isMuted ? "Ovozni yoqish" : "Ovozni o'chirish");
-  btn.setAttribute('title', isMuted ? "Ovozni yoqish" : "Ovozni o'chirish");
+  btn.setAttribute('aria-label', isMuted ? t('soundUnmute') : t('soundMute'));
+  btn.setAttribute('title', isMuted ? t('soundUnmute') : t('soundMute'));
 }
 
 export function playSound(type) {

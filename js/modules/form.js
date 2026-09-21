@@ -3,12 +3,17 @@
  */
 
 import { CONFIG } from '../config.js';
-import { playSound } from './audio.js';
+import { playSound } from './audio.js?v=17';
+import { t, getLang } from './i18n.js?v=1';
 
 let form, name, phone, service, customGroup, custom, submitBtn;
-let customSelectWrapper, customSelectTrigger, selectedServiceText, customSelectOptions;
+let customSelectWrapper, customSelectTrigger, selectedServiceText, customSelectOptions, customSelectMenu;
 let toastEl, toastTitle, toastMessage;
 let toastTimer = null;
+let keyboardLift = 0;
+let keyboardBound = false;
+
+export const formPos = { x: 0, y: 0, dragged: false };
 
 export function formatUzbekPhone(value) {
   if (!value) return '';
@@ -53,19 +58,23 @@ export function initForm() {
   customSelectTrigger = document.getElementById('customSelectTrigger');
   selectedServiceText = document.getElementById('selectedServiceText');
   customSelectOptions = document.querySelectorAll('.custom-select-option');
+  customSelectMenu = document.getElementById('customSelectMenu');
 
   toastEl = document.getElementById('toastNotification');
   toastTitle = document.getElementById('toastTitle');
   toastMessage = document.getElementById('toastMessage');
 
-  // Custom dropdown open/close toggle
   customSelectTrigger?.addEventListener('click', (e) => {
     e.stopPropagation();
     const isOpen = customSelectWrapper?.classList.toggle('is-open');
     customSelectTrigger.setAttribute('aria-expanded', String(isOpen));
+    if (isOpen) {
+      requestAnimationFrame(positionSelectMenu);
+    } else {
+      clearSelectMenuPos();
+    }
   });
 
-  // Custom dropdown item selection
   customSelectOptions.forEach(opt => {
     opt.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -74,8 +83,7 @@ export function initForm() {
       if (selectedServiceText) selectedServiceText.textContent = opt.textContent;
       customSelectTrigger?.classList.add('has-value');
       customSelectOptions.forEach(o => o.classList.toggle('is-selected', o === opt));
-      customSelectWrapper?.classList.remove('is-open');
-      customSelectTrigger?.setAttribute('aria-expanded', 'false');
+      closeServiceMenu();
 
       if (service) {
         service.dispatchEvent(new Event('change'));
@@ -84,28 +92,25 @@ export function initForm() {
     });
   });
 
-  // Close dropdown on outside click
   document.addEventListener('click', (e) => {
     if (customSelectWrapper && !customSelectWrapper.contains(e.target)) {
-      customSelectWrapper.classList.remove('is-open');
-      customSelectTrigger?.setAttribute('aria-expanded', 'false');
+      closeServiceMenu();
     }
   });
 
-  // Close dropdown on Escape key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && customSelectWrapper?.classList.contains('is-open')) {
-      customSelectWrapper.classList.remove('is-open');
-      customSelectTrigger?.setAttribute('aria-expanded', 'false');
+      closeServiceMenu();
     }
   });
 
-  // "Other" slide-down
   service?.addEventListener('change', () => {
-    if (service.value === 'Other') {
+    if (service.value === 'other') {
       customGroup?.classList.add('expanded');
       custom?.setAttribute('required', 'true');
-      custom?.focus();
+      custom?.focus({ preventScroll: true });
+      requestAnimationFrame(keepFieldVisible);
+      setTimeout(keepFieldVisible, 360);
     } else {
       customGroup?.classList.remove('expanded');
       custom?.removeAttribute('required');
@@ -114,7 +119,6 @@ export function initForm() {
     validate();
   });
 
-  // Live validation and input fill status
   [name, custom].forEach(el => {
     if (el) {
       el.addEventListener('input', validate);
@@ -122,7 +126,14 @@ export function initForm() {
     }
   });
 
-  // Phone input formatting & mask handling
+  [name, phone, custom].forEach((el) => {
+    el?.addEventListener('focus', () => {
+      window.scrollTo(0, 0);
+      requestAnimationFrame(keepFieldVisible);
+      setTimeout(keepFieldVisible, 280);
+    });
+  });
+
   if (phone) {
     phone.setAttribute('inputmode', 'tel');
 
@@ -145,7 +156,6 @@ export function initForm() {
         const val = phone.value;
         const digits = val.replace(/\D/g, '');
 
-        // If only prefix is left, clear the entire field on backspace
         if (digits.length <= 3) {
           e.preventDefault();
           phone.value = '';
@@ -156,7 +166,6 @@ export function initForm() {
         const selStart = phone.selectionStart;
         const selEnd = phone.selectionEnd;
 
-        // If deleting right next to a formatting separator ') ', '-', ' ('
         if (selStart === selEnd && selStart > 0) {
           const charBefore = val[selStart - 1];
           if (charBefore === '-' || charBefore === ' ' || charBefore === ')' || charBefore === '(') {
@@ -193,13 +202,164 @@ export function initForm() {
   }
 
   form?.addEventListener('submit', handleSubmit);
+  window.addEventListener('kinsei-lang', refreshServiceLabel);
+  refreshServiceLabel();
+  bindKeyboardLift();
+}
+
+export function placeMobileForm() {
+  const el = document.getElementById('contactSection');
+  if (!el || window.innerWidth > 860) return;
+  const w = el.offsetWidth || 320;
+  const h = el.offsetHeight || 280;
+  formPos.x = Math.round((window.innerWidth - w) / 2);
+
+  const nav = document.querySelector('.mobile-tab-bar');
+  const navBottom = nav?.getBoundingClientRect().bottom || 0;
+  const underNav = Math.round(navBottom + 30);
+  const floorY = Math.max(8, window.innerHeight - h - 12);
+  formPos.y = Math.min(underNav, floorY);
+  formPos.y = Math.max(8, formPos.y);
+
+  formPos.dragged = false;
+  keyboardLift = 0;
+  applyFormScreenPos();
+}
+
+export function applyFormScreenPos() {
+  const el = document.getElementById('contactSection');
+  if (!el) return;
+  el.style.left = `${formPos.x}px`;
+  el.style.top = `${Math.max(8, formPos.y - keyboardLift)}px`;
+  el.style.right = 'auto';
+  el.style.bottom = 'auto';
+  if (customSelectWrapper?.classList.contains('is-open')) positionSelectMenu();
+}
+
+export function resetMobileFormPos() {
+  formPos.x = 0;
+  formPos.y = 0;
+  formPos.dragged = false;
+  keyboardLift = 0;
+  const el = document.getElementById('contactSection');
+  el?.style.removeProperty('left');
+  el?.style.removeProperty('top');
+  el?.style.removeProperty('right');
+  el?.style.removeProperty('bottom');
+  closeServiceMenu();
+}
+
+export function closeServiceMenu() {
+  customSelectWrapper?.classList.remove('is-open');
+  customSelectTrigger?.setAttribute('aria-expanded', 'false');
+  clearSelectMenuPos();
+}
+
+function positionSelectMenu() {
+  const menu = customSelectMenu;
+  const trigger = customSelectTrigger;
+  if (!menu || !trigger || !customSelectWrapper?.classList.contains('is-open')) return;
+
+  if (window.innerWidth > 860) {
+    clearSelectMenuPos();
+    return;
+  }
+
+  menu.classList.add('is-fixed');
+  const r = trigger.getBoundingClientRect();
+  menu.style.visibility = 'hidden';
+  menu.style.display = 'flex';
+  const menuH = menu.offsetHeight || 180;
+  menu.style.visibility = '';
+
+  const spaceBelow = window.innerHeight - r.bottom;
+  menu.style.left = `${r.left}px`;
+  menu.style.width = `${r.width}px`;
+  menu.style.zIndex = '200';
+  if (spaceBelow < menuH + 12) {
+    menu.style.top = 'auto';
+    menu.style.bottom = `${window.innerHeight - r.top + 4}px`;
+  } else {
+    menu.style.top = `${r.bottom + 4}px`;
+    menu.style.bottom = 'auto';
+  }
+}
+
+function clearSelectMenuPos() {
+  if (!customSelectMenu) return;
+  customSelectMenu.classList.remove('is-fixed');
+  customSelectMenu.style.left = '';
+  customSelectMenu.style.top = '';
+  customSelectMenu.style.bottom = '';
+  customSelectMenu.style.width = '';
+  customSelectMenu.style.zIndex = '';
+  customSelectMenu.style.display = '';
+  customSelectMenu.style.visibility = '';
+}
+
+function bindKeyboardLift() {
+  if (keyboardBound) return;
+  keyboardBound = true;
+  const vv = window.visualViewport;
+  const update = () => keepFieldVisible();
+  vv?.addEventListener('resize', update);
+  vv?.addEventListener('scroll', update);
+  window.addEventListener('resize', update);
+  window.addEventListener('focusout', () => {
+    setTimeout(() => {
+      const active = document.activeElement;
+      if (!active || active === document.body || active === document.documentElement) {
+        keyboardLift = 0;
+        if (document.getElementById('contactSection')?.classList.contains('mobile-contact-visible')) {
+          applyFormScreenPos();
+        }
+      }
+    }, 80);
+  });
+}
+
+function keepFieldVisible() {
+  const section = document.getElementById('contactSection');
+  if (!section?.classList.contains('mobile-contact-visible')) return;
+
+  const field = document.activeElement;
+  const isField = field && section.contains(field) && (field.tagName === 'INPUT' || field.tagName === 'TEXTAREA');
+  if (!isField) {
+    keyboardLift = 0;
+    applyFormScreenPos();
+    return;
+  }
+
+  window.scrollTo(0, 0);
+  const vv = window.visualViewport;
+  const visibleTop = vv ? vv.offsetTop + 12 : 12;
+  const visibleBottom = vv ? vv.offsetTop + vv.height - 12 : window.innerHeight - 12;
+  const prevLift = keyboardLift;
+
+  const fieldRect = field.getBoundingClientRect();
+  const unliftedTop = fieldRect.top + prevLift;
+  const fieldH = fieldRect.height;
+  const sectionRect = section.getBoundingClientRect();
+  const unliftedFormBottom = sectionRect.bottom + prevLift;
+
+  let lift = 0;
+  if (unliftedTop + fieldH > visibleBottom) {
+    lift = unliftedTop + fieldH - visibleBottom;
+  }
+  if (unliftedFormBottom - lift > visibleBottom) {
+    lift = Math.max(lift, unliftedFormBottom - visibleBottom);
+  }
+  if (unliftedTop - lift < visibleTop) {
+    lift = unliftedTop - visibleTop;
+  }
+  keyboardLift = Math.max(0, lift);
+  applyFormScreenPos();
 }
 
 function validate() {
   const phoneDigits = phone ? phone.value.replace(/\D/g, '') : '';
   const isPhoneComplete = phoneDigits.length === 12 && phoneDigits.startsWith('998');
 
-  // Update .is-filled state on individual inputs
   if (name) name.classList.toggle('is-filled', name.value.trim().length > 0);
   if (phone) phone.classList.toggle('is-filled', isPhoneComplete);
   if (service) service.classList.toggle('is-filled', service.value !== '');
@@ -209,7 +369,7 @@ function validate() {
     name && name.value.trim().length >= 2 &&
     isPhoneComplete &&
     service && service.value !== '' &&
-    (service.value !== 'Other' || (custom && custom.value.trim().length >= 2));
+    (service.value !== 'other' || (custom && custom.value.trim().length >= 2));
 
   if (submitBtn) {
     submitBtn.disabled = !ok;
@@ -232,15 +392,15 @@ async function handleSubmit(e) {
     name: name.value.trim(),
     phone: phone.value.trim(),
     service: service.value,
-    custom: service.value === 'Other' ? custom.value.trim() : null,
-    time: new Date().toLocaleString('uz-UZ'),
+    custom: service.value === 'other' ? custom.value.trim() : null,
+    time: new Date().toLocaleString(getLang() === 'ru' ? 'ru-RU' : getLang() === 'en' ? 'en-US' : 'uz-UZ'),
   };
 
   const lines = [
     '🚀 *Yangi loyiha so\'rovi (KINSEI)*',
     `👤 *Mijoz:* ${data.name}`,
     `📞 *Telefon:* ${data.phone}`,
-    `🛠 *Xizmat:* ${data.service}`,
+    `🛠 *Xizmat:* ${selectedServiceText?.textContent?.trim() || data.service}`,
   ];
   if (data.custom) lines.push(`📝 *Tafsilot:* ${data.custom}`);
   lines.push(`⏰ *Vaqt:* ${data.time}`);
@@ -267,18 +427,28 @@ async function handleSubmit(e) {
 
   if (ok) {
     playSound('success');
-    showToast('Xabaringiz yuborildi!', 'Tez orada siz bilan bog\'lanamiz.');
+    showToast(t('toastOkTitle'), t('toastOkMsg'));
     form.reset();
     if (service) service.value = '';
-    if (selectedServiceText) selectedServiceText.textContent = 'Xizmat turi';
+    if (selectedServiceText) selectedServiceText.textContent = t('serviceType');
     if (customSelectTrigger) customSelectTrigger.classList.remove('has-value');
     customSelectOptions?.forEach(o => o.classList.remove('is-selected'));
-    if (customSelectWrapper) customSelectWrapper.classList.remove('is-open');
+    closeServiceMenu();
     if (customGroup) customGroup.classList.remove('expanded');
     validate();
   } else {
-    showToast('Xatolik yuz berdi', 'Iltimos, telefon yoki telegram orqali bog\'laning.');
+    showToast(t('toastErrTitle'), t('toastErrMsg'));
   }
+}
+
+function refreshServiceLabel() {
+  if (!selectedServiceText) return;
+  if (!service?.value) {
+    selectedServiceText.textContent = t('serviceType');
+    return;
+  }
+  const opt = Array.from(customSelectOptions || []).find((o) => o.dataset.value === service.value);
+  if (opt) selectedServiceText.textContent = opt.textContent;
 }
 
 function showToast(title, msg) {
@@ -302,5 +472,5 @@ export function preselectService(type) {
     }
     service.dispatchEvent(new Event('change'));
   }
-  if (name) name.focus();
+  if (name) name.focus({ preventScroll: true });
 }

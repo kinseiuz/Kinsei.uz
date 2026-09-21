@@ -20,39 +20,33 @@
   100% { stroke-dasharray: 90, 150; stroke-dashoffset: -124; }
 }
 
-/* ── Card Entrance (Spring from Bottom) ── */
-@keyframes cardEnterSpring {
+/* ── Card throw-in (opaque, no fade, no bounce — like cards tossed on a table) ── */
+@keyframes cardThrow {
   0% {
-    opacity: 0;
-    transform: translateY(320px) rotate(calc(var(--curr-rot, 0deg) * 1.5)) scale(0.75);
+    transform: translate3d(var(--throw-x, 0px), var(--throw-y, 200px), 0) rotate(var(--throw-rot, 0deg));
   }
   100% {
-    opacity: 1;
-    transform: translateY(0) rotate(var(--curr-rot, 0deg)) scale(1);
+    transform: translate3d(0, 0, 0) rotate(var(--curr-rot, 0deg));
   }
 }
 
 /* ── Card Exit (Fall Down) ── */
 @keyframes cardExitDown {
   0% {
-    opacity: 1;
-    transform: translateY(0) rotate(var(--curr-rot, 0deg)) scale(1);
+    transform: translate3d(0, 0, 0) rotate(var(--curr-rot, 0deg));
   }
   100% {
-    opacity: 0;
-    transform: translateY(360px) rotate(calc(var(--curr-rot, 0deg) - 15deg)) scale(0.8);
+    transform: translate3d(0, calc(100vh + 320px), 0) rotate(calc(var(--curr-rot, 0deg) - 25deg));
   }
 }
 
 /* ── Card Exit (Fly Sideways) ── */
 @keyframes cardExitSide {
   0% {
-    opacity: 1;
-    transform: translateX(0) rotate(var(--curr-rot, 0deg)) scale(1);
+    transform: translate3d(0, 0, 0) rotate(var(--curr-rot, 0deg));
   }
   100% {
-    opacity: 0;
-    transform: translateX(var(--exit-x-offset, 350px)) rotate(calc(var(--curr-rot, 0deg) + 20deg)) scale(0.85);
+    transform: translate3d(var(--exit-x-offset, 350px), 0, 0) rotate(calc(var(--curr-rot, 0deg) + 28deg));
   }
 }
 
@@ -60,15 +54,36 @@
    Use .neo-card. prefix so these OVERRIDE the base .neo-card transitions */
 
 .neo-card.card-entering {
-  animation: cardEnterSpring 0.85s var(--spring) forwards !important;
+  animation: cardThrow var(--throw-dur, 0.58s) cubic-bezier(0.22, 0.61, 0.36, 1) both !important;
+  transition: none !important;
 }
 
 .neo-card.card-exiting-down {
-  animation: cardExitDown 0.45s var(--smooth) forwards !important;
+  animation: cardExitDown 0.58s var(--smooth) forwards !important;
   pointer-events: none !important;
 }
 
 .neo-card.card-exiting-side {
-  animation: cardExitSide 0.45s var(--smooth) forwards !important;
+  animation: cardExitSide 0.58s var(--smooth) forwards !important;
   pointer-events: none !important;
+}
+
+/* ── Mobile contact form enter / leave ── */
+@keyframes formEnterUp {
+  from { transform: translate3d(0, 110vh, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes formExitDown {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(0, 110vh, 0); }
+}
+
+.contact-card-wrapper.form-enter-up {
+  animation: formEnterUp 0.52s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.contact-card-wrapper.form-exiting {
+  animation: formExitDown 0.45s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  pointer-events: none;
 }

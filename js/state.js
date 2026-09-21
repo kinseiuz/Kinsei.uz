@@ -6,7 +6,9 @@ export const state = {
   currentTab: 'projects',
   isDragging: false,
   activeDragCard: null,
-  highestZIndex: 30,
+  hoveredCard: null,
+  skipHoverCard: null,
+  highestZIndex: 120,
   sfxEnabled: true,
   selectedBudget: '<$1k',
   cardStates: new Map(), // card DOM → { x, y, rotation, baseZIndex }

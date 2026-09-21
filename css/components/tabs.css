@@ -43,24 +43,48 @@
 
 /* ── Mobile Tab Bar ── */
 .mobile-tab-bar {
-  display: flex;
+  position: relative;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
+  gap: 0;
   background: var(--bg-subtle);
   border: none;
   border-radius: var(--radius-pill);
   padding: 4px;
-  width: 100%;
-  max-width: 330px;
+  width: max-content;
+  max-width: 240px;
   min-height: 48px;
+  margin-inline: auto;
+}
+
+.mobile-tab-pill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 40px;
+  background: var(--text-primary);
+  border-radius: 22px;
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform, width;
+}
+
+.mobile-tab-pill.is-ready {
+  transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+              width 0.38s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .mobile-tab-btn {
-  flex: 1;
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 10px;
+  padding: 0 18px;
   font-size: 0.9rem;
   font-weight: var(--fw-semibold);
   border: none;
@@ -68,13 +92,13 @@
   background: transparent;
   color: var(--text-primary);
   border-radius: 20px;
-  transition: all var(--dur-normal) var(--smooth);
+  transition: color 0.28s ease;
   text-align: center;
   cursor: pointer;
 }
 
 .mobile-tab-btn.active {
-  background: var(--text-primary);
+  background: transparent;
   color: var(--text-inverse);
   border: none;
   box-shadow: none;

@@ -3,6 +3,16 @@
    All spacing, color, typography, and motion tokens in one place.
    ========================================================================== */
 
+@font-face {
+  font-family: 'The Last Shuriken';
+  src:
+    url('../assets/fonts/TheLastShuriken.otf') format('opentype'),
+    url('../assets/fonts/TheLastShuriken.ttf') format('truetype');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* ── Color Palette ── */
   --bg-main: #EFEFEB;
@@ -31,6 +41,7 @@
 
   /* ── Typography ── */
   --font-primary: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: 'The Last Shuriken', 'Dela Gothic One', 'Noto Sans JP', sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
 
   --fs-xs: 0.72rem;
@@ -91,14 +102,14 @@
   --z-ambient: 1;
   --z-cursor: 2;
   --z-app: 5;
-  --z-cards: 10;
-  --z-header: 50;
-  --z-contact: 50;
+  --z-header: 40;
+  --z-contact: 40;
   --z-status: 55;
-  --z-mobile-contact: 60;
-  --z-card-hover: 100;
-  --z-modal: 999;
-  --z-toast: 9999;
+  --z-mobile-contact: 90;
+  --z-cards: 70;
+  --z-card-hover: 80;
+  --z-modal: 10000;
+  --z-toast: 10001;
 
   /* ── Card Dimensions ── */
   --card-width: 320px;
