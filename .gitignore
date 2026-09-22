@@ -3,6 +3,11 @@
 Thumbs.db
 .vscode/
 
+# Secrets & bot data
+.env
+/data/
+__pycache__/
+
 # Media & Archives
 *.mov
 *.mp4

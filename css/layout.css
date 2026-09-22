@@ -5,10 +5,10 @@
 
 /* ── App Viewport Container ── */
 .app-container {
-  position: relative;
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  height: 100dvh;
   padding: 56px 48px 36px 64px;
   display: grid;
   grid-template-columns: 1fr 268px;
@@ -85,15 +85,13 @@
   display: flex;
   align-items: center;
   gap: var(--space-12);
-  margin-top: var(--space-1);
+  margin-top: calc(var(--space-1) - 24px);
   flex-wrap: wrap;
 }
 
-/* ── Social External Links ── */
+/* Desktop text social row stays in the DOM; circular icons in the top-right replace it. */
 .social-links-desktop {
-  display: flex;
-  align-items: center;
-  gap: var(--space-8);
+  display: none;
 }
 
 .social-link {
@@ -147,6 +145,67 @@ body.hide-social .social-icons-mobile {
   display: none !important;
 }
 
+/* Teahouse stays in the DOM. Recover with CONFIG.showTeahouse = true. */
+body.hide-teahouse #cardTeahouse {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Circular social icons — desktop: white fill, black stroke, black icon (sound-button size). */
+.social-icons-mobile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mobile-icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2px solid #111111;
+  box-shadow: 2px 2px 0px #111111;
+  color: #111111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.15s ease,
+              background-color 0.2s ease;
+}
+
+.mobile-icon-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px #111111;
+  background: #F4F4F0;
+}
+
+.mobile-icon-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px #111111;
+  background: #FFFFFF;
+}
+
+.mobile-icon-btn img,
+.mobile-icon-btn svg {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+
+.mobile-icon-btn svg {
+  stroke: #111111;
+  fill: none;
+}
+
 /* ── Mobile Header Actions (hidden on desktop) ── */
 .mobile-header-actions { display: none; }
 
@@ -165,8 +224,9 @@ body.hide-social .social-icons-mobile {
 /* ── Cards Playground Canvas ── */
 .cards-playground {
   position: absolute;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   overflow: hidden;
   z-index: var(--z-cards);
@@ -360,8 +420,9 @@ body.hide-social .social-icons-mobile {
   display: none;
 }
 
-.sound-toggle-btn[data-muted="true"] .icon-muted {
-  display: block;
+/* Sound stays in the DOM. Recover with CONFIG.showSound = true. */
+body.hide-sound .sound-toggle-btn {
+  display: none !important;
 }
 
 @media (max-width: 860px) {

@@ -4,14 +4,15 @@
 
 import { CONFIG } from '../config.js';
 import { state } from '../state.js';
+import { viewW, viewH } from '../viewport.js?v=2';
 
 /**
  * Calculate safe random card position within viewport,
  * avoiding header & contact form UI zones.
  */
 export function calculateSafeCardPosition(card, index, totalCards) {
-  const vpW = window.innerWidth;
-  const vpH = window.innerHeight;
+  const vpW = viewW();
+  const vpH = viewH();
   const isMobile = vpW <= 860;
   const cardW = card.offsetWidth || (isMobile ? 248 : 320);
   const cardH = card.offsetHeight || (isMobile ? 210 : 260);
@@ -92,7 +93,7 @@ export function applyCardTransform(card, pos, animated = true, delayMs = 0, orig
   card.style.setProperty('--curr-rot', `${pos.rotation}deg`);
   card.style.left = `${pos.x}px`;
   card.style.top = `${pos.y}px`;
-  card.style.transform = `rotate(${pos.rotation}deg) translateZ(0)`;
+  card.style.removeProperty('transform');
   card.dataset.baseZ = String(pos.baseZIndex);
   card.style.zIndex = String(pos.baseZIndex);
 
@@ -100,8 +101,8 @@ export function applyCardTransform(card, pos, animated = true, delayMs = 0, orig
   card.style.setProperty('--card-hover-hex', hoverHex);
 
   if (animated) {
-    const handX = origin?.x ?? window.innerWidth * 0.5;
-    const handY = origin?.y ?? window.innerHeight + 120;
+    const handX = origin?.x ?? viewW() * 0.5;
+    const handY = origin?.y ?? viewH() + 120;
     const spin = (Math.random() < 0.5 ? -1 : 1) * (90 + Math.random() * 130);
 
     card.style.setProperty('--throw-x', `${Math.round(handX - pos.x)}px`);
@@ -141,12 +142,14 @@ export function randomizeGroupPositions(cards, animated = true) {
   const slots = shuffledIndices(total);
   const delays = shuffledIndices(total).map((rank) => rank * 55);
   const origin = {
-    x: window.innerWidth * 0.5 + (Math.random() - 0.5) * 36,
-    y: window.innerHeight + 110,
+    x: viewW() * 0.5 + (Math.random() - 0.5) * 36,
+    y: viewH() + 110,
   };
   state.hoveredCard = null;
+  state.pinnedCard = null;
+  state.stackFront = 10;
   state.skipHoverCard = null;
-  cards.forEach((card) => card.classList.remove('is-hovered', 'is-dragging'));
+  cards.forEach((card) => card.classList.remove('is-hovered', 'is-dragging', 'is-pressed'));
 
   const layers = shuffledIndices(total);
 
@@ -178,7 +181,7 @@ export function exitCards(cards, direction, callback) {
 
   const cls = direction === 'side' ? 'card-exiting-side' : 'card-exiting-down';
   let done = 0;
-  const leaveX = window.innerWidth + 160;
+  const leaveX = viewW() + 160;
 
   cards.forEach((card, i) => {
     const offset = (i % 2 === 0 ? 1 : -1) * leaveX;

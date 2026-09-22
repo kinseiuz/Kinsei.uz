@@ -2,26 +2,29 @@
 <html lang="uz">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
   <title>KINSEI. BIZNESINGIZNI YAXSHIROQ NAMOYON QILING</title>
   <meta name="description" content="KINSEI - Zamonaviy veb-saytlar, mobil ilovalar va kreativ dizayn agentligi. Pikselni ham, kodni ham ayamaymiz.">
+  <meta name="theme-color" content="#EFEFEB">
   <link rel="icon" type="image/png" href="assets/favicons/favicon.png" id="dynamicFavicon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Noto+Sans+JP:wght@700;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <!-- Design System (modular CSS) -->
   <link rel="stylesheet" href="css/variables.css?v=22">
-  <link rel="stylesheet" href="css/base.css?v=18">
-  <link rel="stylesheet" href="css/layout.css?v=29">
-  <link rel="stylesheet" href="css/components/cards.css?v=19">
+  <link rel="stylesheet" href="css/base.css?v=20">
+  <link rel="stylesheet" href="css/layout.css?v=36">
+  <link rel="stylesheet" href="css/components/cards.css?v=23">
   <link rel="stylesheet" href="css/components/tabs.css?v=10">
   <link rel="stylesheet" href="css/components/form.css?v=13">
-  <link rel="stylesheet" href="css/components/modal.css?v=23">
-  <link rel="stylesheet" href="css/components/toast.css?v=9">
+  <link rel="stylesheet" href="css/components/modal.css?v=24">
+  <link rel="stylesheet" href="css/components/toast.css?v=11">
   <link rel="stylesheet" href="css/animations.css?v=14">
-  <link rel="stylesheet" href="css/responsive.css?v=19">
+  <link rel="stylesheet" href="css/responsive.css?v=27">
 </head>
-<body class="solo-team">
+<body class="solo-team hide-sound hide-teahouse">
 
   <!-- Root App Viewport (Strict 100vh / No Scroll) -->
   <div id="app" class="app-container">
@@ -38,6 +41,28 @@
           <button type="button" class="lang-option" role="option" data-lang="ru">RU</button>
         </div>
       </div>
+      <div class="social-icons-mobile">
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="mobile-icon-btn social-github" aria-label="GitHub">
+          <img src="img/icon-github.png" alt="GitHub" width="20" height="20">
+        </a>
+        <a href="https://www.instagram.com/hojixkbar?stkn=aTd3NThzMjhodDcy&utm_source=qr" target="_blank" rel="noopener noreferrer" class="mobile-icon-btn" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+        </a>
+        <a href="https://t.me/hojixkbar" target="_blank" rel="noopener noreferrer" class="mobile-icon-btn" aria-label="Telegram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </a>
+        <a href="tel:+998901234567" class="mobile-icon-btn social-phone" aria-label="Telefon" data-i18n-aria="phone">
+          <img src="img/icon-phone.png" alt="Telefon" width="20" height="20">
+        </a>
+      </div>
+      <!-- Sound button hidden via CONFIG.showSound. Do not delete. -->
       <button type="button" id="soundToggleBtn" class="sound-toggle-btn" aria-label="Ovozni o'chirish" title="Ovozni o'chirish" data-muted="false">
         <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
@@ -108,22 +133,8 @@
         </div>
       </div>
 
-      <!-- MOBILE: Social Icons + Tab Bar -->
+      <!-- MOBILE: Tab Bar -->
       <div class="mobile-header-actions">
-        <div class="social-icons-mobile">
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="mobile-icon-btn social-github" aria-label="GitHub">
-            <img src="img/icon-github.png" alt="GitHub" width="20" height="20">
-          </a>
-          <a href="https://www.instagram.com/hojixkbar?stkn=aTd3NThzMjhodDcy&utm_source=qr" target="_blank" rel="noopener noreferrer" class="mobile-icon-btn" aria-label="Instagram">
-            <img src="img/icon-instagram.png" alt="Instagram" width="20" height="20">
-          </a>
-          <a href="https://t.me/hojixkbar" target="_blank" rel="noopener noreferrer" class="mobile-icon-btn" aria-label="Telegram">
-            <img src="img/icon-telegram.png" alt="Telegram" width="20" height="20">
-          </a>
-          <a href="tel:+998901234567" class="mobile-icon-btn social-phone" aria-label="Telefon" data-i18n-aria="phone">
-            <img src="img/icon-phone.png" alt="Telefon" width="20" height="20">
-          </a>
-        </div>
         <div class="mobile-tab-bar" role="tablist">
           <span class="mobile-tab-pill" id="mobileTabPill" aria-hidden="true"></span>
           <button type="button" class="mobile-tab-btn active" id="mobTabProjects" data-tab="projects" data-i18n="tabProjects">Loyihalar</button>
@@ -182,8 +193,8 @@
       <!-- === PROJECTS (5 cards) === -->
       <div class="cards-group active-group" id="projectsGroup">
 
-        <!-- Card 1: Chaq-Chuq — 100% Solid HEX #FFC848 -->
-        <article class="neo-card project-card" id="cardChaqChuq" data-card-id="chaq-chuq" data-project-preview="chaq-chuq" data-hover-color="#FFC848">
+        <!-- Card 1: Chaq-Chuq — shared softness oklch(0.84 0.11 80) -->
+        <article class="neo-card project-card" id="cardChaqChuq" data-card-id="chaq-chuq" data-project-preview="chaq-chuq" data-hover-color="#F0C374">
           <div class="card-inner">
             <div class="card-header">
               <span class="card-icon-badge">
@@ -202,8 +213,8 @@
           </div>
         </article>
 
-        <!-- Card 2: UrDU — soft mint hover -->
-        <article class="neo-card project-card" id="cardUrDu" data-card-id="urdu" data-project-preview="urdu" data-hover-color="#8ED9A4">
+        <!-- Card 2: UrDU — shared softness oklch(0.84 0.11 155) -->
+        <article class="neo-card project-card" id="cardUrDu" data-card-id="urdu" data-project-preview="urdu" data-hover-color="#8EE0AB">
           <div class="card-inner">
             <div class="card-header">
               <span class="card-icon-badge">
@@ -222,8 +233,8 @@
           </div>
         </article>
 
-        <!-- Card 3: Crystal Icons — 100% Solid HEX #48FFFF -->
-        <article class="neo-card project-card" id="cardCrystalIcons" data-card-id="crystal-icons" data-project-preview="crystal" data-hover-color="#48FFFF">
+        <!-- Card 3: Crystal Icons — shared softness oklch(0.84 0.11 200) -->
+        <article class="neo-card project-card" id="cardCrystalIcons" data-card-id="crystal-icons" data-project-preview="crystal" data-hover-color="#65E0E7">
           <div class="card-inner">
             <div class="card-header">
               <span class="card-icon-badge">
@@ -242,8 +253,8 @@
           </div>
         </article>
 
-        <!-- Card 4: Teahouse — 100% Solid HEX #72C7FF -->
-        <article class="neo-card project-card" id="cardTeahouse" data-card-id="teahouse" data-project-preview="teahouse" data-hover-color="#72C7FF">
+        <!-- Card 4: Teahouse — hidden via CONFIG.showTeahouse. Do not delete. -->
+        <article class="neo-card project-card" id="cardTeahouse" data-card-id="teahouse" data-project-preview="teahouse" data-hover-color="#92D0FF">
           <div class="card-inner">
             <div class="card-header">
               <span class="card-icon-badge">
@@ -262,8 +273,8 @@
           </div>
         </article>
 
-        <!-- Card 5: hojixkbar Instagram — Solid Black Card, White inner content -->
-        <article class="neo-card project-card card-instagram" id="cardHojixkbar" data-card-id="hojixkbar" data-project-preview="hojixkbar" data-hover-color="#000000">
+        <!-- Card 5: hojixkbar Instagram — shared softness oklch(0.84 0.11 12) -->
+        <article class="neo-card project-card card-instagram" id="cardHojixkbar" data-card-id="hojixkbar" data-project-preview="hojixkbar" data-hover-color="#FFACB7">
           <div class="card-inner">
             <div class="card-header">
               <span class="card-icon-badge">
@@ -288,7 +299,7 @@
       <div class="cards-group" id="teamGroup">
 
         <!-- Team Card 1: Mansur -->
-        <article class="neo-card team-card" id="cardMansur" data-card-id="mansur" data-hover-color="#C084FC">
+        <article class="neo-card team-card" id="cardMansur" data-card-id="mansur" data-hover-color="#DBB8FF">
           <div class="card-inner">
             <div class="team-card-header">
               <div class="avatar-box">
@@ -308,7 +319,7 @@
         </article>
 
         <!-- Team Card 2: Hojiakbar -->
-        <article class="neo-card team-card" id="cardHojiakbar" data-card-id="hojiakbar" data-hover-color="#FF8A4C">
+        <article class="neo-card team-card" id="cardHojiakbar" data-card-id="hojiakbar" data-hover-color="#FFB589">
           <div class="card-inner">
             <div class="team-card-header">
               <div class="avatar-box">
@@ -364,6 +375,6 @@
 
   </div>
 
-  <script type="module" src="js/main.js?v=51"></script>
+  <script type="module" src="js/main.js?v=65"></script>
 </body>
 </html>

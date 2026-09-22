@@ -15,13 +15,18 @@
   opacity: 1;
   isolation: isolate;
 
-  /* Even stroke + offset shadow so rotated edges stay anti-aliased */
-  border: 1.5px solid var(--border-color);
-  box-shadow: 4px 4px 0 var(--border-color);
+  /* Even stroke + offset shadow so rotated edges stay anti-aliased.
+     Thick right/bottom = shadow. Press shift = thick − thin = 4px. */
+  --stroke-thin: 1.5px;
+  --stroke-thick: 4px;
+  --press-x: 0px;
+  --press-y: 0px;
+  border: var(--stroke-thin) solid var(--border-color);
+  box-shadow: var(--stroke-thick) var(--stroke-thick) 0 var(--border-color);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   -webkit-font-smoothing: antialiased;
-  transform: rotate(var(--curr-rot, 0deg)) translateZ(0);
+  transform: translate3d(var(--press-x), var(--press-y), 0) rotate(var(--curr-rot, 0deg));
 
   will-change: transform, left, top;
   /* Hover-out: fill color only. Layer, type, and copy snap instantly. */
@@ -51,36 +56,6 @@
   color: var(--text-primary);
 }
 
-/* Instagram card hover: solid black card, white inner elements */
-.card-instagram.is-hovered,
-.card-instagram.is-dragging,
-#cardHojixkbar.is-hovered,
-#cardHojixkbar.is-dragging {
-  background-color: #000000 !important;
-}
-
-.card-instagram.is-hovered .card-title,
-.card-instagram.is-hovered .card-brand-name,
-.card-instagram.is-hovered .card-tag,
-.card-instagram.is-dragging .card-title,
-.card-instagram.is-dragging .card-brand-name,
-.card-instagram.is-dragging .card-tag,
-#cardHojixkbar.is-hovered .card-title,
-#cardHojixkbar.is-hovered .card-brand-name,
-#cardHojixkbar.is-hovered .card-tag,
-#cardHojixkbar.is-dragging .card-title,
-#cardHojixkbar.is-dragging .card-brand-name,
-#cardHojixkbar.is-dragging .card-tag {
-  color: #FFFFFF !important;
-}
-
-.card-instagram.is-hovered .card-icon-img,
-.card-instagram.is-dragging .card-icon-img,
-#cardHojixkbar.is-hovered .card-icon-img,
-#cardHojixkbar.is-dragging .card-icon-img {
-  filter: brightness(0) invert(1) !important;
-}
-
 /* Beat the global custom cursor so hover/drag show the grab hand */
 html .neo-card,
 html .neo-card *,
@@ -96,9 +71,14 @@ html .neo-card.is-dragging *::after {
   cursor: grabbing !important;
 }
 
-/* Keep size and type layout locked while dragging */
-.neo-card.is-dragging {
-  box-shadow: 4px 4px 0 var(--border-color);
+/* Pressed 3D: shadow collapses and the card slides into that space
+   (down-right by thick − thin). Explicit transform so iOS Safari updates. */
+.neo-card.is-pressed:not(.card-entering):not(.card-exiting-down):not(.card-exiting-side),
+.neo-card.is-dragging:not(.card-entering):not(.card-exiting-down):not(.card-exiting-side) {
+  --press-x: 4px;
+  --press-y: 4px;
+  box-shadow: none !important;
+  transform: translate3d(4px, 4px, 0) rotate(var(--curr-rot, 0deg));
 }
 
 /* ── Inner Structure — Figma: padding 16px all, gap 24px ── */

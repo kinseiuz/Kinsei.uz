@@ -2,9 +2,10 @@
  * KINSEI Studio — Tab Navigation
  */
 
+import { CONFIG } from '../config.js?v=7';
 import { state } from '../state.js';
-import { randomizeGroupPositions, exitCards } from './cards.js?v=23';
-import { playSound } from './audio.js?v=17';
+import { randomizeGroupPositions, exitCards } from './cards.js?v=28';
+import { playSound } from './audio.js?v=20';
 import { placeMobileForm, resetMobileFormPos } from './form.js?v=23';
 
 const TAB_KEY = 'kinsei-tab';
@@ -17,8 +18,15 @@ let mobTabProjects, mobTabTeam, mobTabContact;
 let switching = false;
 let hideFormTimer = null;
 
+function visibleProjectCards() {
+  return Array.from(document.querySelectorAll('#projectsGroup .neo-card')).filter((card) => {
+    if (card.dataset.cardId === 'teahouse' && !CONFIG.showTeahouse) return false;
+    return true;
+  });
+}
+
 export function initTabs() {
-  projectCards = Array.from(document.querySelectorAll('#projectsGroup .neo-card'));
+  projectCards = visibleProjectCards();
   teamCards = Array.from(document.querySelectorAll('#teamGroup .neo-card'));
   projectsGroup = document.getElementById('projectsGroup');
   teamGroup = document.getElementById('teamGroup');
@@ -193,7 +201,7 @@ function hideMobileForm(done) {
       clearTimeout(hideFormTimer);
       hideFormTimer = null;
     }
-    contactSection.classList.remove('mobile-contact-visible', 'form-exiting', 'is-form-dragging');
+    contactSection.classList.remove('mobile-contact-visible', 'form-exiting', 'is-form-dragging', 'is-form-pressed');
     document.body.classList.remove('mobile-contact-active');
     resetMobileFormPos();
     done?.();
@@ -205,7 +213,7 @@ function hideMobileForm(done) {
 }
 
 function applyDesktopFormReset() {
-  contactSection?.classList.remove('mobile-contact-visible', 'form-enter-up', 'form-exiting', 'is-form-dragging');
+  contactSection?.classList.remove('mobile-contact-visible', 'form-enter-up', 'form-exiting', 'is-form-dragging', 'is-form-pressed');
   document.body.classList.remove('mobile-contact-active');
   resetMobileFormPos();
 }

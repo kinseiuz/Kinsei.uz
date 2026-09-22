@@ -1,51 +1,98 @@
 /**
- * KINSEI Studio — Web Audio SFX Synthesizer
- * Zero external audio files; all sounds generated procedurally via Web Audio API.
+ * KINSEI Studio — Phone-safe UI sounds
+ * iOS Safari blocks Web Audio after the gesture; HTMLAudio + real WAV files play.
  */
 
 import { t } from './i18n.js?v=1';
 import { state } from '../state.js';
+import { CONFIG } from '../config.js?v=7';
 
-let audioCtx = null;
+const SRC = {
+  click: 'assets/sounds/tap.wav?v=1',
+  banner: 'assets/sounds/tap.wav?v=1',
+  card: 'assets/sounds/tap.wav?v=1',
+  tab: 'assets/sounds/tab.wav?v=1',
+  toggleOn: 'assets/sounds/tab.wav?v=1',
+  grab: 'assets/sounds/grab.wav?v=1',
+  drop: 'assets/sounds/drop.wav?v=1',
+  success: 'assets/sounds/success.wav?v=1',
+};
 
-function getAudioContext() {
-  if (!audioCtx) {
-    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-    if (AudioContextClass) {
-      audioCtx = new AudioContextClass();
-    }
-  }
-  if (audioCtx && audioCtx.state === 'suspended') {
-    audioCtx.resume().catch(() => {});
-  }
-  return audioCtx;
+const players = {};
+let unlocked = false;
+
+function makePlayer(src) {
+  const a = new Audio(src);
+  a.preload = 'auto';
+  a.playsInline = true;
+  a.setAttribute('playsinline', '');
+  a.setAttribute('webkit-playsinline', '');
+  a.muted = false;
+  a.volume = 1;
+  return a;
 }
 
-// Unlock audio on first user gesture
-function setupAudioUnlock() {
-  const unlock = () => {
-    getAudioContext();
-    window.removeEventListener('pointerdown', unlock);
-    window.removeEventListener('keydown', unlock);
-  };
-  window.addEventListener('pointerdown', unlock, { once: true, passive: true });
-  window.addEventListener('keydown', unlock, { once: true, passive: true });
+function ensurePlayers() {
+  if (Object.keys(players).length) return;
+  const unique = [...new Set(Object.values(SRC))];
+  const bySrc = {};
+  unique.forEach((src) => { bySrc[src] = makePlayer(src); });
+  Object.entries(SRC).forEach(([key, src]) => {
+    players[key] = bySrc[src];
+  });
+}
+
+function unlockFromGesture() {
+  ensurePlayers();
+  if (unlocked) return;
+  unlocked = true;
+  Object.values(players).forEach((a) => {
+    try {
+      a.muted = true;
+      a.volume = 0;
+      const p = a.play();
+      if (p && typeof p.then === 'function') {
+        p.then(() => {
+          a.pause();
+          a.currentTime = 0;
+          a.muted = false;
+          a.volume = 1;
+        }).catch(() => {
+          a.muted = false;
+          a.volume = 1;
+        });
+      } else {
+        a.pause();
+        a.currentTime = 0;
+        a.muted = false;
+        a.volume = 1;
+      }
+    } catch {
+      a.muted = false;
+      a.volume = 1;
+    }
+  });
 }
 
 export function initAudio() {
-  setupAudioUnlock();
+  if (CONFIG.showSound === false) {
+    state.sfxEnabled = false;
+    return;
+  }
+  ensurePlayers();
 
-  // Load saved preference
   try {
     const saved = localStorage.getItem('kinsei_sfx');
-    if (saved !== null) {
-      state.sfxEnabled = saved === 'true';
-    }
-  } catch (e) {
-    // localStorage not accessible
+    if (saved !== null) state.sfxEnabled = saved === 'true';
+  } catch {
+    /* ignore */
   }
 
-  // Bind sound toggle button
+  const unlock = () => unlockFromGesture();
+  window.addEventListener('touchstart', unlock, { capture: true, passive: true });
+  window.addEventListener('pointerdown', unlock, { capture: true, passive: true });
+  window.addEventListener('click', unlock, { capture: true, passive: true });
+
   const toggleBtn = document.getElementById('soundToggleBtn');
   if (toggleBtn) {
     updateSoundToggleUI(toggleBtn);
@@ -64,16 +111,11 @@ export function toggleSound() {
   state.sfxEnabled = !state.sfxEnabled;
   try {
     localStorage.setItem('kinsei_sfx', String(state.sfxEnabled));
-  } catch (e) {}
-
-  const toggleBtn = document.getElementById('soundToggleBtn');
-  if (toggleBtn) {
-    updateSoundToggleUI(toggleBtn);
+  } catch {
+    /* ignore */
   }
-
-  if (state.sfxEnabled) {
-    playSound('toggleOn');
-  }
+  updateSoundToggleUI(document.getElementById('soundToggleBtn'));
+  if (state.sfxEnabled) playSound('toggleOn');
 }
 
 function updateSoundToggleUI(btn) {
@@ -85,172 +127,19 @@ function updateSoundToggleUI(btn) {
 }
 
 export function playSound(type) {
+  if (CONFIG.showSound === false) return;
   if (!state.sfxEnabled) return;
-  const ctx = getAudioContext();
-  if (!ctx) return;
-
-  const now = ctx.currentTime;
-
-  switch (type) {
-    // ── Tactile crisp button click ──
-    case 'click': {
-      // Layer 1: High frequency snap (850Hz -> 180Hz in 25ms)
-      const osc1 = ctx.createOscillator();
-      const gain1 = ctx.createGain();
-      osc1.type = 'sine';
-      osc1.frequency.setValueAtTime(850, now);
-      osc1.frequency.exponentialRampToValueAtTime(180, now + 0.025);
-      gain1.gain.setValueAtTime(0.08, now);
-      gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.025);
-      osc1.connect(gain1);
-      gain1.connect(ctx.destination);
-      osc1.start(now);
-      osc1.stop(now + 0.025);
-
-      // Layer 2: Subtle warm body punch (320Hz -> 80Hz in 20ms)
-      const osc2 = ctx.createOscillator();
-      const gain2 = ctx.createGain();
-      osc2.type = 'triangle';
-      osc2.frequency.setValueAtTime(320, now);
-      osc2.frequency.exponentialRampToValueAtTime(80, now + 0.02);
-      gain2.gain.setValueAtTime(0.05, now);
-      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.02);
-      osc2.connect(gain2);
-      gain2.connect(ctx.destination);
-      osc2.start(now);
-      osc2.stop(now + 0.02);
-      break;
-    }
-
-    // ── Tab switch ──
-    case 'tab': {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(320, now);
-      osc.frequency.exponentialRampToValueAtTime(640, now + 0.07);
-      gain.gain.setValueAtTime(0.09, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(now);
-      osc.stop(now + 0.07);
-      break;
-    }
-
-    // ── Tactile Rich Banner / Card Tap ──
-    case 'banner':
-    case 'card': {
-      // High snap
-      const osc1 = ctx.createOscillator();
-      const gain1 = ctx.createGain();
-      osc1.type = 'sine';
-      osc1.frequency.setValueAtTime(520, now);
-      osc1.frequency.exponentialRampToValueAtTime(160, now + 0.045);
-      gain1.gain.setValueAtTime(0.12, now);
-      gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
-      osc1.connect(gain1);
-      gain1.connect(ctx.destination);
-      osc1.start(now);
-      osc1.stop(now + 0.045);
-
-      // Warm punch
-      const osc2 = ctx.createOscillator();
-      const gain2 = ctx.createGain();
-      osc2.type = 'triangle';
-      osc2.frequency.setValueAtTime(280, now);
-      osc2.frequency.exponentialRampToValueAtTime(75, now + 0.04);
-      gain2.gain.setValueAtTime(0.09, now);
-      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
-      osc2.connect(gain2);
-      gain2.connect(ctx.destination);
-      osc2.start(now);
-      osc2.stop(now + 0.04);
-      break;
-    }
-
-    // ── Sound Unmute Blip ──
-    case 'toggleOn': {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(440, now);
-      osc.frequency.exponentialRampToValueAtTime(880, now + 0.06);
-      gain.gain.setValueAtTime(0.06, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(now);
-      osc.stop(now + 0.06);
-      break;
-    }
-
-    // ── Sound Mute Blip ──
-    case 'toggleOff': {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(700, now);
-      osc.frequency.exponentialRampToValueAtTime(350, now + 0.05);
-      gain.gain.setValueAtTime(0.05, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(now);
-      osc.stop(now + 0.05);
-      break;
-    }
-
-    // ── Card grab ──
-    case 'grab': {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(220, now);
-      osc.frequency.exponentialRampToValueAtTime(130, now + 0.04);
-      gain.gain.setValueAtTime(0.05, now);
-      gain.gain.linearRampToValueAtTime(0, now + 0.04);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(now);
-      osc.stop(now + 0.04);
-      break;
-    }
-
-    // ── Card drop ──
-    case 'drop': {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(140, now);
-      osc.frequency.exponentialRampToValueAtTime(60, now + 0.06);
-      gain.gain.setValueAtTime(0.06, now);
-      gain.gain.linearRampToValueAtTime(0, now + 0.06);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(now);
-      osc.stop(now + 0.06);
-      break;
-    }
-
-    // ── Successful form submission chime ──
-    case 'success': {
-      const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
-      notes.forEach((freq, idx) => {
-        const o = ctx.createOscillator();
-        const g = ctx.createGain();
-        o.type = 'sine';
-        const start = now + idx * 0.07;
-        const dur = 0.35;
-        o.frequency.setValueAtTime(freq, start);
-        g.gain.setValueAtTime(0.06, start);
-        g.gain.exponentialRampToValueAtTime(0.0005, start + dur);
-        o.connect(g);
-        g.connect(ctx.destination);
-        o.start(start);
-        o.stop(start + dur);
-      });
-      break;
-    }
+  ensurePlayers();
+  const a = players[type] || players.click;
+  if (!a) return;
+  try {
+    a.muted = false;
+    a.volume = 1;
+    a.pause();
+    a.currentTime = 0;
+    const p = a.play();
+    if (p && typeof p.catch === 'function') p.catch(() => {});
+  } catch {
+    /* ignore */
   }
 }

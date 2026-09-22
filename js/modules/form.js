@@ -2,18 +2,23 @@
  * KINSEI Studio — Contact Form (Uzbekistan standard phone formatting & validation)
  */
 
-import { CONFIG } from '../config.js';
-import { playSound } from './audio.js?v=17';
+import { playSound } from './audio.js?v=20';
 import { t, getLang } from './i18n.js?v=1';
 
 let form, name, phone, service, customGroup, custom, submitBtn;
 let customSelectWrapper, customSelectTrigger, selectedServiceText, customSelectOptions, customSelectMenu;
 let toastEl, toastTitle, toastMessage;
 let toastTimer = null;
+let toastHideAt = 0;
+let toastRemaining = 4000;
+let toastPaused = false;
 let keyboardLift = 0;
 let keyboardBound = false;
 
+const TOAST_MS = 4000;
+
 export const formPos = { x: 0, y: 0, dragged: false };
+export const toastPos = { x: 0, y: 0, dragged: false };
 
 export function formatUzbekPhone(value) {
   if (!value) return '';
@@ -393,33 +398,26 @@ async function handleSubmit(e) {
     phone: phone.value.trim(),
     service: service.value,
     custom: service.value === 'other' ? custom.value.trim() : null,
-    time: new Date().toLocaleString(getLang() === 'ru' ? 'ru-RU' : getLang() === 'en' ? 'en-US' : 'uz-UZ'),
   };
 
-  const lines = [
-    '🚀 *Yangi loyiha so\'rovi (KINSEI)*',
-    `👤 *Mijoz:* ${data.name}`,
-    `📞 *Telefon:* ${data.phone}`,
-    `🛠 *Xizmat:* ${selectedServiceText?.textContent?.trim() || data.service}`,
-  ];
-  if (data.custom) lines.push(`📝 *Tafsilot:* ${data.custom}`);
-  lines.push(`⏰ *Vaqt:* ${data.time}`);
-  const text = lines.join('\n');
-
   let ok = false;
-  if (CONFIG.telegram.botToken && CONFIG.telegram.chatId) {
-    try {
-      const r = await fetch(`https://api.telegram.org/bot${CONFIG.telegram.botToken}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: CONFIG.telegram.chatId, text, parse_mode: 'Markdown' }),
-      });
-      ok = (await r.json()).ok;
-    } catch (err) { console.warn('Telegram:', err); }
-  } else {
-    await new Promise(r => setTimeout(r, 500));
-    console.log('⚡ Telegram bot:\n', text);
-    ok = true;
+  try {
+    const r = await fetch('/api/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: data.name,
+        phone: data.phone,
+        service: data.service,
+        serviceLabel: selectedServiceText?.textContent?.trim() || data.service,
+        custom: data.custom,
+        lang: getLang(),
+      }),
+    });
+    const payload = await r.json().catch(() => ({}));
+    ok = r.ok && payload.ok !== false;
+  } catch (err) {
+    console.warn('Lead:', err);
   }
 
   if (btnText) btnText.style.display = 'inline';
@@ -438,6 +436,7 @@ async function handleSubmit(e) {
     validate();
   } else {
     showToast(t('toastErrTitle'), t('toastErrMsg'));
+    validate();
   }
 }
 
@@ -451,13 +450,72 @@ function refreshServiceLabel() {
   if (opt) selectedServiceText.textContent = opt.textContent;
 }
 
+export function applyToastScreenPos() {
+  if (!toastEl) return;
+  toastEl.style.left = `${toastPos.x}px`;
+  toastEl.style.top = `${toastPos.y}px`;
+  toastEl.style.right = 'auto';
+  toastEl.style.bottom = 'auto';
+  toastEl.style.margin = '0';
+}
+
+export function resetToastPos() {
+  toastPos.x = 0;
+  toastPos.y = 0;
+  toastPos.dragged = false;
+  if (!toastEl) return;
+  toastEl.classList.remove('is-toast-pressed', 'is-toast-dragging');
+  toastEl.style.removeProperty('left');
+  toastEl.style.removeProperty('top');
+  toastEl.style.removeProperty('right');
+  toastEl.style.removeProperty('bottom');
+  toastEl.style.removeProperty('margin');
+  toastEl.style.removeProperty('transition');
+}
+
+export function pauseToastHide() {
+  if (!toastEl?.classList.contains('toast-active')) return;
+  if (toastTimer) {
+    clearTimeout(toastTimer);
+    toastTimer = null;
+    toastRemaining = Math.max(900, toastHideAt - performance.now());
+  }
+  toastPaused = true;
+}
+
+export function resumeToastHide() {
+  if (!toastPaused) return;
+  toastPaused = false;
+  if (!toastEl?.classList.contains('toast-active')) return;
+  armToastHide(toastRemaining);
+}
+
+function armToastHide(ms) {
+  if (toastTimer) clearTimeout(toastTimer);
+  toastHideAt = performance.now() + ms;
+  toastTimer = setTimeout(hideToast, ms);
+}
+
+function hideToast() {
+  toastTimer = null;
+  toastPaused = false;
+  if (!toastEl) return;
+  toastEl.classList.remove('toast-active', 'is-toast-pressed', 'is-toast-dragging');
+  toastTimer = setTimeout(() => {
+    resetToastPos();
+    toastTimer = null;
+  }, 300);
+}
+
 function showToast(title, msg) {
   if (toastTimer) clearTimeout(toastTimer);
+  toastPaused = false;
   if (toastTitle) toastTitle.textContent = title;
   if (toastMessage) toastMessage.textContent = msg;
   if (toastEl) {
+    resetToastPos();
     toastEl.classList.add('toast-active');
-    toastTimer = setTimeout(() => toastEl.classList.remove('toast-active'), 4000);
+    armToastHide(TOAST_MS);
   }
 }
 

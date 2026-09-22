@@ -3,16 +3,19 @@
  * No status bar, no SFX, no cursor glow, no shuffle button.
  */
 
-import { CONFIG } from './config.js?v=5';
+import { CONFIG } from './config.js?v=8';
 import { state } from './state.js';
-import { randomizeGroupPositions } from './modules/cards.js?v=23';
-import { setupDraggable, initCardInteraction } from './modules/drag.js?v=37';
-import { initTabs, setActiveTab, getProjectCards, getTeamCards, readSavedTab, bootActiveTab } from './modules/tabs.js?v=29';
-import { initForm } from './modules/form.js?v=23';
-import { initModal, openProjectModal, closeModal } from './modules/modal.js?v=22';
-import { initAudio, playSound } from './modules/audio.js?v=17';
+import { randomizeGroupPositions } from './modules/cards.js?v=28';
+import { setupDraggable, initCardInteraction } from './modules/drag.js?v=49';
+import { initTabs, setActiveTab, getProjectCards, getTeamCards, readSavedTab, bootActiveTab } from './modules/tabs.js?v=37';
+import { initForm } from './modules/form.js?v=28';
+import { initModal, openProjectModal, closeModal } from './modules/modal.js?v=26';
+import { initAudio, playSound } from './modules/audio.js?v=20';
 import { initI18n } from './modules/i18n.js?v=2';
 import { initLogoMark } from './modules/logo.js?v=2';
+import { bindViewportFill } from './viewport.js?v=2';
+
+bindViewportFill();
 
 document.addEventListener('DOMContentLoaded', () => {
   applyNavVisibility();
@@ -82,7 +85,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Boot ──
   bootActiveTab(pickBootTab());
+  trackVisit();
 });
+
+function visitorId() {
+  const key = 'kinsei_vid';
+  try {
+    let id = localStorage.getItem(key);
+    if (!id) {
+      id = (crypto.randomUUID && crypto.randomUUID()) || `k-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      localStorage.setItem(key, id);
+    }
+    return id;
+  } catch {
+    return `k-${Date.now()}`;
+  }
+}
+
+function trackVisit() {
+  const payload = JSON.stringify({
+    vid: visitorId(),
+    ref: document.referrer || '',
+    lang: document.documentElement.lang || 'uz',
+    w: window.innerWidth,
+    h: window.innerHeight,
+    ua: navigator.userAgent,
+  });
+  const blob = new Blob([payload], { type: 'application/json' });
+  if (navigator.sendBeacon && navigator.sendBeacon('/api/hit', blob)) return;
+  fetch('/api/hit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: payload,
+    keepalive: true,
+  }).catch(() => {});
+}
 
 function pickBootTab() {
   if (CONFIG.showNav) return readSavedTab();
@@ -100,6 +137,8 @@ function applyNavVisibility() {
 
   document.body.classList.toggle('solo-team', !showNav);
   document.body.classList.toggle('hide-social', !showSocial);
+  document.body.classList.toggle('hide-teahouse', CONFIG.showTeahouse === false);
+  document.body.classList.toggle('hide-sound', CONFIG.showSound === false);
 
   document.querySelectorAll('.tab-switcher').forEach((el) => {
     el.hidden = !showNav;

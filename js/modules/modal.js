@@ -2,8 +2,8 @@
  * KINSEI Studio — Project Detail Modal
  */
 
-import { PROJECT_DATA } from '../data/projects.js?v=19';
-import { playSound } from './audio.js?v=17';
+import { PROJECT_DATA } from '../data/projects.js?v=20';
+import { playSound } from './audio.js?v=20';
 import { t } from './i18n.js?v=2';
 import { MODAL_DESC_KEYS } from '../data/i18n.js?v=2';
 

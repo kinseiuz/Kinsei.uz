@@ -4,8 +4,8 @@
 
 export const CONFIG = {
   telegram: {
-    botToken: '', // @BotFather dan olingan bot tokeni (masalan: 123456789:ABCdef...)
-    chatId: '6832614745',   // Siz ko'rsatgan Telegram ID
+    // Token lives in .env and server.py — never put it in frontend JS.
+    chatId: '6832614745',
   },
   dragThreshold: 5,
   viewportRetention: 0.70,
@@ -17,4 +17,11 @@ export const CONFIG = {
   showMobileNav: true,
   showSocial: true,
   defaultTab: 'projects',
+
+  // Hidden projects stay in HTML / i18n / PROJECT_DATA. Do not delete.
+  // Recover Teahouse: set showTeahouse to true.
+  showTeahouse: false,
+
+  // Sound button + playback stay in the codebase. Recover: showSound true.
+  showSound: false,
 };

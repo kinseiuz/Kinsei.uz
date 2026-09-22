@@ -6,12 +6,12 @@
 
   /* ── App Viewport on Mobile ── */
   .app-container {
-    padding: 18px 16px 16px 16px;
+    padding: 18px 16px max(16px, env(safe-area-inset-bottom, 0px)) 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
-    height: 100dvh;
+    height: 100%;
+    min-height: 100%;
     overflow: hidden;
   }
 
@@ -75,38 +75,24 @@
     margin-top: 4px;
   }
 
-  /* ── Mobile Social Links (Transparent bg, larger icons) ── */
+  /* Top-right social: same white circle as laptop */
   .social-icons-mobile {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 24px;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 0;
   }
 
   .mobile-icon-btn {
-    color: var(--text-primary);
-    width: 38px;
-    height: 38px;
-    border-radius: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0;
-    transition: transform 0.15s ease;
+    width: 34px;
+    height: 34px;
   }
 
-  .mobile-icon-btn:active {
-    transform: scale(0.9);
-    background: transparent !important;
-  }
-
-  .mobile-icon-btn img {
-    width: 32px;
-    height: 32px;
-    object-fit: contain;
+  .mobile-icon-btn img,
+  .mobile-icon-btn svg {
+    width: 18px;
+    height: 18px;
   }
 
   /* ── Mobile Tab Bar (compact pill, sliding active indicator) ── */
@@ -189,6 +175,12 @@
     padding-top: 18px;
   }
 
+  .contact-card-wrapper.is-form-pressed:not(.form-enter-up):not(.form-exiting),
+  .contact-card-wrapper.is-form-dragging:not(.form-enter-up):not(.form-exiting) {
+    box-shadow: none !important;
+    transform: translate3d(4px, 4px, 0);
+  }
+
   .contact-card-wrapper.mobile-contact-visible {
     display: flex;
     flex-direction: column;
@@ -264,17 +256,33 @@
     width: min(calc(100vw - 64px), 248px);
     max-width: 248px;
     border-radius: 12px;
-    border: 1.5px solid var(--border-color);
-    box-shadow: 4px 4px 0 var(--border-color);
+    border: var(--stroke-thin, 1.5px) solid var(--border-color);
+    box-shadow: var(--stroke-thick, 4px) var(--stroke-thick, 4px) 0 var(--border-color);
     background-color: #FFFFFF;
     opacity: 1 !important;
     touch-action: none;
   }
 
+  .neo-card.is-pressed,
+  .neo-card.is-dragging {
+    box-shadow: none !important;
+    transform: translate3d(4px, 4px, 0) rotate(var(--curr-rot, 0deg));
+  }
+
   .card-inner {
     padding: 14px 12px;
     min-height: 210px;
-    gap: 10px;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  .card-header {
+    margin-bottom: 0;
+  }
+
+  .card-content {
+    padding-top: 20px;
+    margin-top: 0;
   }
 
   .card-icon-img {

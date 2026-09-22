@@ -1,0 +1,29 @@
+---
+description: Hidden site pieces stay in the codebase. Recover them on request; never delete.
+alwaysApply: true
+---
+
+# Hidden features (recover, do not recreate)
+
+These are **hidden, not deleted**. If the user says recover / show / bring back any of them, flip the flag. Do not rebuild markup, data, or assets.
+
+## Teahouse project card
+
+- Flag: `CONFIG.showTeahouse` in `js/config.js` (currently `false`)
+- Card stays in `index.html` (`#cardTeahouse`), plus `js/data/projects.js` and i18n
+- CSS: `body.hide-teahouse #cardTeahouse` in `css/layout.css`
+- Visible card list: `visibleProjectCards()` in `js/modules/tabs.js`
+
+**Recover Teahouse:** set `showTeahouse: true`, bump `config.js` cache query on the `main.js` import (and `tabs.js` if it imports config). Reload. Do not copy a new card.
+
+## Other hide-in-place flags
+
+- Desktop nav / team screen: `CONFIG.showNav` (`false`) — team cards and desktop tabs stay in the DOM
+- Phone pill: `CONFIG.showMobileNav`
+- Social row: `CONFIG.showSocial`
+- Phone + GitHub icons: CSS `.social-phone` / `.social-github` (`display: none`); keep the links
+- Sound: `CONFIG.showSound` (`false`) — speaker button stays in `index.html`, `js/modules/audio.js` stays. Playback is skipped while the flag is off.
+
+**Recover sound:** set `showSound: true`, bump `config.js` cache on the `main.js` import. Reload.
+
+Bump the matching `?v=` on `js/main.js` and CSS after a flag change so the browser does not keep the old file.
