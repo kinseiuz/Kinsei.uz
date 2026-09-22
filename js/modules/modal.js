@@ -4,8 +4,8 @@
 
 import { PROJECT_DATA } from '../data/projects.js?v=20';
 import { playSound } from './audio.js?v=20';
-import { t } from './i18n.js?v=2';
-import { MODAL_DESC_KEYS } from '../data/i18n.js?v=2';
+import { t } from './i18n.js?v=3';
+import { MODAL_DESC_KEYS } from '../data/i18n.js?v=3';
 
 let modal, closeBtn, title, desc, liveBtn, card;
 let closeLocked = false;

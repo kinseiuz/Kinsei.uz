@@ -9,9 +9,9 @@ import { randomizeGroupPositions } from './modules/cards.js?v=28';
 import { setupDraggable, initCardInteraction } from './modules/drag.js?v=49';
 import { initTabs, setActiveTab, getProjectCards, getTeamCards, readSavedTab, bootActiveTab } from './modules/tabs.js?v=37';
 import { initForm } from './modules/form.js?v=28';
-import { initModal, openProjectModal, closeModal } from './modules/modal.js?v=26';
+import { initModal, openProjectModal, closeModal } from './modules/modal.js?v=27';
 import { initAudio, playSound } from './modules/audio.js?v=20';
-import { initI18n } from './modules/i18n.js?v=2';
+import { initI18n } from './modules/i18n.js?v=3';
 import { initLogoMark } from './modules/logo.js?v=2';
 import { bindViewportFill } from './viewport.js?v=2';
 
