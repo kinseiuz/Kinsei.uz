@@ -4,6 +4,18 @@
    ========================================================================== */
 
 @font-face {
+  font-family: 'Japanola';
+  src:
+    url('../assets/fonts/Japanola.woff2') format('woff2'),
+    url('../assets/fonts/Japanola.woff') format('woff'),
+    url('../assets/fonts/Japanola.otf') format('opentype'),
+    url('../assets/fonts/Japanola.ttf') format('truetype');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'The Last Shuriken';
   src:
     url('../assets/fonts/TheLastShuriken.otf') format('opentype'),
@@ -41,7 +53,7 @@
 
   /* ── Typography ── */
   --font-primary: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-display: 'The Last Shuriken', 'Dela Gothic One', 'Noto Sans JP', sans-serif;
+  --font-display: 'Japanola', 'The Last Shuriken', 'Dela Gothic One', 'Noto Sans JP', sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
 
   --fs-xs: 0.72rem;
@@ -106,8 +118,8 @@
   --z-contact: 40;
   --z-status: 55;
   --z-mobile-contact: 90;
-  --z-cards: 70;
-  --z-card-hover: 80;
+  --z-cards: 200;
+  --z-card-hover: 210;
   --z-modal: 10000;
   --z-toast: 10001;
 

@@ -1,23 +1,25 @@
 /**
- * KINSEI Studio — UI copy for uz / en / ru
+ * KINSEI Studio — UI copy for uz / en
  */
 
-export const SUPPORTED_LANGS = ['uz', 'en', 'ru'];
+export const SUPPORTED_LANGS = ['uz', 'en'];
 
 export const LANG_LABELS = {
   uz: 'UZ',
   en: 'EN',
-  ru: 'RU',
 };
 
 export const STRINGS = {
   uz: {
-    docTitle: "KINSEI. BRENDINGIZ YAXSHIROQ KO'RINISHGA LOYIQ",
-    docDesc: 'KINSEI - Zamonaviy veb-saytlar, mobil ilovalar va kreativ dizayn agentligi. Pikselni ham, kodni ham ayamaymiz.',
-    titleLine1: 'KINSEI. BRENDINGIZ',
-    titleLine2: "YAXSHIROQ KO'RINISHGA LOYIQ",
-    titleMobile: "BRENDINGIZ YAXSHIROQ KO'RINISHGA LOYIQ",
+    docTitle: 'KINSEI — Brend, tajriba va texnologik transformatsiya',
+    docDesc: 'KINSEI — Brend, tajriba va texnologik transformatsiya',
+    titleLine1: 'KELING, BRENDINGIZNI QANDAY RIVOJLANTIRISHIMIZ',
+    titleLine2: 'HAQIDA GAPLASHAMIZ.',
+    titleMobile: 'KELING, BRENDINGIZNI QANDAY RIVOJLANTIRISHIMIZ HAQIDA GAPLASHAMIZ.',
     language: 'Til',
+    contactBtn: "Bog'lanish",
+    contactTelegram: 'Telegram',
+    contactEmail: 'Email',
     soundMute: "Ovozni o'chirish",
     soundUnmute: 'Ovozni yoqish',
     tabProjects: 'Loyihalar',
@@ -33,6 +35,10 @@ export const STRINGS = {
     serviceOther: 'Boshqa',
     extraPlaceholder: "Loyiha yoki g'oyangiz haqida",
     submit: "Jo'natish",
+    footerService1: 'Brend identikasi + Veb-sayt dizayni',
+    footerService2: "Ko'ngilochar + lifestyle loyihalar",
+    footerService3: "bo'yicha mutaxassis",
+    footerAbout: 'Kinsei — dizayn direktori va Webflow dasturchisi Hojiakbarning shaxsiy portfeli. Turli soha mutaxassislari bilan hamkorlikda yaratiladi.',
     tagWebsite: 'Veb-sayt',
     cardChaqChuq: "Sifatli quruq meva va yong'oqlarni yetkazib beruvchi mahalliy brend",
     cardUrdu: 'UrDU talabalari uchun tadbirlar va imkoniyatlar platformasi',
@@ -55,12 +61,15 @@ export const STRINGS = {
     modalHojixkbar: 'Korusellar orqali kreativ tarzda jonlantirilgan iqtiboslar.',
   },
   en: {
-    docTitle: 'KINSEI. YOUR BRAND DESERVES A BETTER PRESENCE',
-    docDesc: 'KINSEI — a studio for modern websites, brand design, and creative work. We spare neither pixels nor code.',
-    titleLine1: 'KINSEI. YOUR BRAND DESERVES',
-    titleLine2: 'A BETTER PRESENCE',
-    titleMobile: 'YOUR BRAND DESERVES A BETTER PRESENCE',
+    docTitle: 'KINSEI — Brand, experience, and technology transformation',
+    docDesc: 'KINSEI — Brand, experience, and technology transformation',
+    titleLine1: "LET'S TALK ABOUT HOW WE CAN",
+    titleLine2: 'GROW YOUR BRAND.',
+    titleMobile: "LET'S TALK ABOUT HOW WE CAN GROW YOUR BRAND.",
     language: 'Language',
+    contactBtn: 'Contact',
+    contactTelegram: 'Telegram',
+    contactEmail: 'Email',
     soundMute: 'Mute sound',
     soundUnmute: 'Unmute sound',
     tabProjects: 'Projects',
@@ -76,6 +85,10 @@ export const STRINGS = {
     serviceOther: 'Other',
     extraPlaceholder: 'Tell us about your project or idea',
     submit: 'Send',
+    footerService1: 'Brand Identity + Website design',
+    footerService2: 'Entertainment + Lifestyle Specialist',
+    footerService3: 'Custom made in Tashkent, Uzbekistan',
+    footerAbout: 'KINSEI IS THE PORTFOLIO OF HOJIAKBAR, A DESIGN DIRECTOR AND WEBFLOW DEVELOPER, WORKING COLLABORATIVELY WITH SPECIALISTS ACROSS MULTIPLE DISCIPLINES.',
     tagWebsite: 'Website',
     cardChaqChuq: 'A local brand delivering quality dried fruits and nuts',
     cardUrdu: 'An events and opportunities platform for UrDU students',
@@ -98,8 +111,8 @@ export const STRINGS = {
     modalHojixkbar: 'Quotes brought to life through creative carousels.',
   },
   ru: {
-    docTitle: 'KINSEI. ВАШ БРЕНД ДОСТОИН ЛУЧШЕГО ПРИСУТСТВИЯ',
-    docDesc: 'KINSEI — студия современных сайтов, бренд-дизайна и креатива. Не жалеем ни пикселей, ни кода.',
+    docTitle: 'KINSEI — Бренд, опыт и технологическая трансформация',
+    docDesc: 'KINSEI — Бренд, опыт и технологическая трансформация',
     titleLine1: 'KINSEI. ВАШ БРЕНД ДОСТОИН',
     titleLine2: 'ЛУЧШЕГО ПРИСУТСТВИЯ',
     titleMobile: 'ВАШ БРЕНД ДОСТОИН ЛУЧШЕГО ПРИСУТСТВИЯ',
@@ -119,6 +132,10 @@ export const STRINGS = {
     serviceOther: 'Другое',
     extraPlaceholder: 'Расскажите о проекте или идее',
     submit: 'Отправить',
+    footerService1: 'Бренд-айдентика + Веб-дизайн',
+    footerService2: 'Специалист по entertainment и lifestyle',
+    footerService3: 'Сделано на заказ в Ташкенте, Узбекистан',
+    footerAbout: 'KINSEI — портфолио Ходжиакбара, дизайн-директора и Webflow-разработчика, работающего совместно со специалистами разных дисциплин.',
     tagWebsite: 'Веб-сайт',
     cardChaqChuq: 'Местный бренд качественных сухофруктов и орехов',
     cardUrdu: 'Платформа событий и возможностей для студентов УрГУ',
@@ -160,7 +177,6 @@ export function detectSystemLang() {
 
   for (const locale of candidates) {
     if (locale === 'uz' || locale.startsWith('uz-')) return 'uz';
-    if (locale === 'ru' || locale.startsWith('ru-')) return 'ru';
     if (locale === 'en' || locale.startsWith('en-')) return 'en';
   }
   return 'uz';

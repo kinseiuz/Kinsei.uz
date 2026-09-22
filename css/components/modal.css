@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Project Preview Modal — Neo-Brutalist Drawer
+   Project popover — dropdown panel on the clicked card (no overlay, no blur)
    ========================================================================== */
 
 .project-modal {
@@ -8,70 +8,57 @@
   width: 100%;
   height: 100%;
   z-index: var(--z-modal);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   pointer-events: none;
-}
-
-.project-modal.modal-open {
-  pointer-events: auto;
 }
 
 .modal-backdrop {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  z-index: 1;
-  background: var(--bg-overlay);
-  opacity: 0;
-  cursor: pointer;
-  pointer-events: none;
-  backdrop-filter: blur(0);
-  -webkit-backdrop-filter: blur(0);
-  transition:
-    opacity 0.35s ease,
-    backdrop-filter 0.35s ease,
-    -webkit-backdrop-filter 0.35s ease;
-}
-
-.project-modal.modal-open .modal-backdrop {
-  opacity: 1;
-  pointer-events: auto;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  display: none;
 }
 
 .modal-card {
-  position: relative;
-  width: 90%;
-  max-width: 520px;
-  background: var(--bg-white);
-  border-radius: 18px;
-  padding: var(--space-14) var(--space-12);
-  border: 2px solid var(--border-color);
-  box-shadow: 8px 8px 0px var(--text-primary);
-  display: flex;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 320px;
+  max-width: calc(100vw - 24px);
+  background: #FFFFFF;
+  border-radius: 10px;
+  padding: 18px 16px 14px;
+  border: 2px solid #111111;
+  box-shadow: 3px 3px 0 #111111;
+  display: none;
   flex-direction: column;
-  gap: var(--space-7);
-  opacity: 0;
-  transform: translateY(16px) scale(0.97);
-  transition: transform 0.35s ease, opacity 0.35s ease;
+  gap: 10px;
+  pointer-events: none;
   z-index: 2;
 }
 
 .project-modal.modal-open .modal-card {
-  opacity: 1;
-  transform: translateY(0) scale(1);
+  display: flex;
+  pointer-events: auto;
+  animation: dropMenuFade 0.16s ease-out;
+}
+
+.project-modal.is-closing .modal-card {
+  display: flex;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.16s ease;
+}
+
+@keyframes dropMenuFade {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .modal-close-btn {
   position: absolute;
-  top: var(--space-7);
-  right: var(--space-8);
-  width: 32px; height: 32px;
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
   border-radius: var(--radius-round);
-  border: var(--stroke-thin) solid var(--border-color);
+  border: 1.5px solid #111111;
   background: #FFFFFF;
   color: #111111;
   font-size: var(--fs-md);
@@ -83,45 +70,52 @@
   appearance: none;
   -webkit-appearance: none;
   -webkit-tap-highlight-color: transparent;
-  transition: all 0.2s;
+  transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 2px 2px 0 #111111;
 }
 
 .modal-close-btn svg {
   display: block;
-  width: 12px;
-  height: 12px;
+  width: 11px;
+  height: 11px;
   stroke: currentColor;
   pointer-events: none;
 }
 
 .modal-close-btn:hover {
-  background: var(--text-primary);
-  color: var(--text-inverse);
+  background: #111111;
+  color: #FFFFFF;
+}
+
+.modal-close-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
 }
 
 .modal-title {
-  font-size: var(--fs-2xl);
+  font-size: 1.2rem;
   font-weight: var(--fw-extrabold);
   line-height: 1.2;
-  padding-right: 36px;
+  padding-right: 32px;
+  color: #111111;
 }
 
 .modal-desc {
-  font-size: var(--fs-md);
-  color: var(--text-secondary);
+  font-size: 0.92rem;
+  color: #555555;
   line-height: 1.45;
 }
 
 .modal-actions {
   display: flex;
   gap: var(--space-4);
-  margin-top: var(--space-3);
+  margin-top: 2px;
 }
 
 .modal-action-btn {
-  padding: var(--space-5) var(--space-8);
-  border-radius: var(--radius-md);
-  font-size: 0.94rem;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.9rem;
   font-weight: var(--fw-bold);
   cursor: pointer;
   display: inline-flex;
@@ -129,25 +123,32 @@
   justify-content: center;
   gap: var(--space-2);
   text-decoration: none;
-  transition: all 0.2s;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
   width: 100%;
 }
 
 .modal-action-btn.primary {
-  background: var(--text-primary);
-  color: var(--text-inverse);
-  border: var(--stroke-thin) solid var(--text-primary);
+  background: #111111;
+  color: #FFFFFF;
+  border: 1.5px solid #111111;
+  box-shadow: 3px 3px 0 #111111;
 }
 
 .modal-action-btn.primary:hover {
   background: #000;
-  transform: translateY(-2px);
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 #111111;
+}
+
+.modal-action-btn.primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
 }
 
 .modal-action-btn.secondary {
   background: transparent;
-  color: var(--text-primary);
-  border: var(--stroke-thin) solid var(--border-color);
+  color: #111111;
+  border: 1.5px solid #111111;
   font-size: 0.88rem;
 }
 

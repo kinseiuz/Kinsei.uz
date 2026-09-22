@@ -2,7 +2,7 @@
  * KINSEI Studio — Language switching
  */
 
-import { LANG_LABELS, STRINGS, SUPPORTED_LANGS, detectSystemLang } from '../data/i18n.js?v=3';
+import { LANG_LABELS, STRINGS, SUPPORTED_LANGS, detectSystemLang } from '../data/i18n.js?v=17';
 
 const STORAGE_KEY = 'kinsei-lang';
 
@@ -20,6 +20,10 @@ export function t(key) {
 export function initI18n() {
   let saved = null;
   try { saved = localStorage.getItem(STORAGE_KEY); } catch (e) {}
+  if (saved && !SUPPORTED_LANGS.includes(saved)) {
+    saved = null;
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  }
   currentLang = SUPPORTED_LANGS.includes(saved) ? saved : detectSystemLang();
   applyI18n();
   bindLangSwitcher();
@@ -45,6 +49,12 @@ function applyI18n() {
 
   const meta = document.querySelector('meta[name="description"]');
   if (meta) meta.setAttribute('content', dict.docDesc);
+  document.querySelectorAll('meta[property="og:title"]').forEach((el) => {
+    el.setAttribute('content', dict.docTitle);
+  });
+  document.querySelectorAll('meta[property="og:description"]').forEach((el) => {
+    el.setAttribute('content', dict.docDesc);
+  });
 
   document.querySelectorAll('[data-i18n]').forEach((el) => {
     const value = dict[el.dataset.i18n];

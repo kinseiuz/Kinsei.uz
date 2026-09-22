@@ -2,7 +2,7 @@
  * KINSEI Studio — Card Physics & Random Positioning
  */
 
-import { CONFIG } from '../config.js';
+import { CONFIG } from '../config.js?v=11';
 import { state } from '../state.js';
 import { viewW, viewH } from '../viewport.js?v=2';
 
@@ -55,15 +55,22 @@ export function calculateSafeCardPosition(card, index, totalCards) {
       rotation = Math.round(baseRot + (Math.random() - 0.5) * 5);
     }
   } else {
-    const slotWidth = (vpW - 120) / totalCards;
-    const slotLeft = 60 + index * slotWidth;
-    const minX = slotLeft - 30;
-    const maxX = slotLeft + (slotWidth - cardW) + 30;
-    const minY = Math.max(220, vpH * 0.40);
-    const maxY = Math.max(minY + 30, vpH - cardH - 35);
+    const leftPad = 64;
+    const rightPad = 64;
+    const playW = Math.max(cardW + 80, vpW - leftPad - rightPad);
+    const slotWidth = playW / totalCards;
+    const slotLeft = leftPad + index * slotWidth;
+    const minX = slotLeft - 40;
+    const maxX = Math.min(slotLeft + slotWidth - cardW + 40, vpW - rightPad - cardW * 0.22);
+    const minY = Math.max(360, vpH * 0.38);
+    const maxY = Math.max(minY + 48, vpH - cardH - 168);
+    const spanX = Math.max(0, maxX - minX);
+    const ySpread = Math.max(24, maxY - minY);
+    const ySlot = minY + ((index % 3) / 2) * ySpread * 0.55;
 
-    x = Math.round(minX + Math.random() * (maxX - minX));
-    y = Math.round(minY + Math.random() * (maxY - minY));
+    x = Math.round(minX + Math.random() * Math.max(8, spanX));
+    y = Math.round(ySlot + (Math.random() - 0.5) * 56);
+    y = Math.max(minY, Math.min(maxY, y));
     rotation = Math.round(Math.random() * CONFIG.rotationRange - CONFIG.rotationRange / 2);
   }
 

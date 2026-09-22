@@ -2,11 +2,11 @@
  * KINSEI Studio — Tab Navigation
  */
 
-import { CONFIG } from '../config.js?v=7';
+import { CONFIG } from '../config.js?v=11';
 import { state } from '../state.js';
-import { randomizeGroupPositions, exitCards } from './cards.js?v=28';
-import { playSound } from './audio.js?v=20';
-import { placeMobileForm, resetMobileFormPos } from './form.js?v=23';
+import { randomizeGroupPositions, exitCards } from './cards.js?v=34';
+import { playSound } from './audio.js?v=23';
+import { placeMobileForm, resetMobileFormPos } from './form.js?v=31';
 
 const TAB_KEY = 'kinsei-tab';
 const TABS = new Set(['projects', 'team', 'contact']);
@@ -70,7 +70,10 @@ export function readSavedTab() {
 }
 
 export function bootActiveTab(tabName) {
-  const tab = TABS.has(tabName) ? tabName : 'projects';
+  let tab = TABS.has(tabName) ? tabName : 'projects';
+  if (tab === 'contact' && (CONFIG.showForm === false || CONFIG.showMobileNav === false)) {
+    tab = 'projects';
+  }
   state.currentTab = tab;
   persistTab(tab);
   syncTabButtons(tab);
@@ -94,6 +97,7 @@ export function bootActiveTab(tabName) {
 }
 
 export function setActiveTab(tabName) {
+  if (tabName === 'contact' && (CONFIG.showForm === false || CONFIG.showMobileNav === false)) return;
   if (!TABS.has(tabName) || state.currentTab === tabName || switching) return;
   playSound('tab');
   const prevTab = state.currentTab;
@@ -172,6 +176,7 @@ function syncTabButtons(tabName) {
 }
 
 function showMobileForm() {
+  if (CONFIG.showForm === false || CONFIG.showMobileNav === false) return;
   if (window.innerWidth > 860 || !contactSection) return;
   document.body.classList.add('mobile-contact-active');
   contactSection.classList.remove('form-exiting');

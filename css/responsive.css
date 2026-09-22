@@ -27,41 +27,83 @@
   }
 
   .brand-symbol {
-    width: 88px;
-    height: 88px;
+    width: 70px;
+    height: 70px;
     margin-inline: auto;
   }
 
-  .brand-title-group {
-    display: flex;
+  .brand-title-group,
+  .brand-intro {
+    display: none;
+  }
+
+  .brand-top {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .brand-lockup {
     flex-direction: column;
-    align-items: center;
-    width: 100%;
-    gap: 2px;
+    gap: 8px;
   }
 
-  .brand-title {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    width: 100%;
-    font-family: var(--font-display);
-    font-size: clamp(18px, 5.4vw, 28px);
-    line-height: 1.12;
-    letter-spacing: 0.01em;
-  }
-
-  .brand-title span {
-    white-space: normal;
-    max-width: 100%;
+  .brand-wordmark {
+    display: none;
   }
 
   .brand-tagline-mobile {
     display: none;
   }
 
+  .brand-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .brand-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 20px;
+    line-height: 1.15;
+    text-align: center;
+    overflow: visible;
+    flex: none;
+    width: 100%;
+  }
+
+  .brand-title span {
+    white-space: normal;
+    text-align: center;
+  }
+
   /* Hide desktop text links; mobile uses icon row instead */
   .nav-controls-desktop {
+    display: none;
+  }
+
+  .brand-row {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .contact-menu {
+    display: flex;
+    margin-left: 0;
+    justify-content: center;
+  }
+
+  .form-studio-copy,
+  .right-col-head {
     display: none;
   }
 

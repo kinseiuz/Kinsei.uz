@@ -8,9 +8,9 @@
 
 import { CONFIG } from '../config.js';
 import { state } from '../state.js';
-import { playSound } from './audio.js?v=20';
-import { openProjectModal } from './modal.js?v=26';
-import { formPos, applyFormScreenPos, closeServiceMenu, toastPos, applyToastScreenPos, pauseToastHide, resumeToastHide } from './form.js?v=28';
+import { playSound } from './audio.js?v=23';
+import { openProjectModal } from './modal.js?v=39';
+import { formPos, applyFormScreenPos, closeServiceMenu, toastPos, applyToastScreenPos, pauseToastHide, resumeToastHide } from './form.js?v=31';
 import { viewW, viewH } from '../viewport.js?v=2';
 
 const CARD_DRAG_PX = 12;
@@ -80,7 +80,7 @@ function onPointerDown(e) {
     return;
   }
 
-  if (document.getElementById('projectModal')?.classList.contains('modal-open')) return;
+  if (e.target.closest?.('.modal-card')) return;
 
   const formEl = document.getElementById('contactSection');
   if (
@@ -504,7 +504,7 @@ function endSession(e) {
 
   if (openOnRelease) {
     playSound('banner');
-    openProjectModal(previewId);
+    openProjectModal(previewId, card);
   }
 }
 

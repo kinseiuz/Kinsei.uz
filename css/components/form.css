@@ -188,6 +188,30 @@
   font-weight: var(--fw-bold);
 }
 
+@media (min-width: 861px) {
+  .contact-form .line-input {
+    text-align: right;
+  }
+
+  .custom-select-trigger {
+    flex-direction: row-reverse;
+    text-align: right;
+  }
+
+  .custom-select-trigger .selected-text {
+    text-align: right;
+  }
+
+  .select-chevron {
+    margin-left: 0;
+    margin-right: 8px;
+  }
+
+  .custom-select-option {
+    text-align: right;
+  }
+}
+
 /* ── "Other" slide-down field ── */
 .custom-service-group {
   max-height: 0;

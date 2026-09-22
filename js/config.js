@@ -12,9 +12,9 @@ export const CONFIG = {
   rotationRange: 60, // -30° to +30°
 
   // Set showNav to true to bring back desktop Loyihalar / Jamoa tabs.
-  // Phone keeps its own pill: Projects + Contact. Team pill stays in the DOM, hidden.
+  // Phone pill stays in the DOM. Recover: showMobileNav true.
   showNav: false,
-  showMobileNav: true,
+  showMobileNav: false,
   showSocial: true,
   defaultTab: 'projects',
 
@@ -24,4 +24,10 @@ export const CONFIG = {
 
   // Sound button + playback stay in the codebase. Recover: showSound true.
   showSound: false,
+
+  // Contact form stays in the DOM. Recover: showForm true.
+  showForm: false,
+
+  // Bottom-left / bottom-right studio copy stays in the DOM. Recover: showFooterCopy true.
+  showFooterCopy: false,
 };

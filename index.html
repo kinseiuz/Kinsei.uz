@@ -5,26 +5,29 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
-  <title>KINSEI. BRENDINGIZ YAXSHIROQ KO'RINISHGA LOYIQ</title>
-  <meta name="description" content="KINSEI - Zamonaviy veb-saytlar, mobil ilovalar va kreativ dizayn agentligi. Pikselni ham, kodni ham ayamaymiz.">
+  <title>KINSEI — Brend, tajriba va texnologik transformatsiya</title>
+  <meta name="description" content="KINSEI — Brend, tajriba va texnologik transformatsiya">
+  <meta property="og:title" content="KINSEI — Brend, tajriba va texnologik transformatsiya">
+  <meta property="og:description" content="KINSEI — Brend, tajriba va texnologik transformatsiya">
+  <meta property="og:type" content="website">
   <meta name="theme-color" content="#EFEFEB">
   <link rel="icon" type="image/png" href="assets/favicons/favicon.png" id="dynamicFavicon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Noto+Sans+JP:wght@700;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <!-- Design System (modular CSS) -->
-  <link rel="stylesheet" href="css/variables.css?v=22">
+  <link rel="stylesheet" href="css/variables.css?v=24">
   <link rel="stylesheet" href="css/base.css?v=20">
-  <link rel="stylesheet" href="css/layout.css?v=36">
+  <link rel="stylesheet" href="css/layout.css?v=63">
   <link rel="stylesheet" href="css/components/cards.css?v=23">
   <link rel="stylesheet" href="css/components/tabs.css?v=10">
-  <link rel="stylesheet" href="css/components/form.css?v=13">
-  <link rel="stylesheet" href="css/components/modal.css?v=24">
+  <link rel="stylesheet" href="css/components/form.css?v=14">
+  <link rel="stylesheet" href="css/components/modal.css?v=26">
   <link rel="stylesheet" href="css/components/toast.css?v=11">
   <link rel="stylesheet" href="css/animations.css?v=14">
-  <link rel="stylesheet" href="css/responsive.css?v=27">
+  <link rel="stylesheet" href="css/responsive.css?v=38">
 </head>
-<body class="solo-team hide-sound hide-teahouse">
+<body class="solo-team hide-sound hide-teahouse hide-form hide-footer-copy hide-mobile-nav">
 
   <!-- Root App Viewport (Strict 100vh / No Scroll) -->
   <div id="app" class="app-container">
@@ -38,21 +41,20 @@
         <div class="lang-menu" id="langMenu" role="listbox">
           <button type="button" class="lang-option" role="option" data-lang="uz">UZ</button>
           <button type="button" class="lang-option" role="option" data-lang="en">EN</button>
-          <button type="button" class="lang-option" role="option" data-lang="ru">RU</button>
         </div>
       </div>
       <div class="social-icons-mobile">
         <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="mobile-icon-btn social-github" aria-label="GitHub">
           <img src="img/icon-github.png" alt="GitHub" width="20" height="20">
         </a>
-        <a href="https://www.instagram.com/hojixkbar?stkn=aTd3NThzMjhodDcy&utm_source=qr" target="_blank" rel="noopener noreferrer" class="mobile-icon-btn" aria-label="Instagram">
+        <a href="https://www.instagram.com/hojixkbar?stkn=aTd3NThzMjhodDcy&utm_source=qr" target="_blank" rel="noopener noreferrer" class="mobile-icon-btn social-instagram" aria-label="Instagram">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
             <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
             <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
           </svg>
         </a>
-        <a href="https://t.me/hojixkbar" target="_blank" rel="noopener noreferrer" class="mobile-icon-btn" aria-label="Telegram">
+        <a href="https://t.me/hojixkbar" target="_blank" rel="noopener noreferrer" class="mobile-icon-btn social-telegram" aria-label="Telegram">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <line x1="22" y1="2" x2="11" y2="13"></line>
             <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
@@ -80,21 +82,33 @@
     <!-- TOP HEADER & BRANDING -->
     <header class="site-header" id="siteHeader">
 
-      <!-- Logo Symbol — Figma: X-shaped geometric mark -->
-      <div class="brand-symbol" id="brandLogo" title="KINSEI Studio">
-        <svg class="brand-logo-mark" id="brandLogoMark" viewBox="0 0 800 800" role="img" aria-label="KINSEI" focusable="false">
-          <path id="brandLogoPath" d="M680,120L513,400L680,680L400,513L120,680L287,400L120,287L373,287L373,369L452,257Z"></path>
-        </svg>
+      <div class="brand-row">
+        <div class="brand-top">
+          <div class="brand-lockup">
+            <div class="brand-symbol" id="brandLogo" title="KINSEI Studio">
+              <svg class="brand-logo-mark" id="brandLogoMark" viewBox="0 0 800 800" role="img" aria-label="KINSEI" focusable="false">
+                <path id="brandLogoPath" d="M680,120L513,400L680,680L400,513L120,680L287,400L120,287L373,287L373,369L452,257Z"></path>
+              </svg>
+            </div>
+            <div class="brand-wordmark">KINSEI</div>
+          </div>
+        </div>
+
+        <div class="brand-copy">
+          <h1 class="brand-title">
+            <span data-i18n="titleLine1">KELING, BRENDINGIZNI QANDAY RIVOJLANTIRISHIMIZ</span>
+            <span data-i18n="titleLine2">HAQIDA GAPLASHAMIZ.</span>
+          </h1>
+
+          <div class="contact-menu" id="contactMenu">
+            <a href="https://t.me/hojixkbar" target="_blank" rel="noopener noreferrer" class="contact-trigger" id="contactTrigger">
+              <span data-i18n="contactBtn">Bog'lanish</span>
+            </a>
+          </div>
+        </div>
       </div>
 
-      <!-- Main Headline -->
-      <div class="brand-title-group">
-        <h1 class="brand-title">
-          <span data-i18n="titleLine1">KINSEI. BRENDINGIZ</span>
-          <span data-i18n="titleLine2">YAXSHIROQ KO'RINISHGA LOYIQ</span>
-        </h1>
-        <p class="brand-tagline-mobile" data-i18n="titleMobile">BRENDINGIZ YAXSHIROQ KO'RINISHGA LOYIQ</p>
-      </div>
+      <p class="brand-tagline-mobile" data-i18n="titleMobile">KELING, BRENDINGIZNI QANDAY RIVOJLANTIRISHIMIZ HAQIDA GAPLASHAMIZ.</p>
 
       <!-- Navigation & Social Links (Desktop) -->
       <div class="nav-controls-desktop">
@@ -115,12 +129,12 @@
             <span>GitHub</span>
             <span class="arrow">↗</span>
           </a>
-          <a href="https://www.instagram.com/hojixkbar?stkn=aTd3NThzMjhodDcy&utm_source=qr" target="_blank" rel="noopener noreferrer" class="social-link" title="Instagram">
+          <a href="https://www.instagram.com/hojixkbar?stkn=aTd3NThzMjhodDcy&utm_source=qr" target="_blank" rel="noopener noreferrer" class="social-link social-instagram" title="Instagram">
             <img src="img/icon-instagram.png" alt="Instagram" width="18" height="18" class="link-icon">
             <span>Instagram</span>
             <span class="arrow">↗</span>
           </a>
-          <a href="https://t.me/hojixkbar" target="_blank" rel="noopener noreferrer" class="social-link" title="Telegram">
+          <a href="https://t.me/hojixkbar" target="_blank" rel="noopener noreferrer" class="social-link social-telegram" title="Telegram">
             <img src="img/icon-telegram.png" alt="Telegram" width="18" height="18" class="link-icon">
             <span>Telegram</span>
             <span class="arrow">↗</span>
@@ -145,8 +159,18 @@
 
     </header>
 
-    <!-- RIGHT SIDEBAR: Contact Form — Figma: faqat 4 field + 2 button -->
+    <div class="form-studio-copy" id="studioCopy">
+      <div class="form-studio-services">
+        <p data-i18n="footerService1">Brend identikasi + Veb-sayt dizayni</p>
+        <p data-i18n="footerService2">Ko'ngilochar + lifestyle loyihalar</p>
+        <p data-i18n="footerService3">bo'yicha mutaxassis</p>
+      </div>
+      <p class="form-studio-about" data-i18n="footerAbout">Kinsei — dizayn direktori va Webflow dasturchisi Hojiakbarning shaxsiy portfeli. Turli soha mutaxassislari bilan hamkorlikda yaratiladi.</p>
+    </div>
+
+    <!-- RIGHT SIDEBAR: Contact Form — hidden on desktop via CONFIG.showForm. Do not delete. -->
     <aside class="contact-card-wrapper" id="contactSection">
+      <div class="right-col-head" aria-hidden="true"></div>
       <form class="contact-form" id="contactForm" autocomplete="off" novalidate>
         <div class="input-group">
           <label for="clientName" class="sr-only" data-i18n="namePlaceholder">Ismingiz</label>
@@ -375,6 +399,6 @@
 
   </div>
 
-  <script type="module" src="js/main.js?v=66"></script>
+  <script type="module" src="js/main.js?v=89"></script>
 </body>
 </html>

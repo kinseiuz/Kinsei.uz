@@ -3,15 +3,15 @@
  * No status bar, no SFX, no cursor glow, no shuffle button.
  */
 
-import { CONFIG } from './config.js?v=8';
+import { CONFIG } from './config.js?v=11';
 import { state } from './state.js';
-import { randomizeGroupPositions } from './modules/cards.js?v=28';
-import { setupDraggable, initCardInteraction } from './modules/drag.js?v=49';
-import { initTabs, setActiveTab, getProjectCards, getTeamCards, readSavedTab, bootActiveTab } from './modules/tabs.js?v=37';
-import { initForm } from './modules/form.js?v=28';
-import { initModal, openProjectModal, closeModal } from './modules/modal.js?v=27';
-import { initAudio, playSound } from './modules/audio.js?v=20';
-import { initI18n } from './modules/i18n.js?v=3';
+import { randomizeGroupPositions } from './modules/cards.js?v=34';
+import { setupDraggable, initCardInteraction } from './modules/drag.js?v=60';
+import { initTabs, setActiveTab, getProjectCards, getTeamCards, readSavedTab, bootActiveTab } from './modules/tabs.js?v=46';
+import { initForm } from './modules/form.js?v=31';
+import { initModal, openProjectModal, closeModal } from './modules/modal.js?v=39';
+import { initAudio, playSound } from './modules/audio.js?v=23';
+import { initI18n } from './modules/i18n.js?v=17';
 import { initLogoMark } from './modules/logo.js?v=2';
 import { bindViewportFill } from './viewport.js?v=2';
 
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initModal();
 
   document.addEventListener('click', (e) => {
-    const el = e.target.closest('button, .tab-btn, .mobile-tab-btn, .social-link, .mobile-icon-btn, .modal-close-btn');
+    const el = e.target.closest('button, .tab-btn, .mobile-tab-btn, .social-link, .mobile-icon-btn, .modal-close-btn, .contact-trigger');
     if (!el || el.id === 'soundToggleBtn') return;
 
     if (el.classList.contains('tab-btn') || el.classList.contains('mobile-tab-btn')) {
@@ -139,6 +139,9 @@ function applyNavVisibility() {
   document.body.classList.toggle('hide-social', !showSocial);
   document.body.classList.toggle('hide-teahouse', CONFIG.showTeahouse === false);
   document.body.classList.toggle('hide-sound', CONFIG.showSound === false);
+  document.body.classList.toggle('hide-form', CONFIG.showForm === false);
+  document.body.classList.toggle('hide-footer-copy', CONFIG.showFooterCopy === false);
+  document.body.classList.toggle('hide-mobile-nav', CONFIG.showMobileNav === false);
 
   document.querySelectorAll('.tab-switcher').forEach((el) => {
     el.hidden = !showNav;

@@ -19,11 +19,21 @@ These are **hidden, not deleted**. If the user says recover / show / bring back 
 ## Other hide-in-place flags
 
 - Desktop nav / team screen: `CONFIG.showNav` (`false`) — team cards and desktop tabs stay in the DOM
-- Phone pill: `CONFIG.showMobileNav`
+- Phone pill: `CONFIG.showMobileNav` (`false`) — pills stay in the DOM. CSS: `body.hide-mobile-nav .mobile-tab-bar`
 - Social row: `CONFIG.showSocial`
 - Phone + GitHub icons: CSS `.social-phone` / `.social-github` (`display: none`); keep the links
+- Instagram icon: CSS `.social-instagram` (`display: none`); keep the links. Circular cluster `.social-icons-mobile` is also hidden while every icon inside is off; restore the row when bringing any icon back.
+- Telegram icon: CSS `.social-telegram` (`display: none`); keep the links. Desktop Contact button opens Telegram.
 - Sound: `CONFIG.showSound` (`false`) — speaker button stays in `index.html`, `js/modules/audio.js` stays. Playback is skipped while the flag is off.
+- Contact form: `CONFIG.showForm` (`false`) — `#contactSection` stays in the DOM. CSS: `body.hide-form #contactSection`.
+- Bottom studio copy: `CONFIG.showFooterCopy` (`false`) — `#studioCopy` stays in the DOM. CSS: `body.hide-footer-copy #studioCopy` at `min-width: 861px`.
 
 **Recover sound:** set `showSound: true`, bump `config.js` cache on the `main.js` import. Reload.
+
+**Recover desktop form:** set `showForm: true`, bump `config.js` cache on the `main.js` import. Reload.
+
+**Recover phone nav:** set `showMobileNav: true`, bump `config.js` cache on the `main.js` import. Reload.
+
+**Recover bottom copy:** set `showFooterCopy: true`, bump `config.js` cache on the `main.js` import. Reload.
 
 Bump the matching `?v=` on `js/main.js` and CSS after a flag change so the browser does not keep the old file.
