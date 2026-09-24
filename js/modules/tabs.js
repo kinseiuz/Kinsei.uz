@@ -2,11 +2,11 @@
  * KINSEI Studio — Tab Navigation
  */
 
-import { CONFIG } from '../config.js?v=11';
+import { CONFIG } from '../config.js?v=12';
 import { state } from '../state.js';
-import { randomizeGroupPositions, exitCards } from './cards.js?v=34';
-import { playSound } from './audio.js?v=23';
-import { placeMobileForm, resetMobileFormPos } from './form.js?v=31';
+import { randomizeGroupPositions, exitCards } from './cards.js?v=38';
+import { playSound } from './audio.js?v=24';
+import { placeMobileForm, resetMobileFormPos } from './form.js?v=32';
 
 const TAB_KEY = 'kinsei-tab';
 const TABS = new Set(['projects', 'team', 'contact']);

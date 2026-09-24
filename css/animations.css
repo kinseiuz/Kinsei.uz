@@ -58,6 +58,53 @@
   transition: none !important;
 }
 
+/* Project cards rotate on .card-flip. The shell throw would add a second angle. */
+.neo-card:has(.card-flip).card-entering,
+.neo-card:has(.card-flip).card-exiting-down,
+.neo-card:has(.card-flip).card-exiting-side {
+  animation: none !important;
+}
+
+@keyframes cardThrowFlip {
+  0% {
+    transform: translate3d(var(--throw-x, 0px), var(--throw-y, 200px), 0) rotate(var(--throw-rot, 0deg)) rotateY(var(--flip-y, 0deg));
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--curr-rot, 0deg)) rotateY(var(--flip-y, 0deg));
+  }
+}
+
+@keyframes cardExitDownFlip {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(var(--curr-rot, 0deg)) rotateY(var(--flip-y, 0deg));
+  }
+  100% {
+    transform: translate3d(0, calc(100vh + 320px), 0) rotate(calc(var(--curr-rot, 0deg) - 25deg)) rotateY(var(--flip-y, 0deg));
+  }
+}
+
+@keyframes cardExitSideFlip {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(var(--curr-rot, 0deg)) rotateY(var(--flip-y, 0deg));
+  }
+  100% {
+    transform: translate3d(var(--exit-x-offset, 350px), 0, 0) rotate(calc(var(--curr-rot, 0deg) + 28deg)) rotateY(var(--flip-y, 0deg));
+  }
+}
+
+.neo-card.card-entering .card-flip {
+  animation: cardThrowFlip var(--throw-dur, 0.58s) cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  animation-delay: inherit;
+}
+
+.neo-card.card-exiting-down .card-flip {
+  animation: cardExitDownFlip 0.58s var(--smooth) forwards;
+}
+
+.neo-card.card-exiting-side .card-flip {
+  animation: cardExitSideFlip 0.58s var(--smooth) forwards;
+}
+
 .neo-card.card-exiting-down {
   animation: cardExitDown 0.58s var(--smooth) forwards !important;
   pointer-events: none !important;

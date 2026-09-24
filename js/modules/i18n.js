@@ -2,7 +2,7 @@
  * KINSEI Studio — Language switching
  */
 
-import { LANG_LABELS, STRINGS, SUPPORTED_LANGS, detectSystemLang } from '../data/i18n.js?v=17';
+import { LANG_LABELS, STRINGS, SUPPORTED_LANGS, detectSystemLang } from '../data/i18n.js?v=18';
 
 const STORAGE_KEY = 'kinsei-lang';
 

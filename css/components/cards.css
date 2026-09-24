@@ -211,3 +211,128 @@ html .neo-card.is-dragging *::after {
   color: #444;
   line-height: 1.35;
 }
+
+/* ── Click flips the same card. Size stays. Landing wobbles. ── */
+.neo-card:has(.card-flip) {
+  perspective: 1100px;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  isolation: auto;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  /* Rotation lives on .card-flip only. A second rotate() here doubles the angle. */
+  transform: translate3d(var(--press-x), var(--press-y), 0) !important;
+}
+
+.neo-card:has(.card-flip).is-hovered,
+.neo-card:has(.card-flip).is-dragging {
+  background-color: transparent !important;
+}
+
+.neo-card:has(.card-flip).is-pressed,
+.neo-card:has(.card-flip).is-dragging {
+  transform: translate3d(4px, 4px, 0);
+}
+
+.card-flip {
+  position: relative;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transform: rotate(var(--curr-rot, 0deg)) rotateY(var(--flip-y, 0deg));
+}
+
+.neo-card.is-flipping .card-flip {
+  animation: cardHop 0.42s cubic-bezier(0.45, 0.05, 0.2, 1) forwards;
+}
+
+.neo-card.is-flipping {
+  transition: left 0.42s cubic-bezier(0.22, 0.8, 0.28, 1),
+              top 0.42s cubic-bezier(0.22, 0.8, 0.28, 1),
+              transform 0.42s cubic-bezier(0.22, 0.8, 0.28, 1);
+}
+
+@keyframes cardHop {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(var(--spin-from, var(--curr-rot, 0deg))) rotateY(var(--flip-from, 0deg));
+  }
+  45% {
+    transform: translate3d(var(--hop-x, 0px), var(--hop-y, -22px), 48px) rotate(var(--spin-mid, var(--curr-rot, 0deg))) rotateY(var(--flip-mid, 90deg));
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--curr-rot, 0deg)) rotateY(var(--flip-to, 180deg));
+  }
+}
+
+.card-face {
+  background: #FFFFFF;
+  border: var(--stroke-thin, 1.5px) solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--stroke-thick, 4px) var(--stroke-thick, 4px) 0 var(--border-color);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition: background-color 0.25s ease;
+}
+
+.card-back {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  transform: rotateY(180deg);
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 16px;
+  overflow: hidden;
+}
+
+.neo-card.is-hovered .card-face,
+.neo-card.is-dragging .card-face {
+  background-color: var(--card-hover-hex, #FFFFFF);
+  transition-duration: 0s;
+}
+
+.neo-card.is-pressed .card-face,
+.neo-card.is-dragging .card-face {
+  box-shadow: none;
+}
+
+.card-back-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: var(--fw-extrabold);
+  line-height: 1.15;
+  color: #111111;
+}
+
+.card-back-desc {
+  margin: 0;
+  flex: 1 1 auto;
+  font-size: 0.86rem;
+  font-weight: var(--fw-medium);
+  line-height: 1.35;
+  color: #333333;
+  overflow: hidden;
+}
+
+.card-back-link {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1.5px solid #111111;
+  border-radius: 10px;
+  box-shadow: 2px 2px 0 #111111;
+  background: #FFFFFF;
+  color: #111111;
+  font-size: 0.86rem;
+  font-weight: var(--fw-bold);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+html .neo-card .card-back-link,
+html .neo-card .card-back-link * {
+  cursor: pointer !important;
+}

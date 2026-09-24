@@ -26,7 +26,7 @@ These are **hidden, not deleted**. If the user says recover / show / bring back 
 - Telegram icon: CSS `.social-telegram` (`display: none`); keep the links. Desktop Contact button opens Telegram.
 - Sound: `CONFIG.showSound` (`false`) — speaker button stays in `index.html`, `js/modules/audio.js` stays. Playback is skipped while the flag is off.
 - Contact form: `CONFIG.showForm` (`false`) — `#contactSection` stays in the DOM. CSS: `body.hide-form #contactSection`.
-- Bottom studio copy: `CONFIG.showFooterCopy` (`false`) — `#studioCopy` stays in the DOM. CSS: `body.hide-footer-copy #studioCopy` at `min-width: 861px`.
+- Bottom studio copy: `CONFIG.showFooterCopy` (`true`) — `#studioCopy` stays in the DOM. CSS: `body.hide-footer-copy #studioCopy` at `min-width: 861px`. Right-side about and extra service lines stay hidden.
 
 **Recover sound:** set `showSound: true`, bump `config.js` cache on the `main.js` import. Reload.
 

@@ -3,15 +3,15 @@
  * No status bar, no SFX, no cursor glow, no shuffle button.
  */
 
-import { CONFIG } from './config.js?v=11';
+import { CONFIG } from './config.js?v=12';
 import { state } from './state.js';
-import { randomizeGroupPositions } from './modules/cards.js?v=34';
-import { setupDraggable, initCardInteraction } from './modules/drag.js?v=60';
-import { initTabs, setActiveTab, getProjectCards, getTeamCards, readSavedTab, bootActiveTab } from './modules/tabs.js?v=46';
-import { initForm } from './modules/form.js?v=31';
-import { initModal, openProjectModal, closeModal } from './modules/modal.js?v=39';
-import { initAudio, playSound } from './modules/audio.js?v=23';
-import { initI18n } from './modules/i18n.js?v=17';
+import { randomizeGroupPositions } from './modules/cards.js?v=38';
+import { setupDraggable, initCardInteraction } from './modules/drag.js?v=66';
+import { initTabs, setActiveTab, getProjectCards, getTeamCards, readSavedTab, bootActiveTab } from './modules/tabs.js?v=50';
+import { initForm } from './modules/form.js?v=32';
+import { initModal, openProjectModal, closeModal } from './modules/modal.js?v=45';
+import { initAudio, playSound } from './modules/audio.js?v=24';
+import { initI18n } from './modules/i18n.js?v=18';
 import { initLogoMark } from './modules/logo.js?v=2';
 import { bindViewportFill } from './viewport.js?v=2';
 

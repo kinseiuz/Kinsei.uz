@@ -2,7 +2,7 @@
  * KINSEI Studio — Card Physics & Random Positioning
  */
 
-import { CONFIG } from '../config.js?v=11';
+import { CONFIG } from '../config.js?v=12';
 import { state } from '../state.js';
 import { viewW, viewH } from '../viewport.js?v=2';
 
@@ -122,10 +122,12 @@ export function applyCardTransform(card, pos, animated = true, delayMs = 0, orig
     card.style.animationDelay = `${delayMs}ms`;
     card.classList.add('card-entering', 'is-dealt');
     card.addEventListener('animationend', (e) => {
-      if (e.target !== card) return;
+      const flip = card.querySelector('.card-flip');
+      if (e.target !== card && e.target !== flip) return;
+      if (e.animationName !== 'cardThrow' && e.animationName !== 'cardThrowFlip') return;
       card.classList.remove('card-entering');
       card.style.animationDelay = '';
-    }, { once: true });
+    });
   } else {
     card.classList.add('is-dealt');
   }
@@ -199,10 +201,12 @@ export function exitCards(cards, direction, callback) {
     card.classList.add(cls);
 
     card.addEventListener('animationend', (e) => {
-      if (e.target !== card) return;
+      const flip = card.querySelector('.card-flip');
+      if (e.target !== card && e.target !== flip) return;
+      if (!/cardExit/.test(e.animationName)) return;
       done++;
       if (done === cards.length) finish();
-    }, { once: true });
+    });
   });
 
   setTimeout(finish, 720);

@@ -28,6 +28,6 @@ export const CONFIG = {
   // Contact form stays in the DOM. Recover: showForm true.
   showForm: false,
 
-  // Bottom-left / bottom-right studio copy stays in the DOM. Recover: showFooterCopy true.
-  showFooterCopy: false,
+  // Bottom-left / bottom-right studio copy stays in the DOM.
+  showFooterCopy: true,
 };

@@ -344,23 +344,23 @@ body.hide-teahouse #cardTeahouse {
 .form-studio-services,
 .form-studio-about {
   font-family: var(--font-primary);
-  font-weight: var(--fw-bold);
-  font-size: 15px;
+  font-weight: 600;
+  font-size: 14px;
   line-height: 1.45;
-  text-transform: uppercase;
   color: #111111;
-  letter-spacing: 0.01em;
+  letter-spacing: 0;
   pointer-events: none;
 }
 
 .form-studio-services {
   margin-bottom: 0;
   text-align: left;
+  max-width: min(420px, 38vw);
 }
 
 .form-studio-services p {
   margin: 0;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .form-studio-about {
@@ -368,6 +368,11 @@ body.hide-teahouse #cardTeahouse {
   max-width: min(460px, 42vw);
   text-align: right;
   white-space: normal;
+}
+
+.form-studio-services p:nth-child(n + 2),
+.form-studio-about {
+  display: none;
 }
 
 body.hide-form #contactSection {

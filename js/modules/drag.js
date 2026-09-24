@@ -8,9 +8,9 @@
 
 import { CONFIG } from '../config.js';
 import { state } from '../state.js';
-import { playSound } from './audio.js?v=23';
-import { openProjectModal } from './modal.js?v=39';
-import { formPos, applyFormScreenPos, closeServiceMenu, toastPos, applyToastScreenPos, pauseToastHide, resumeToastHide } from './form.js?v=31';
+import { playSound } from './audio.js?v=24';
+import { openProjectModal } from './modal.js?v=45';
+import { formPos, applyFormScreenPos, closeServiceMenu, toastPos, applyToastScreenPos, pauseToastHide, resumeToastHide } from './form.js?v=32';
 import { viewW, viewH } from '../viewport.js?v=2';
 
 const CARD_DRAG_PX = 12;
@@ -80,7 +80,7 @@ function onPointerDown(e) {
     return;
   }
 
-  if (e.target.closest?.('.modal-card')) return;
+  if (e.target.closest?.('.modal-card, .card-back-link')) return;
 
   const formEl = document.getElementById('contactSection');
   if (
@@ -95,6 +95,7 @@ function onPointerDown(e) {
 
   const card = cardFromPoint(e.clientX, e.clientY);
   if (!card) return;
+  if (card.classList.contains('is-flipping')) return;
 
   playSound('click');
   if (e.pointerType !== 'mouse') e.preventDefault();
@@ -451,7 +452,7 @@ function endSession(e) {
   const previewId = card.dataset.projectPreview;
   const coordsOk = Number.isFinite(e?.clientX) && Number.isFinite(e?.clientY);
   const stillOnCard = !coordsOk || pointOnCard(card, e.clientX, e.clientY);
-  const openOnRelease = !hasDragged && previewId && stillOnCard;
+  const openOnRelease = !hasDragged && previewId && stillOnCard && !card.classList.contains('is-flipping');
 
   if (captured) {
     try { card.releasePointerCapture(pointerId); } catch { /* already released */ }

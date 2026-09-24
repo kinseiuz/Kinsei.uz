@@ -2,8 +2,8 @@
  * KINSEI Studio — Contact Form (Uzbekistan standard phone formatting & validation)
  */
 
-import { playSound } from './audio.js?v=23';
-import { t, getLang } from './i18n.js?v=17';
+import { playSound } from './audio.js?v=24';
+import { t, getLang } from './i18n.js?v=18';
 
 let form, name, phone, service, customGroup, custom, submitBtn;
 let customSelectWrapper, customSelectTrigger, selectedServiceText, customSelectOptions, customSelectMenu;

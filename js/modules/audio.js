@@ -3,9 +3,9 @@
  * iOS Safari blocks Web Audio after the gesture; HTMLAudio + real WAV files play.
  */
 
-import { t } from './i18n.js?v=17';
+import { t } from './i18n.js?v=18';
 import { state } from '../state.js';
-import { CONFIG } from '../config.js?v=11';
+import { CONFIG } from '../config.js?v=12';
 
 const SRC = {
   click: 'assets/sounds/tap.wav?v=1',
